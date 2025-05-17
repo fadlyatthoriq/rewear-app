@@ -1,66 +1,127 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Rewear App
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="public/assets/images/logo.png" alt="Rewear Logo" width="200">
 </p>
 
-## About Laravel
+<p align="center">
+  <a href="https://github.com/fadlyatthoriq/rewear-app"><img src="https://img.shields.io/github/stars/fadlyatthoriq/rewear-app" alt="Stars"></a>
+  <a href="https://github.com/fadlyatthoriq/rewear-app/blob/master/LICENSE"><img src="https://img.shields.io/github/license/fadlyatthoriq/rewear-app" alt="License"></a>
+  <a href="https://github.com/fadlyatthoriq/rewear-app/issues"><img src="https://img.shields.io/github/issues/fadlyatthoriq/rewear-app" alt="Issues"></a>
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## About Rewear App
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Rewear App is a modern e-commerce platform built with Laravel, focusing on sustainable fashion through second-hand clothing. Our platform connects buyers and sellers of pre-loved fashion items, promoting a circular economy in the fashion industry.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Key Features
 
-## Learning Laravel
+- 🛍️ User-friendly shopping experience
+- 👤 Secure user authentication
+- 🛒 Shopping cart functionality
+- 💳 Secure payment processing
+- 📱 Responsive design
+- 🔍 Advanced search and filtering
+- 📊 Admin dashboard
+- 📦 Order management system
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Built With
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+<p align="center">
+  <a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="200" alt="Laravel Logo"></a>
+</p>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- [Laravel](https://laravel.com) - The PHP Framework for Web Artisans
+- [Tailwind CSS](https://tailwindcss.com) - A utility-first CSS framework
+- [MySQL](https://www.mysql.com) - Database
+- [Vite](https://vitejs.dev) - Next Generation Frontend Tooling
 
-## Laravel Sponsors
+## Getting Started
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Prerequisites
 
-### Premium Partners
+- PHP >= 8.1
+- Composer
+- Node.js & NPM
+- MySQL
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/fadlyatthoriq/rewear-app.git
+cd rewear-app
+```
+
+2. Install PHP dependencies
+```bash
+composer install
+```
+
+3. Install NPM dependencies
+```bash
+npm install
+```
+
+4. Create environment file
+```bash
+cp .env.example .env
+```
+
+5. Generate application key
+```bash
+php artisan key:generate
+```
+
+6. Configure your database in `.env` file
+```bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=rewear_app
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+7. Run migrations and seeders
+```bash
+php artisan migrate --seed
+```
+
+8. Start the development server
+```bash
+php artisan serve
+```
+
+9. In a separate terminal, start Vite
+```bash
+npm run dev
+```
+
+Visit `http://localhost:8000` to see the application.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [Laravel](https://laravel.com) - The PHP Framework for Web Artisans
+- [Tailwind CSS](https://tailwindcss.com) - A utility-first CSS framework
+- All contributors who have helped shape this project
+
+---
+
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/fadlyatthoriq">Fadly Atthoriq</a>
+</p>

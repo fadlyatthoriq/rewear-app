@@ -1,18 +1,18 @@
 @extends('layouts.admin-master')
 
 @section('content')
-<div class="px-6 py-8">
-    <div class="grid gap-6 xl:grid-cols-2 2xl:grid-cols-3">
+<div class="px-4 sm:px-6 py-4 sm:py-8">
+    <div class="grid gap-4 sm:gap-6 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3">
       <!-- Main widget -->
-      <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm 2xl:col-span-2 dark:border-gray-700 dark:bg-gray-800">
-        <div class="flex items-center justify-between mb-6">
-          <div class="flex-shrink-0">
-            <span class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">Rp {{ number_format($totalSales, 0, ',', '.') }}</span>
-            <h3 class="mt-1 text-base font-medium text-gray-500 dark:text-gray-400">Sales this week</h3>
+      <div class="p-4 sm:p-6 bg-white border border-gray-200 rounded-xl shadow-sm 2xl:col-span-2 dark:border-gray-700 dark:bg-gray-800">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6">
+          <div class="flex-shrink-0 mb-4 sm:mb-0">
+            <span class="text-xl sm:text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">Rp {{ number_format($totalSales, 0, ',', '.') }}</span>
+            <h3 class="mt-1 text-sm sm:text-base font-medium text-gray-500 dark:text-gray-400">Sales this week</h3>
           </div>
-          <div class="flex items-center justify-end flex-1 text-base font-medium {{ $salesGrowth >= 0 ? 'text-green-500' : 'text-red-500' }} dark:text-green-400">
+          <div class="flex items-center justify-end flex-1 text-sm sm:text-base font-medium {{ $salesGrowth >= 0 ? 'text-green-500' : 'text-red-500' }} dark:text-green-400">
             {{ number_format($salesGrowth, 1) }}%
-            <svg class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd"
                 d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
                 clip-rule="evenodd"></path>
@@ -21,9 +21,9 @@
         </div>
         <div id="main-chart" class="mt-4"></div>
         <!-- Card Footer -->
-        <div class="flex items-center justify-between pt-4 mt-6 border-t border-gray-200 sm:pt-6 dark:border-gray-700">
+        <div class="flex items-center justify-between pt-4 mt-4 sm:mt-6 border-t border-gray-200 sm:pt-6 dark:border-gray-700">
           <div>
-            <button class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-500 rounded-lg hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" type="button" data-dropdown-toggle="weekly-sales-dropdown">
+            <button class="inline-flex items-center px-3 sm:px-4 py-2 text-sm font-medium text-center text-gray-500 rounded-lg hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" type="button" data-dropdown-toggle="weekly-sales-dropdown">
               @switch($period)
                 @case('today')
                   Today
@@ -77,8 +77,8 @@
         </div>
       </div>
       <!--Tabs widget -->
-      <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <h3 class="flex items-center mb-6 text-xl font-semibold text-gray-900 dark:text-white">
+      <div class="p-4 sm:p-6 bg-white border border-gray-200 rounded-xl shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <h3 class="flex items-center mb-4 sm:mb-6 text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
           Statistics this month
           <button data-popover-target="popover-description" data-popover-placement="bottom-end" type="button" class="ml-2 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors duration-200">
             <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -95,32 +95,24 @@
           </div>
           <div data-popper-arrow></div>
         </div>
-        <div class="sm:hidden">
-          <label for="tabs" class="sr-only">Select tab</label>
-          <select id="tabs" class="bg-gray-50 border-0 border-b border-gray-200 text-gray-900 text-sm rounded-t-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-            <option>Statistics</option>
-            <option>Services</option>
-            <option>FAQ</option>
-          </select>
-        </div>
-        <ul class="hidden text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg sm:flex dark:divide-gray-600 dark:text-gray-400" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
+        <ul class="text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg flex dark:divide-gray-600 dark:text-gray-400" id="fullWidthTab" data-tabs-toggle="#fullWidthTabContent" role="tablist">
           <li class="w-full">
-            <button id="faq-tab" data-tabs-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="true" class="inline-block w-full p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors duration-200">
+            <button id="faq-tab" data-tabs-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="true" class="inline-block w-full p-3 sm:p-4 rounded-tl-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors duration-200">
               <div class="flex items-center justify-center">
-                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
                 </svg>
-                Top Products
+                <span class="text-xs sm:text-sm">Top Products</span>
               </div>
             </button>
           </li>
           <li class="w-full">
-            <button id="about-tab" data-tabs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false" class="inline-block w-full p-4 rounded-tr-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors duration-200">
+            <button id="about-tab" data-tabs-target="#about" type="button" role="tab" aria-controls="about" aria-selected="false" class="inline-block w-full p-3 sm:p-4 rounded-tr-lg bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors duration-200">
               <div class="flex items-center justify-center">
-                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
                 </svg>
-                Top Customers
+                <span class="text-xs sm:text-sm">Top Customers</span>
               </div>
             </button>
           </li>
@@ -129,29 +121,29 @@
           <div class="hidden pt-4" id="faq" role="tabpanel" aria-labelledby="faq-tab">
             <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
               @foreach($topProducts as $product)
-              <li class="py-4">
-                <div class="flex items-center justify-between gap-4">
+              <li class="py-3 sm:py-4">
+                <div class="flex items-center justify-between gap-2 sm:gap-4">
                   <div class="flex items-center min-w-0 flex-1">
                     @php
                       $productImage = $product->image_url ? asset('storage/' . $product->image_url) : asset('images/default-product.png');
                     @endphp
-                    <img class="flex-shrink-0 w-12 h-12 rounded-lg object-cover bg-gray-100" 
+                    <img class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover bg-gray-100" 
                          src="{{ $productImage }}" 
                          alt="{{ $product->name }}"
                          onerror="this.onerror=null; this.src='{{ asset('images/default-product.png') }}'">
-                    <div class="ml-4 overflow-hidden">
-                      <p class="font-medium text-gray-900 truncate dark:text-white">
+                    <div class="ml-3 sm:ml-4 overflow-hidden">
+                      <p class="text-sm sm:text-base font-medium text-gray-900 truncate dark:text-white">
                         {{ $product->name }}
                       </p>
-                      <div class="flex items-center text-sm text-green-500 dark:text-green-400">
-                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <div class="flex items-center text-xs sm:text-sm text-green-500 dark:text-green-400">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                           <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
                         </svg>
                         {{ $product->transaction_items_count }} transactions
                       </div>
                     </div>
                   </div>
-                  <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white flex-shrink-0">
+                  <div class="inline-flex items-center text-sm sm:text-base font-semibold text-gray-900 dark:text-white flex-shrink-0">
                     Rp {{ number_format($product->price, 0, ',', '.') }}
                   </div>
                 </div>
@@ -162,26 +154,26 @@
           <div class="hidden pt-4" id="about" role="tabpanel" aria-labelledby="about-tab">
             <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
               @foreach($topCustomers as $customer)
-              <li class="py-4">
-                <div class="flex items-center space-x-4">
+              <li class="py-3 sm:py-4">
+                <div class="flex items-center space-x-3 sm:space-x-4">
                   <div class="flex-shrink-0">
                     @php
-                      $userImage = $customer->profile_photo_url ? $customer->profile_photo_url : asset('images/default-avatar.png');
+                      $userImage = $customer->profile_picture ? asset('storage/' . $customer->profile_picture) : asset('assets-admin/static/images/avatar-default.svg');
                     @endphp
-                    <img class="w-10 h-10 rounded-full bg-gray-100" 
+                    <img class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-100" 
                          src="{{ $userImage }}" 
                          alt="{{ $customer->name }}"
-                         onerror="this.onerror=null; this.src='{{ asset('images/default-avatar.png') }}'">
+                         onerror="this.onerror=null; this.src='{{ asset('assets-admin/static/images/avatar-default.svg') }}'">
                   </div>
                   <div class="flex-1 min-w-0">
-                    <p class="font-medium text-gray-900 truncate dark:text-white">
+                    <p class="text-sm sm:text-base font-medium text-gray-900 truncate dark:text-white">
                       {{ $customer->name }}
                     </p>
-                    <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                    <p class="text-xs sm:text-sm text-gray-500 truncate dark:text-gray-400">
                       {{ $customer->email }}
                     </p>
                   </div>
-                  <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white flex-shrink-0">
+                  <div class="inline-flex items-center text-sm sm:text-base font-semibold text-gray-900 dark:text-white flex-shrink-0">
                     Rp {{ number_format($customer->transactions_sum_total_price, 0, ',', '.') }}
                   </div>
                 </div>
@@ -193,14 +185,14 @@
       </div>
     </div>
     <div class="grid w-full grid-cols-1 gap-4 mt-4 xl:grid-cols-2 2xl:grid-cols-3">
-        <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <div class="p-4 sm:p-6 bg-white border border-gray-200 rounded-xl shadow-sm dark:border-gray-700 dark:bg-gray-800">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <h3 class="text-base font-normal text-gray-500 dark:text-gray-400">New products</h3>
-              <span class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">{{ $newProducts }}</span>
-              <p class="flex items-center text-base font-normal text-gray-500 dark:text-gray-400">
-                <span class="flex items-center mr-1.5 text-sm {{ $productGrowth >= 0 ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400' }}">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <h3 class="text-sm sm:text-base font-normal text-gray-500 dark:text-gray-400">New products</h3>
+              <span class="text-xl sm:text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">{{ $newProducts }}</span>
+              <p class="flex items-center text-sm sm:text-base font-normal text-gray-500 dark:text-gray-400">
+                <span class="flex items-center mr-1.5 text-xs sm:text-sm {{ $productGrowth >= 0 ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400' }}">
+                  <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
                   </svg>
                   {{ $productGrowth }}% 
@@ -211,14 +203,14 @@
           </div>
           <div id="new-products-chart" class="mt-4"></div>
         </div>
-        <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <div class="p-4 sm:p-6 bg-white border border-gray-200 rounded-xl shadow-sm dark:border-gray-700 dark:bg-gray-800">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <h3 class="text-base font-normal text-gray-500 dark:text-gray-400">Users</h3>
-              <span class="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">{{ $newUsers }}</span>
-              <p class="flex items-center text-base font-normal text-gray-500 dark:text-gray-400">
-                <span class="flex items-center mr-1.5 text-sm {{ $userGrowth >= 0 ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400' }}">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <h3 class="text-sm sm:text-base font-normal text-gray-500 dark:text-gray-400">Users</h3>
+              <span class="text-xl sm:text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">{{ $newUsers }}</span>
+              <p class="flex items-center text-sm sm:text-base font-normal text-gray-500 dark:text-gray-400">
+                <span class="flex items-center mr-1.5 text-xs sm:text-sm {{ $userGrowth >= 0 ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400' }}">
+                  <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path clip-rule="evenodd" fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"></path>
                   </svg>
                   {{ $userGrowth }}% 
@@ -229,48 +221,48 @@
           </div>
           <div id="week-signups-chart" class="mt-4"></div>
         </div>
-        <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <div class="flex items-center justify-between mb-6">
+        <div class="p-4 sm:p-6 bg-white border border-gray-200 rounded-xl shadow-sm dark:border-gray-700 dark:bg-gray-800">
+          <div class="flex items-center justify-between mb-4 sm:mb-6">
             <div>
-              <h3 class="text-base font-normal text-gray-500 dark:text-gray-400">Audience by age</h3>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Demographic distribution of users</p>
+              <h3 class="text-sm sm:text-base font-normal text-gray-500 dark:text-gray-400">Audience by age</h3>
+              <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">Demographic distribution of users</p>
             </div>
           </div>
-          <div class="space-y-4">
+          <div class="space-y-3 sm:space-y-4">
             <div class="flex items-center">
-              <div class="w-20 text-sm font-medium text-gray-900 dark:text-white">50+</div>
-              <div class="flex-1 h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 mx-4">
-                <div class="bg-primary-600 h-2.5 rounded-full dark:bg-primary-500" style="width: {{ $agePercentages['50+'] }}%"></div>
+              <div class="w-16 sm:w-20 text-xs sm:text-sm font-medium text-gray-900 dark:text-white">50+</div>
+              <div class="flex-1 h-2 sm:h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 mx-3 sm:mx-4">
+                <div class="bg-primary-600 h-2 sm:h-2.5 rounded-full dark:bg-primary-500" style="width: {{ $agePercentages['50+'] }}%"></div>
               </div>
-              <div class="w-12 text-sm text-right font-medium text-gray-900 dark:text-white">{{ $agePercentages['50+'] }}%</div>
+              <div class="w-8 sm:w-12 text-xs sm:text-sm text-right font-medium text-gray-900 dark:text-white">{{ $agePercentages['50+'] }}%</div>
             </div>
             <div class="flex items-center">
-              <div class="w-20 text-sm font-medium text-gray-900 dark:text-white">40-49</div>
-              <div class="flex-1 h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 mx-4">
-                <div class="bg-primary-600 h-2.5 rounded-full dark:bg-primary-500" style="width: {{ $agePercentages['40-49'] }}%"></div>
+              <div class="w-16 sm:w-20 text-xs sm:text-sm font-medium text-gray-900 dark:text-white">40-49</div>
+              <div class="flex-1 h-2 sm:h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 mx-3 sm:mx-4">
+                <div class="bg-primary-600 h-2 sm:h-2.5 rounded-full dark:bg-primary-500" style="width: {{ $agePercentages['40-49'] }}%"></div>
               </div>
-              <div class="w-12 text-sm text-right font-medium text-gray-900 dark:text-white">{{ $agePercentages['40-49'] }}%</div>
+              <div class="w-8 sm:w-12 text-xs sm:text-sm text-right font-medium text-gray-900 dark:text-white">{{ $agePercentages['40-49'] }}%</div>
             </div>
             <div class="flex items-center">
-              <div class="w-20 text-sm font-medium text-gray-900 dark:text-white">30-39</div>
-              <div class="flex-1 h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 mx-4">
-                <div class="bg-primary-600 h-2.5 rounded-full dark:bg-primary-500" style="width: {{ $agePercentages['30-39'] }}%"></div>
+              <div class="w-16 sm:w-20 text-xs sm:text-sm font-medium text-gray-900 dark:text-white">30-39</div>
+              <div class="flex-1 h-2 sm:h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 mx-3 sm:mx-4">
+                <div class="bg-primary-600 h-2 sm:h-2.5 rounded-full dark:bg-primary-500" style="width: {{ $agePercentages['30-39'] }}%"></div>
               </div>
-              <div class="w-12 text-sm text-right font-medium text-gray-900 dark:text-white">{{ $agePercentages['30-39'] }}%</div>
+              <div class="w-8 sm:w-12 text-xs sm:text-sm text-right font-medium text-gray-900 dark:text-white">{{ $agePercentages['30-39'] }}%</div>
             </div>
             <div class="flex items-center">
-              <div class="w-20 text-sm font-medium text-gray-900 dark:text-white">20-29</div>
-              <div class="flex-1 h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 mx-4">
-                <div class="bg-primary-600 h-2.5 rounded-full dark:bg-primary-500" style="width: {{ $agePercentages['20-29'] }}%"></div>
+              <div class="w-16 sm:w-20 text-xs sm:text-sm font-medium text-gray-900 dark:text-white">20-29</div>
+              <div class="flex-1 h-2 sm:h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 mx-3 sm:mx-4">
+                <div class="bg-primary-600 h-2 sm:h-2.5 rounded-full dark:bg-primary-500" style="width: {{ $agePercentages['20-29'] }}%"></div>
               </div>
-              <div class="w-12 text-sm text-right font-medium text-gray-900 dark:text-white">{{ $agePercentages['20-29'] }}%</div>
+              <div class="w-8 sm:w-12 text-xs sm:text-sm text-right font-medium text-gray-900 dark:text-white">{{ $agePercentages['20-29'] }}%</div>
             </div>
             <div class="flex items-center">
-              <div class="w-20 text-sm font-medium text-gray-900 dark:text-white">Under 20</div>
-              <div class="flex-1 h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 mx-4">
-                <div class="bg-primary-600 h-2.5 rounded-full dark:bg-primary-500" style="width: {{ $agePercentages['Under 20'] }}%"></div>
+              <div class="w-16 sm:w-20 text-xs sm:text-sm font-medium text-gray-900 dark:text-white">Under 20</div>
+              <div class="flex-1 h-2 sm:h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 mx-3 sm:mx-4">
+                <div class="bg-primary-600 h-2 sm:h-2.5 rounded-full dark:bg-primary-500" style="width: {{ $agePercentages['Under 20'] }}%"></div>
               </div>
-              <div class="w-12 text-sm text-right font-medium text-gray-900 dark:text-white">{{ $agePercentages['Under 20'] }}%</div>
+              <div class="w-8 sm:w-12 text-xs sm:text-sm text-right font-medium text-gray-900 dark:text-white">{{ $agePercentages['Under 20'] }}%</div>
             </div>
           </div>
         </div>
@@ -299,7 +291,7 @@
     // Initialize main chart
     const mainChartOptions = {
         chart: {
-            height: 420,
+            height: 350,
             type: 'area',
             fontFamily: 'Inter, sans-serif',
             foreColor: document.documentElement.classList.contains('dark') ? '#9CA3AF' : '#6B7280',
@@ -411,6 +403,19 @@
                         }
                     }
                 }
+            },
+            {
+                breakpoint: 640,
+                options: {
+                    chart: {
+                        height: 300
+                    },
+                    xaxis: {
+                        labels: {
+                            show: false
+                        }
+                    }
+                }
             }
         ]
     };
@@ -418,7 +423,7 @@
     // New products line chart
     const newProductsChartOptions = {
         chart: {
-            height: 200,
+            height: 180,
             type: 'line',
             fontFamily: 'Inter, sans-serif',
             foreColor: document.documentElement.classList.contains('dark') ? '#9CA3AF' : '#6B7280',
@@ -481,13 +486,28 @@
                 size: undefined,
                 sizeOffset: 3
             }
-        }
+        },
+        responsive: [
+            {
+                breakpoint: 640,
+                options: {
+                    chart: {
+                        height: 150
+                    },
+                    xaxis: {
+                        labels: {
+                            show: false
+                        }
+                    }
+                }
+            }
+        ]
     };
 
     // New users line chart
     const newUsersChartOptions = {
         chart: {
-            height: 200,
+            height: 180,
             type: 'line',
             fontFamily: 'Inter, sans-serif',
             foreColor: document.documentElement.classList.contains('dark') ? '#9CA3AF' : '#6B7280',
@@ -550,7 +570,22 @@
                 size: undefined,
                 sizeOffset: 3
             }
-        }
+        },
+        responsive: [
+            {
+                breakpoint: 640,
+                options: {
+                    chart: {
+                        height: 150
+                    },
+                    xaxis: {
+                        labels: {
+                            show: false
+                        }
+                    }
+                }
+            }
+        ]
     };
 
     document.addEventListener('DOMContentLoaded', function() {

@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'phone' => '081234567890',
             'address' => 'Jl. Admin No. 1',
             'birth_date' => '1990-01-01',
-            'profile_picture' => 'public/assets-admin/static/images/avatar-default.svg',
+            'profile_picture' => null,
             'email_verified_at' => now(),
             'remember_token' => null
         ]);
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             'phone' => '089876543210',
             'address' => 'Jl. User No. 1',
             'birth_date' => '1992-05-15',
-            'profile_picture' => 'public/assets-admin/static/images/avatar-default.svg',
+            'profile_picture' => null,
             'email_verified_at' => now(),
             'remember_token' => null
         ]);
@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
             'phone' => '081234567891',
             'address' => 'Jl. John Doe No. 1',
             'birth_date' => '1995-03-20',
-            'profile_picture' => 'public/assets-admin/static/images/avatar-default.svg',
+            'profile_picture' => null,
             'email_verified_at' => now(),
             'remember_token' => null
         ]);
@@ -60,7 +60,7 @@ class UserSeeder extends Seeder
             'phone' => '081234567892',
             'address' => 'Jl. Jane Smith No. 1',
             'birth_date' => '1993-07-10',
-            'profile_picture' => 'public/assets-admin/static/images/avatar-default.svg',
+            'profile_picture' => null,
             'email_verified_at' => now(),
             'remember_token' => null
         ]);

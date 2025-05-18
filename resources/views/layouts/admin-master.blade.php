@@ -41,11 +41,6 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src="{{ asset('assets-admin/src/constants.js') }}"></script>
-    <script src="{{ asset('assets-admin/src/index.js') }}"></script>
-    <script src="{{ asset('assets-admin/src/charts.js') }}"></script>
-    <script src="{{ asset('assets-admin/src/dark-mode.js') }}"></script>
-    <script src="{{ asset('assets-admin/src/sidebar.js') }}"></script>
 
 </body>
 </html>

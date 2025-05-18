@@ -13,12 +13,12 @@ class ShopController extends Controller
         $query = Product::with('category');
 
         // Filter by category
-        if ($request->has('category')) {
+        if ($request->has('category') && $request->category !== '') {
             $query->where('category_id', $request->category);
         }
 
         // Search functionality
-        if ($request->has('search')) {
+        if ($request->has('search') && $request->search !== '') {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
@@ -41,7 +41,7 @@ class ShopController extends Controller
                 $query->latest();
         }
 
-        $products = $query->paginate(12)->withQueryString();
+        $products = $query->paginate(8)->appends(request()->query());
         $categories = Category::all();
 
         return view('shop', compact('products', 'categories'));

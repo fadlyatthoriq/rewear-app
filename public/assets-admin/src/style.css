@@ -1,8 +1,12 @@
-@import "tailwindcss";
-@plugin "flowbite/plugin";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@source "../node_modules/flowbite";
-@source "../node_modules/flowbite-datepicker";
+/* Flowbite */
+@import 'flowbite/dist/flowbite.css';
+
+/* Font Awesome */
+@import '@fortawesome/fontawesome-free/css/all.min.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 

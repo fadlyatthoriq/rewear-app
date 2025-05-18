@@ -31,7 +31,9 @@
                     <div>
                         <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button-2" aria-expanded="false" data-dropdown-toggle="dropdown-2">
                             <span class="sr-only">Open user menu</span>
-                            <img class="w-8 h-8 rounded-full" src="{{ auth()->user()->profile_photo_url ?? asset('assets/images/default-avatar.png') }}" alt="{{ auth()->user()->name }}">
+                            <img class="w-8 h-8 rounded-full" src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('assets-admin/static/images/avatar-default.svg') }}" 
+                            alt="{{ auth()->user()->name }}" 
+                            onerror="this.onerror=null; this.src='{{ asset('assets-admin/static/images/avatar-default.svg') }}'">
                         </button>
                     </div>
                     <!-- Dropdown menu -->

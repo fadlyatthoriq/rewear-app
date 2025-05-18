@@ -15,41 +15,39 @@
         <div class="col-span-1">
             <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Shop</h3>
             <div class="mt-4 space-y-4">
-                @foreach (['Women', 'Men', 'Accessories', 'New Arrivals'] as $link)
-                    <a href="#" class="text-base text-gray-500 hover:text-[#2596be] transition-all duration-300 block transform hover:translate-x-2">{{ $link }}</a>
+                @foreach($categories as $category)
+                    <a href="{{ route('shop', ['category' => $category->id]) }}" class="text-base text-gray-500 hover:text-[#2596be] transition-all duration-300 block transform hover:translate-x-2">{{ $category->name }}</a>
                 @endforeach
             </div>
         </div>
 
         <!-- Contact Info -->
         <div class="col-span-1">
-            <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Contact Us</h3>
+            <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Contact</h3>
             <div class="mt-4 space-y-4">
-                <div class="flex items-center space-x-3">
-                    <i class="fa-solid fa-location-dot text-[#2596be]"></i>
-                    <p class="text-gray-500 ml-3">123 Fashion Street, Jakarta</p>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <i class="fa-solid fa-phone text-[#2596be]"></i>
-                    <p class="text-gray-500 ml-3">+62 812 3456 7890</p>
-                </div>
-                <div class="flex items-center space-x-3">
-                    <i class="fa-solid fa-envelope text-[#2596be]"></i>
-                    <p class="text-gray-500 ml-3">support@rewear.com</p>
-                </div>
+                <p class="text-base text-gray-500">
+                    <i class="fa-solid fa-location-dot mr-2"></i>
+                    123 Fashion Street, Style City
+                </p>
+                <p class="text-base text-gray-500">
+                    <i class="fa-solid fa-phone mr-2"></i>
+                    +1 234 567 890
+                </p>
+                <p class="text-base text-gray-500">
+                    <i class="fa-solid fa-envelope mr-2"></i>
+                    support@rewear.com
+                </p>
             </div>
         </div>
     </div>
-</footer>
-<!-- ./footer -->
 
-<!-- copyright -->
-<div class="bg-gray-800 py-4">
-    <div class="container flex items-center justify-between">
-        <p class="text-white">&copy; {{ date('Y') }} Rewear - Your Fashion Destination</p>
+    <!-- Copyright -->
+    <div class="container mt-12 pt-8 border-t border-gray-100">
+        <p class="text-center text-gray-500">
+            &copy; {{ date('Y') }} Rewear. All rights reserved.
+        </p>
     </div>
-</div>
-<!-- ./copyright -->
+</footer>
 
 <!-- back to top button -->
 <button id="back-to-top" class="fixed bottom-8 right-8 bg-[#2596be] text-white w-10 h-10 rounded-full flex items-center justify-center opacity-0 invisible transition-all duration-300 transform hover:scale-110">

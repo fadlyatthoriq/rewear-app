@@ -110,8 +110,12 @@
                             <div class="text-xs text-gray-500 ml-3">({{ $product->transactionItems->count() }})</div>
                         </div>
                     </div>
-                    <a href="{{ route('cart.add', $product->id) }}"
-                        class="block w-full py-2 mt-auto text-center text-white bg-[#2596be] font-bold rounded-xl shadow hover:bg-white hover:text-white hover:border-[#2596be] hover:shadow-xl hover:scale-105 border-2 border-[#2596be] transition-all duration-300">Add to cart</a>
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mt-auto add-to-cart-form">
+                        @csrf
+                        <button type="submit" class="w-full py-2 text-center text-white bg-primary font-bold rounded shadow hover:bg-white hover:text-white hover:border-primary hover:shadow-xl hover:scale-105 border-2 border-primary transition-all duration-300">
+                            Add to cart
+                        </button>
+                    </form>
                 </div>
             @endforeach
         </div>
@@ -163,11 +167,83 @@
                             <div class="text-xs text-gray-500 ml-3">({{ $product->transactionItems->count() }})</div>
                         </div>
                     </div>
-                    <a href="{{ route('cart.add', $product->id) }}"
-                        class="block w-full py-2 mt-auto text-center text-white bg-[#2596be] font-bold rounded-xl shadow hover:bg-white hover:text-white hover:border-[#2596be] hover:shadow-xl hover:scale-105 border-2 border-[#2596be] transition-all duration-300">Add to cart</a>
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mt-auto add-to-cart-form">
+                        @csrf
+                        <button type="submit" class="w-full py-2 text-center text-white bg-primary font-bold rounded shadow hover:bg-white hover:text-white hover:border-primary hover:shadow-xl hover:scale-105 border-2 border-primary transition-all duration-300">
+                            Add to cart
+                        </button>
+                    </form>
                 </div>
             @endforeach
         </div>
     </div>
     <!-- ./product -->
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle add to cart forms
+    document.querySelectorAll('.add-to-cart-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                },
+                body: new FormData(this)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Update cart count in navbar
+                    const cartCountElement = document.querySelector('.cart-count');
+                    if (data.cartCount > 0) {
+                        if (cartCountElement) {
+                            cartCountElement.textContent = data.cartCount;
+                        } else {
+                            const cartLink = document.querySelector('a[href="/cart"]');
+                            const countSpan = document.createElement('span');
+                            countSpan.className = 'absolute -top-2 -right-2 bg-[#2596be] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow cart-count';
+                            countSpan.textContent = data.cartCount;
+                            cartLink.appendChild(countSpan);
+                        }
+                    }
+
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                } else {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Something went wrong!',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            });
+        });
+    });
+});
+</script>
+@endpush

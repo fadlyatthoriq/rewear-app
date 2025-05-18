@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2025 at 12:13 PM
+-- Generation Time: May 18, 2025 at 05:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -43,7 +43,8 @@ CREATE TABLE `carts` (
 --
 
 INSERT INTO `carts` (`id`, `user_id`, `session_id`, `total`, `tax`, `savings`, `created_at`, `updated_at`) VALUES
-(1, 1, NULL, 0.00, 0.00, 0.00, '2025-05-18 00:51:18', '2025-05-18 00:51:18');
+(1, 1, NULL, 0.00, 0.00, 0.00, '2025-05-18 00:51:18', '2025-05-18 00:51:18'),
+(2, 5, NULL, 0.00, 0.00, 0.00, '2025-05-18 08:02:51', '2025-05-18 08:02:51');
 
 -- --------------------------------------------------------
 
@@ -60,6 +61,15 @@ CREATE TABLE `cart_items` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cart_items`
+--
+
+INSERT INTO `cart_items` (`id`, `cart_id`, `product_id`, `quantity`, `price`, `created_at`, `updated_at`) VALUES
+(20, 1, 2, 1, 50000.00, '2025-05-18 06:25:35', '2025-05-18 06:25:35'),
+(22, 1, 1, 1, 90000.00, '2025-05-18 07:21:34', '2025-05-18 07:21:34'),
+(23, 2, 7, 1, 30000.00, '2025-05-18 08:02:51', '2025-05-18 08:02:51');
 
 -- --------------------------------------------------------
 
@@ -132,7 +142,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2024_03_15_000000_add_profile_picture_to_users_table', 1),
 (10, '2025_05_15_165207_add_email_verified_at_to_users_table', 1),
 (11, '2025_05_18_074239_create_carts_table', 1),
-(12, '2025_05_18_074712_create_cart_items_table', 2);
+(12, '2025_05_18_074712_create_cart_items_table', 2),
+(13, '2025_05_18_143804_create_wishlists_table', 3);
 
 -- --------------------------------------------------------
 
@@ -346,10 +357,34 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `phone`, `address`, `birth_date`, `remember_token`, `created_at`, `updated_at`, `profile_picture`, `email_verified_at`) VALUES
-(1, 'Admins', 'admin@rewear.com', '$2y$12$lPIklpHpaIBZYzJlEJMHVeHRo9OW6lrnf0C0PjK0CTdOVsEVtqSza', 'admin', '081234567890', 'Jl. Admin No. 1', '1990-01-01', NULL, '2025-05-18 00:46:55', '2025-05-18 02:40:39', NULL, '2025-05-18 00:46:55'),
+(1, 'Admin', 'admin@rewear.com', '$2y$12$3wtzq5ZQ1HcIbwMifr6lFujivLtBdC4MlLxyym.u4iUBZgQtCYjyO', 'admin', '081234567890', 'Jl. Admin No. 1', '1990-01-01', NULL, '2025-05-18 00:46:55', '2025-05-18 06:36:32', NULL, '2025-05-18 00:46:55'),
 (2, 'User', 'user@rewear.com', '$2y$12$r6x3tuZF7XXgP58gJFt4HOK7tvqJgBfBTXrwr8bwHRqWHtrZ1pYc.', 'user', '089876543210', 'Jl. User No. 1', '1992-05-15', NULL, '2025-05-18 00:46:55', '2025-05-18 00:46:55', NULL, '2025-05-18 00:46:55'),
 (3, 'John Doe', 'john@example.com', '$2y$12$0aQ43u0pOK4LdAqXQZZzQ.tS3pFBbbeveRwLH9Uj56BJL2T6XP09O', 'user', '081234567891', 'Jl. John Doe No. 1', '1995-03-20', NULL, '2025-05-18 00:46:55', '2025-05-18 00:46:55', NULL, '2025-05-18 00:46:55'),
-(4, 'Jane Smith', 'jane@example.com', '$2y$12$J406U4glb6ScMDTHMaP5Z.Yi/OxpqNgw/HIO1qnZewH1h59Q9jnnu', 'user', '081234567892', 'Jl. Jane Smith No. 1', '1993-07-10', NULL, '2025-05-18 00:46:56', '2025-05-18 00:46:56', NULL, '2025-05-18 00:46:56');
+(4, 'Jane Smith', 'jane@example.com', '$2y$12$J406U4glb6ScMDTHMaP5Z.Yi/OxpqNgw/HIO1qnZewH1h59Q9jnnu', 'user', '081234567892', 'Jl. Jane Smith No. 1', '1993-07-10', NULL, '2025-05-18 00:46:56', '2025-05-18 00:46:56', NULL, '2025-05-18 00:46:56'),
+(5, 'Dina Eliza', 'dina@gmail.com', '$2y$12$k.fsWzDTpeuYA4iwfc2MUurnv3YtBZIUszlbifn9WetPBHWjuCHPC', 'user', '085212345678', 'Jl. Haji Karim', NULL, NULL, '2025-05-18 08:01:35', '2025-05-18 08:01:35', 'assets-admin/static/images/avatar-default.svg', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wishlists`
+--
+
+CREATE TABLE `wishlists` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `wishlists`
+--
+
+INSERT INTO `wishlists` (`id`, `user_id`, `product_id`, `created_at`, `updated_at`) VALUES
+(8, 5, 6, '2025-05-18 08:01:56', '2025-05-18 08:01:56'),
+(9, 5, 2, '2025-05-18 08:02:00', '2025-05-18 08:02:00'),
+(10, 5, 7, '2025-05-18 08:02:22', '2025-05-18 08:02:22');
 
 --
 -- Indexes for dumped tables
@@ -433,6 +468,14 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
+-- Indexes for table `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `wishlists_user_id_product_id_unique` (`user_id`,`product_id`),
+  ADD KEY `wishlists_product_id_foreign` (`product_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -440,13 +483,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -464,7 +507,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -494,7 +537,13 @@ ALTER TABLE `transaction_items`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `wishlists`
+--
+ALTER TABLE `wishlists`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
@@ -531,6 +580,13 @@ ALTER TABLE `transactions`
 ALTER TABLE `transaction_items`
   ADD CONSTRAINT `transaction_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `transaction_items_transaction_id_foreign` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `wishlists`
+--
+ALTER TABLE `wishlists`
+  ADD CONSTRAINT `wishlists_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `wishlists_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

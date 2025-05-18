@@ -23,15 +23,15 @@ class ViewServiceProvider extends ServiceProvider
 
             // Get cart count
             $cartCount = 0;
+            $wishlistCount = 0;
+            
             if (Auth::check()) {
                 $cart = Cart::where('user_id', Auth::id())->first();
                 if ($cart) {
                     $cartCount = $cart->items()->sum('quantity');
                 }
+                $wishlistCount = Auth::user()->wishlist()->count();
             }
-
-            // Get wishlist count from session
-            $wishlistCount = count(session()->get('wishlist', []));
 
             $view->with([
                 'cartCount' => $cartCount,

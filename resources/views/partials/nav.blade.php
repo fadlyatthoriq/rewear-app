@@ -6,20 +6,9 @@
       <img src="{{ asset('assets/images/logo.png') }}" alt="Rewear Logo" class="w-24 md:w-32">
     </a>
 
-    <!-- Desktop Search Bar -->
-    <form action="/search" method="GET" class="hidden md:flex flex-1 mx-6 max-w-2xl relative">
-      <input type="search" name="q" placeholder="Search products..."
-        class="w-full p-2.5 pl-10 rounded-md border border-gray-200 focus:ring-2 focus:ring-[#217ca6] focus:border-[#217ca6] focus:outline-none text-sm bg-gray-50 hover:bg-white shadow-sm"
-        autocomplete="off" />
-      <button type="submit"
-        class="absolute right-2.5 top-1/2 -translate-y-1/2 bg-primary text-white px-4 py-1.5 rounded-md text-sm hover:bg-[#217ca6] transition shadow">
-        Search
-      </button>
-    </form>
-
     <!-- Icons -->
     <div class="flex items-center space-x-4 md:space-x-5 text-gray-600">
-      <a href="/wishlist" class="relative group">
+      <a href="{{ route('wishlist.index') }}" class="relative group">
         <i class="fa-regular fa-heart text-xl group-hover:text-[#2596be] transition"></i>
         @if($wishlistCount > 0)
         <span class="absolute -top-2 -right-2 bg-[#2596be] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow">{{ $wishlistCount }}</span>

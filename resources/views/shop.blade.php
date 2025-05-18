@@ -103,11 +103,14 @@
                             title="view product">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </a>
-                        <a href="{{ route('wishlist.add', $product->id) }}"
-                            class="bg-white text-[#2596be] shadow w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#2596be] hover:text-white transition"
-                            title="add to wishlist">
-                            <i class="fa-solid fa-heart"></i>
-                        </a>
+                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST" class="wishlist-form">
+                            @csrf
+                            <button type="submit"
+                                class="bg-white text-[#2596be] shadow w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#2596be] hover:text-white transition"
+                                title="add to wishlist">
+                                <i class="fa-solid fa-heart"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
                 <div class="flex-1 flex flex-col pt-4 pb-2">
@@ -118,17 +121,14 @@
                         <p class="text-2xl text-[#2596be] font-extrabold">Rp. {{ number_format($product->price) }}</p>
                     </div>
                     <div class="flex items-center">
-                        <div class="flex gap-1 text-sm text-yellow-400">
-                            @for ($i = 0; $i < 5; $i++)
-                                <span><i class="fa-solid fa-star"></i></span>
-                            @endfor
+                        <div class="text-sm text-gray-600">
+                            Stock: <span class="font-semibold">{{ $product->stock }}</span>
                         </div>
-                        <div class="text-xs text-gray-500 ml-3">({{ $product->transactionItems->count() }})</div>
                     </div>
                 </div>
                 <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mt-auto add-to-cart-form">
                     @csrf
-                    <button type="submit" class="w-full py-2 text-center text-white bg-primary font-bold rounded shadow hover:bg-white hover:text-white hover:border-primary hover:shadow-xl hover:scale-105 border-2 border-primary transition-all duration-300">
+                    <button type="submit" class="w-full py-2 text-center text-white bg-primary font-bold rounded shadow hover:bg-white hover:text-primary hover:border-primary hover:shadow-xl hover:scale-105 border-2 border-primary transition-all duration-300">
                         Add to cart
                     </button>
                 </form>
@@ -234,6 +234,77 @@ document.addEventListener('DOMContentLoaded', function() {
                     showConfirmButton: false,
                     timer: 3000
                 });
+            });
+        });
+    });
+
+    // Handle wishlist forms
+    document.querySelectorAll('.wishlist-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            fetch(this.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: new FormData(this)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update wishlist count in navbar
+                const wishlistCountElement = document.querySelector('a[href*="wishlist"] span');
+                if (data.wishlistCount > 0) {
+                    if (wishlistCountElement) {
+                        wishlistCountElement.textContent = data.wishlistCount;
+                    } else {
+                        const wishlistLink = document.querySelector('a[href*="wishlist"]');
+                        const countSpan = document.createElement('span');
+                        countSpan.className = 'absolute -top-2 -right-2 bg-[#2596be] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow';
+                        countSpan.textContent = data.wishlistCount;
+                        wishlistLink.appendChild(countSpan);
+                    }
+                }
+
+                // Show success message
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: data.message,
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Check if session expired
+                if (error.message.includes('<!DOCTYPE')) {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Your session has expired. Please refresh the page.',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                } else {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Something went wrong! Please try again.',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                }
             });
         });
     });

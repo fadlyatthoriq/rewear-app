@@ -24,18 +24,9 @@ class CartController extends Controller
         $total = $items->sum(function($item) {
             return $item->price * $item->quantity;
         });
-        // Format agar $cart di blade tetap associative array seperti sebelumnya
-        $cartArray = [];
-        foreach ($items as $item) {
-            $cartArray[$item->product_id] = [
-                'name' => $item->product->name,
-                'quantity' => $item->quantity,
-                'price' => $item->price,
-                'image' => $item->product->image_url
-            ];
-        }
+
         return view('cart', [
-            'cart' => $cartArray,
+            'cart' => $items,
             'total' => $total
         ]);
     }
@@ -89,70 +80,46 @@ class CartController extends Controller
         }
     }
 
-    public function remove(Product $product)
-    {
-        $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->first();
-        if ($cart) {
-            $item = $cart->items()->where('product_id', $product->id)->first();
-            if ($item) {
-                $item->delete();
-                Alert::success('Success', 'Product removed from cart successfully!');
-                return redirect()->back();
-            }
-        }
-        Alert::error('Error', 'Product not found in cart!');
-        return redirect()->back();
-    }
-
     public function update(Request $request, Product $product)
     {
         $user = Auth::user();
         $cart = Cart::where('user_id', $user->id)->first();
-        if ($cart) {
-            $item = $cart->items()->where('product_id', $product->id)->first();
-            if ($item) {
-                if ($request->has('action')) {
-                    if ($request->action === 'increase') {
-                        // Check if increasing would exceed stock
-                        if ($item->quantity >= $product->stock) {
-                            Alert::error('Error', 'Sorry, you cannot add more of this item. Stock limit reached!');
-                            return redirect()->back();
-                        }
-                        $item->quantity++;
-                    } else if ($request->action === 'decrease') {
-                        $item->quantity--;
-                        // If quantity reaches 0, delete the item
-                        if ($item->quantity <= 0) {
-                            $item->delete();
-                            Alert::success('Success', 'Item removed from cart!');
-                            return redirect()->back();
-                        }
-                    }
-                } else {
-                    $request->validate([
-                        'quantity' => 'required|integer|min:0'
-                    ]);
-                    // If quantity is 0, delete the item
-                    if ($request->quantity == 0) {
-                        $item->delete();
-                        Alert::success('Success', 'Item removed from cart!');
-                        return redirect()->back();
-                    }
-                    // Check if requested quantity exceeds stock
-                    if ($request->quantity > $product->stock) {
-                        Alert::error('Error', 'Sorry, requested quantity exceeds available stock!');
-                        return redirect()->back();
-                    }
-                    $item->quantity = $request->quantity;
-                }
+        
+        if (!$cart) {
+            return redirect()->route('cart.index');
+        }
+
+        $item = $cart->items()->where('product_id', $product->id)->first();
+        
+        if (!$item) {
+            return redirect()->route('cart.index');
+        }
+
+        if ($request->action === 'increase') {
+            if ($item->quantity < $product->stock) {
+                $item->quantity++;
                 $item->save();
-                Alert::success('Success', 'Cart updated successfully!');
-                return redirect()->back();
+            }
+        } else if ($request->action === 'decrease') {
+            if ($item->quantity > 1) {
+                $item->quantity--;
+                $item->save();
             }
         }
-        Alert::error('Error', 'Product not found in cart!');
-        return redirect()->back();
+
+        return redirect()->route('cart.index');
+    }
+
+    public function remove(Product $product)
+    {
+        $user = Auth::user();
+        $cart = Cart::where('user_id', $user->id)->first();
+        
+        if ($cart) {
+            $cart->items()->where('product_id', $product->id)->delete();
+        }
+
+        return redirect()->route('cart.index');
     }
 
     public function clear()

@@ -12,6 +12,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,7 +53,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/account', [AccountController::class, 'index'])->name('account');
     Route::post('/account/update', [AccountController::class, 'update'])->name('account.update');
     Route::post('/account/password', [AccountController::class, 'updatePassword'])->name('account.password');
+    Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+    Route::post('/checkout', [OrderController::class, 'processCheckout'])->name('checkout.process');
+    Route::get('/order-summary', [OrderController::class, 'index'])->name('order-summary');
+    Route::post('/order/create-transaction', [OrderController::class, 'createTransaction'])->name('order.create-transaction');
+    
+    // Payment Routes
+    Route::post('/payment/create', [PaymentController::class, 'createPayment'])->name('payment.create');
 });
+
+// Midtrans callback route (no auth required)
+Route::post('/payment/callback', [PaymentController::class, 'handleCallback'])->name('payment.callback');
 
 // Admin Routes
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {

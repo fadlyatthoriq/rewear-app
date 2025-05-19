@@ -14,12 +14,12 @@
                     <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 md:p-6">
                         <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
                             <a href="{{ route('product.show', $id) }}" class="shrink-0 md:order-1">
-                                <img class="h-24 w-24 rounded-lg object-cover" src="{{ asset('storage/' . $item['image']) }}" alt="{{ $item['name'] }}" />
+                                <img src="{{ secure_asset('storage/' . $item->product->image_url) }}" alt="{{ $item->product->name }}" class="w-16 h-16 object-cover rounded">
                             </a>
 
                             <div class="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                                <a href="{{ route('product.show', $id) }}" class="text-base font-medium text-gray-900 hover:underline dark:text-white">{{ $item['name'] }}</a>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Rp. {{ number_format($item['price'], 2) }} per item</p>
+                                <a href="{{ route('product.show', $id) }}" class="text-base font-medium text-gray-900 hover:underline dark:text-white">{{ $item->product->name }}</a>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Rp. {{ number_format($item->price, 2) }} per item</p>
 
                                 <div class="flex items-center gap-4">
                                     <form action="#" method="POST" class="inline">
@@ -110,7 +110,7 @@
                         </dl>
                     </div>
 
-                    <a href="#" class="flex w-full items-center justify-center rounded-lg bg-primary px-5 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-primary-600 hover:shadow-xl hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-all duration-300">
+                    <a href="{{ route('checkout') }}" class="flex w-full items-center justify-center rounded-lg bg-primary px-5 py-3.5 text-base font-semibold text-white shadow-lg hover:bg-primary-600 hover:shadow-xl hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-all duration-300">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                         </svg>

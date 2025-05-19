@@ -12,9 +12,9 @@ class Transaction extends Model
     protected $fillable = [
         'user_id',
         'total_price',
-        'status',
         'payment_method',
-        'midtrans_order_id',
+        'delivery_method',
+        'status',
     ];
 
     public function user()

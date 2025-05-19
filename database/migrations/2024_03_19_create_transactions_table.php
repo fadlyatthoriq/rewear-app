@@ -10,11 +10,12 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->decimal('total_price', 12, 2);
-            $table->enum('status', ['pending', 'paid', 'failed', 'cancelled'])->default('pending');
-            $table->string('payment_method', 50)->default('midtrans');
-            $table->string('midtrans_order_id', 100)->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->decimal('total_price', 10, 2);
+            $table->string('payment_method');
+            $table->string('delivery_method');
+            $table->string('status')->default('pending');
+            $table->string('payment_status')->default('pending');
             $table->timestamps();
         });
     }

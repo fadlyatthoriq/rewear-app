@@ -87,6 +87,26 @@
                                     @endif
                                 </a>
                             </th>
+                            <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'payment_status', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center">
+                                    Payment Status
+                                    @if(request('sort') === 'payment_status')
+                                        <svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="{{ request('direction') === 'asc' ? 'M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z' : 'M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z' }}"/>
+                                        </svg>
+                                    @endif
+                                </a>
+                            </th>
+                            <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'shipping_status', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center">
+                                    Shipping Status
+                                    @if(request('sort') === 'shipping_status')
+                                        <svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="{{ request('direction') === 'asc' ? 'M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z' : 'M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z' }}"/>
+                                        </svg>
+                                    @endif
+                                </a>
+                            </th>
                             <th scope="col" class="hidden md:table-cell p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
                                 <a href="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center">
                                     Date
@@ -119,7 +139,7 @@
                             </td>
                             <td class="p-4 text-base font-medium whitespace-nowrap">
                                 <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
-                                    @if($transaction->status === 'paid') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                                    @if($transaction->status === 'paid' || $transaction->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
                                     @elseif($transaction->status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
                                     @elseif($transaction->status === 'failed' || $transaction->status === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
                                     @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
@@ -127,23 +147,36 @@
                                     {{ ucfirst($transaction->status) }}
                                 </span>
                             </td>
+                            <td class="p-4 text-base font-medium whitespace-nowrap">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    @if($transaction->payment_status === 'paid') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                                    @elseif($transaction->payment_status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                                    @elseif($transaction->payment_status === 'failed' || $transaction->payment_status === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                                    @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
+                                    @endif">
+                                    {{ ucfirst($transaction->payment_status) }}
+                                </span>
+                            </td>
+                            <td class="p-4 text-base font-medium whitespace-nowrap">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    @if($transaction->shipping_status === 'shipped') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                                    @elseif($transaction->shipping_status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                                    @elseif($transaction->shipping_status === 'delivered') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
+                                    @elseif($transaction->shipping_status === 'failed') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                                    @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
+                                    @endif">
+                                    {{ ucfirst($transaction->shipping_status) }}
+                                </span>
+                            </td>
                             <td class="hidden md:table-cell p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ $transaction->created_at->format('M d, Y H:i') }}
                             </td>
                             <td class="p-4 space-x-2 whitespace-nowrap">
                                 <div class="flex flex-col sm:flex-row gap-2">
-                                    <a href="{{ route('admin.transactions.show', $transaction) }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
-                                        View
+                                    <a href="{{ route('admin.transactions.show', $transaction) }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
+                                        Detail
                                     </a>
-                                    <button type="button" data-drawer-target="drawer-update-transaction-default" data-drawer-show="drawer-update-transaction-default" aria-controls="drawer-update-transaction-default" data-drawer-placement="right" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onclick="editTransaction({{ $transaction->id }})">
-                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
-                                        Update
-                                    </button>
-                                    <button type="button" onclick="deleteTransaction({{ $transaction->id }})" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
-                                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                        Delete
-                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -174,75 +207,8 @@
     </div>
 </div>
 
-<!-- Update Transaction Status Drawer -->
-<div id="drawer-update-transaction-default" class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs sm:max-w-md p-4 overflow-y-auto transition-transform translate-x-full bg-white dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-label" aria-hidden="true">
-    <h5 id="drawer-label" class="inline-flex items-center mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400">Update Transaction Status</h5>
-    <button type="button" data-drawer-dismiss="drawer-update-transaction-default" aria-controls="drawer-update-transaction-default" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
-        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        <span class="sr-only">Close menu</span>
-    </button>
-    <form id="updateTransactionForm" method="POST">
-        @csrf
-        @method('PUT')
-        <div class="space-y-4">
-            <div>
-                <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
-                <select name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="paid">Paid</option>
-                    <option value="failed">Failed</option>
-                    <option value="cancelled">Cancelled</option>
-                </select>
-            </div>
-
-            <div class="bottom-0 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
-                <button type="submit" class="text-white w-full justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                    Update status
-                </button>
-                <button type="button" data-drawer-dismiss="drawer-update-transaction-default" aria-controls="drawer-update-transaction-default" class="inline-flex w-full justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                    <svg aria-hidden="true" class="w-5 h-5 -ml-1 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </form>
-</div>
-
 @push('scripts')
 <script>
-function editTransaction(id) {
-    // Fetch transaction data
-    fetch(`/admin/transactions/${id}/edit`)
-        .then(response => response.json())
-        .then(transaction => {
-            // Update form action
-            document.getElementById('updateTransactionForm').action = `/admin/transactions/${id}`;
-            
-            // Fill form fields
-            document.getElementById('status').value = transaction.status;
-        });
-}
-
-// Add status update confirmation with SweetAlert2
-document.getElementById('updateTransactionForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    Swal.fire({
-        title: 'Update Status?',
-        text: "Are you sure you want to update the transaction status?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, update it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            this.submit();
-        }
-    });
-});
-
 function deleteTransaction(id) {
     Swal.fire({
         title: 'Are you sure?',

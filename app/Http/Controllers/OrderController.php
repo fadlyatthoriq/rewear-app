@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\Cart;
+use App\Models\TransactionItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Services\MidtransService;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -116,92 +119,97 @@ class OrderController extends Controller
 
     public function createTransaction(Request $request)
     {
-        \Log::info('Creating transaction', [
-            'request_data' => $request->all(),
-            'user_id' => Auth::id()
-        ]);
-
-        // Validate request
-        $request->validate([
-            'total' => 'required|numeric|min:0',
-            'payment_method' => 'required|string',
-            'delivery_method' => 'required|string'
-        ]);
-
-        $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->first();
-        
-        if (!$cart) {
-            \Log::error('Cart not found', ['user_id' => $user->id]);
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Cart not found'
-            ], 404);
-        }
-
         try {
-            DB::beginTransaction();
-
-            \Log::info('Creating transaction record', [
-                'user_id' => $user->id,
-                'total' => $request->total,
-                'payment_method' => $request->payment_method,
-                'delivery_method' => $request->delivery_method
+            // Validate request
+            $request->validate([
+                'total' => 'required|numeric|min:0',
+                'payment_method' => 'required|string',
+                'delivery_method' => 'required|string'
             ]);
 
-            // Create transaction
-            $transaction = Transaction::create([
-                'user_id' => $user->id,
-                'total_price' => $request->total,
-                'status' => 'pending',
-                'payment_method' => $request->payment_method,
-                'delivery_method' => $request->delivery_method
-            ]);
-
-            \Log::info('Transaction created', ['transaction_id' => $transaction->id]);
-
-            // Create transaction items
-            foreach ($cart->items as $item) {
-                \Log::info('Creating transaction item', [
-                    'product_id' => $item->product_id,
-                    'quantity' => $item->quantity,
-                    'price' => $item->price
-                ]);
-
-                $transaction->items()->create([
-                    'product_id' => $item->product_id,
-                    'quantity' => $item->quantity,
-                    'price' => $item->price
-                ]);
+            // Get checkout data from session
+            $checkout = session('checkout');
+            if (!$checkout) {
+                return back()->with('error', 'Checkout data not found. Please try again.');
             }
 
-            // Clear cart
-            $cart->items()->delete();
-            $cart->delete();
+            // Get cart
+            $cart = Cart::where('user_id', auth()->id())->first();
+            if (!$cart || $cart->items->isEmpty()) {
+                return back()->with('error', 'Your cart is empty.');
+            }
 
-            // Clear checkout session
-            session()->forget('checkout');
+            DB::beginTransaction();
 
-            DB::commit();
+            try {
+                // Create transaction
+                $transaction = Transaction::create([
+                    'user_id' => auth()->id(),
+                    'total_amount' => $request->total,
+                    'status' => 'pending',
+                    'payment_method' => $request->payment_method,
+                    'delivery_method' => $request->delivery_method,
+                    'customer_name' => $checkout['name'],
+                    'customer_email' => $checkout['email'],
+                    'customer_phone' => $checkout['phone'],
+                    'customer_address' => $checkout['address']
+                ]);
 
-            \Log::info('Transaction completed successfully', ['transaction_id' => $transaction->id]);
+                if (!$transaction) {
+                    throw new \Exception('Failed to create transaction');
+                }
 
-            return response()->json([
-                'status' => 'success',
-                'transaction_id' => $transaction->id
-            ]);
+                // Create transaction items from cart
+                foreach ($cart->items as $item) {
+                    $transactionItem = TransactionItem::create([
+                        'transaction_id' => $transaction->id,
+                        'product_id' => $item->product_id,
+                        'quantity' => $item->quantity,
+                        'price' => $item->product->price
+                    ]);
+
+                    if (!$transactionItem) {
+                        throw new \Exception('Failed to create transaction item');
+                    }
+                }
+
+                // Create payment with Midtrans
+                $midtransService = new MidtransService();
+                $payment = $midtransService->createTransaction($transaction);
+
+                // Check if Midtrans transaction creation was successful
+                if (!isset($payment['status']) || $payment['status'] !== 'success') {
+                    // Log the payment response for debugging
+                    Log::error('Midtrans transaction creation failed. Payment response:', $payment);
+                    throw new \Exception('Failed to create payment with Midtrans: ' . ($payment['message'] ?? 'Unknown error'));
+                }
+
+                // Update transaction with Midtrans data
+                $transaction->update([
+                    'midtrans_order_id' => $payment['order_id'],
+                    'midtrans_payment_token' => $payment['snap_token'],
+                    'payment_expiry' => now()->addHours(24)
+                ]);
+
+                // Clear cart after successful transaction
+                $cart->items()->delete();
+
+                // Clear checkout session
+                session()->forget('checkout');
+
+                DB::commit();
+
+                // Redirect to Midtrans payment page
+                return redirect($payment['redirect_url']);
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                throw $e;
+            }
+
         } catch (\Exception $e) {
-            DB::rollBack();
-            \Log::error('Transaction creation failed', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                'line' => $e->getLine(),
-                'file' => $e->getFile()
-            ]);
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            Log::error('Transaction creation failed: ' . $e->getMessage());
+            return back()->with('error', 'Failed to create transaction: ' . $e->getMessage());
         }
     }
 } 

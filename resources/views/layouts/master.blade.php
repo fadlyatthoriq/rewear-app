@@ -10,9 +10,9 @@
 
     <title>@yield('title')</title>
 
-    <link rel="shortcut icon" href="{{ secure_asset('assets/images/favicon/favicon.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon/favicon.ico') }}" type="image/x-icon">
 
-    <link rel="stylesheet" href="{{ secure_asset('assets/css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

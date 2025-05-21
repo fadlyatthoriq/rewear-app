@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Transaction;
 use Midtrans\Config;
 use Midtrans\Snap;
+use Illuminate\Support\Facades\Log;
 
 class MidtransService
 {
@@ -18,32 +19,56 @@ class MidtransService
 
     public function createTransaction(Transaction $transaction)
     {
-        $params = [
-            'transaction_details' => [
-                'order_id' => 'ORDER-' . $transaction->id,
-                'gross_amount' => (int) $transaction->total_price,
-            ],
-            'customer_details' => [
-                'first_name' => $transaction->user->name,
-                'email' => $transaction->user->email,
-                'phone' => $transaction->user->phone,
-            ],
-            'item_details' => $this->getItemDetails($transaction),
-            'expiry' => [
-                'start_time' => date('Y-m-d H:i:s O'),
-                'unit' => 'day',
-                'duration' => 1,
-            ],
-        ];
-
         try {
+            // Validasi konfigurasi
+            if (empty(config('services.midtrans.server_key'))) {
+                throw new \Exception('Midtrans server key is not configured');
+            }
+
+            $params = [
+                'transaction_details' => [
+                    'order_id' => 'ORDER-' . $transaction->id,
+                    'gross_amount' => (int) $transaction->total_amount,
+                ],
+                'customer_details' => [
+                    'first_name' => $transaction->user->name,
+                    'email' => $transaction->user->email,
+                    'phone' => $transaction->user->phone,
+                ],
+                'item_details' => $this->getItemDetails($transaction),
+                'expiry' => [
+                    'start_time' => date('Y-m-d H:i:s O'),
+                    'unit' => 'day',
+                    'duration' => 1,
+                ],
+            ];
+
+            // Log parameters for debugging
+            Log::info('Midtrans transaction parameters', $params);
+
             $snapToken = Snap::getSnapToken($params);
+            
+            // Response dari Midtrans Snap API
+            $snapResponse = Snap::createTransaction($params);
+
+            // Pastikan respons berhasil dan memiliki token serta redirect_url
+            if (empty($snapResponse) || !isset($snapResponse->token) || !isset($snapResponse->redirect_url)) {
+                 Log::error('Midtrans Snap API returned invalid response', ['response' => $snapResponse]);
+                 throw new \Exception('Invalid response from Midtrans Snap API');
+            }
+
             return [
                 'status' => 'success',
-                'snap_token' => $snapToken,
-                'redirect_url' => "https://app.midtrans.com/snap/v2/vtweb/{$snapToken}"
+                'snap_token' => $snapResponse->token,
+                'redirect_url' => $snapResponse->redirect_url,
+                'order_id' => 'ORDER-' . $transaction->id // Menggunakan order_id dari objek transaksi lokal
             ];
         } catch (\Exception $e) {
+            Log::error('Midtrans transaction creation failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             return [
                 'status' => 'error',
                 'message' => $e->getMessage()
@@ -54,6 +79,7 @@ class MidtransService
     private function getItemDetails(Transaction $transaction)
     {
         $items = [];
+        $subtotal = 0;
         
         foreach ($transaction->items as $item) {
             $items[] = [
@@ -62,10 +88,11 @@ class MidtransService
                 'quantity' => $item->quantity,
                 'name' => $item->product->name,
             ];
+            $subtotal += $item->price * $item->quantity;
         }
 
-        // Add tax
-        $tax = $transaction->total_price * 0.1;
+        // Hitung pajak dari subtotal (bukan dari total_amount)
+        $tax = $subtotal * 0.1;
         $items[] = [
             'id' => 'TAX',
             'price' => (int) $tax,

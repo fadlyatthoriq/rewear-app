@@ -66,16 +66,48 @@
                         <h2 class="text-xl font-semibold mb-4">Payment Method</h2>
                         <div class="space-y-4">
                             <div class="flex items-center">
+                                <input type="radio" name="payment_method" id="gopay" value="gopay" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <label for="gopay" class="ml-3 block text-sm font-medium text-gray-700">GoPay / GoPay Later</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" name="payment_method" id="va" value="va" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <label for="va" class="ml-3 block text-sm font-medium text-gray-700">Virtual Account Bank</label>
+                            </div>
+                            <div class="flex items-center">
                                 <input type="radio" name="payment_method" id="credit_card" value="credit_card" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
-                                <label for="credit_card" class="ml-3 block text-sm font-medium text-gray-700">Credit Card</label>
+                                <label for="credit_card" class="ml-3 block text-sm font-medium text-gray-700">Credit / Debit Card</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="radio" name="payment_method" id="bank_transfer" value="bank_transfer" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
-                                <label for="bank_transfer" class="ml-3 block text-sm font-medium text-gray-700">Bank Transfer</label>
+                                <input type="radio" name="payment_method" id="google_play" value="google_play" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <label for="google_play" class="ml-3 block text-sm font-medium text-gray-700">Google Play</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="radio" name="payment_method" id="e_wallet" value="e_wallet" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
-                                <label for="e_wallet" class="ml-3 block text-sm font-medium text-gray-700">E-Wallet</label>
+                                <input type="radio" name="payment_method" id="shopeepay" value="shopeepay" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <label for="shopeepay" class="ml-3 block text-sm font-medium text-gray-700">ShopeePay / SPayLater</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" name="payment_method" id="dana" value="dana" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <label for="dana" class="ml-3 block text-sm font-medium text-gray-700">Dana</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" name="payment_method" id="qris" value="qris" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <label for="qris" class="ml-3 block text-sm font-medium text-gray-700">QRIS</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" name="payment_method" id="alfa" value="alfa" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <label for="alfa" class="ml-3 block text-sm font-medium text-gray-700">Alfa Group</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" name="payment_method" id="indomaret" value="indomaret" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <label for="indomaret" class="ml-3 block text-sm font-medium text-gray-700">Indomaret</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" name="payment_method" id="akulaku" value="akulaku" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <label for="akulaku" class="ml-3 block text-sm font-medium text-gray-700">Akulaku Paylater</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" name="payment_method" id="kredivo" value="kredivo" class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <label for="kredivo" class="ml-3 block text-sm font-medium text-gray-700">Kredivo</label>
                             </div>
                         </div>
                     </div>

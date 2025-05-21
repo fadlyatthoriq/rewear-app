@@ -33,7 +33,7 @@
           <div class="relative h-48 w-full overflow-hidden rounded-lg">
             <a href="{{ route('product.show', $item->product->id) }}" class="block h-full w-full">
               <img class="h-full w-full transform object-cover transition-transform duration-300 group-hover:scale-110" 
-                   src="{{ secure_asset('storage/' . $item->product->image_url) }}" 
+                   src="{{ asset('storage/' . $item->product->image_url) }}" 
                    alt="{{ $item->product->name }}" />
             </a>
             <!-- Quick Actions -->

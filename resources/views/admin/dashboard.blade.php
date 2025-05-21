@@ -174,7 +174,7 @@
                     </p>
                   </div>
                   <div class="inline-flex items-center text-sm sm:text-base font-semibold text-gray-900 dark:text-white flex-shrink-0">
-                    Rp {{ number_format($customer->transactions_sum_total_price, 0, ',', '.') }}
+                    Rp {{ number_format($customer->transactions_sum_total_amount, 0, ',', '.') }}
                   </div>
                 </div>
               </li>

@@ -48,12 +48,35 @@
                 <div class="mb-4">
                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Status</p>
                     <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
-                        @if($transaction->status === 'paid') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                        @if($transaction->status === 'paid' || $transaction->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
                         @elseif($transaction->status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
                         @elseif($transaction->status === 'failed' || $transaction->status === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
                         @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
                         @endif">
                         {{ ucfirst($transaction->status) }}
+                    </span>
+                </div>
+                <div class="mb-4">
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Payment Status</p>
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
+                        @if($transaction->payment_status === 'paid') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                        @elseif($transaction->payment_status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                        @elseif($transaction->payment_status === 'failed' || $transaction->payment_status === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                        @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
+                        @endif">
+                        {{ ucfirst($transaction->payment_status) }}
+                    </span>
+                </div>
+                <div class="mb-4">
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Shipping Status</p>
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
+                        @if($transaction->shipping_status === 'delivered') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                        @elseif($transaction->shipping_status === 'shipped') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
+                        @elseif($transaction->shipping_status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                        @elseif($transaction->shipping_status === 'failed') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                        @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
+                        @endif">
+                        {{ ucfirst($transaction->shipping_status) }}
                     </span>
                 </div>
             </div>
@@ -121,8 +144,9 @@
         <a href="{{ route('admin.transactions.index') }}" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-gray-700 rounded-lg focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-900 hover:bg-gray-800">
             Back to Transactions
         </a>
-        <button type="button" data-drawer-target="drawer-update-transaction-default" data-drawer-show="drawer-update-transaction-default" aria-controls="drawer-update-transaction-default" data-drawer-placement="right" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800" onclick="editTransaction({{ $transaction->id }})">
-            Update Status
+        <button type="button" data-drawer-target="drawer-update-transaction-default" data-drawer-show="drawer-update-transaction-default" aria-controls="drawer-update-transaction-default" data-drawer-placement="right" class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-yellow-600 rounded-lg focus:ring-4 focus:ring-yellow-200 dark:focus:ring-yellow-900 hover:bg-yellow-700" onclick="editTransaction({{ $transaction->id }})">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
+            Edit Status
         </button>
     </div>
 </div>
@@ -143,15 +167,35 @@
                 <select name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                     <option value="pending">Pending</option>
                     <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="completed">Completed</option>
+                    <option value="failed">Failed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div>
+                <label for="payment_status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payment Status</label>
+                <select name="payment_status" id="payment_status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
                     <option value="paid">Paid</option>
                     <option value="failed">Failed</option>
                     <option value="cancelled">Cancelled</option>
                 </select>
             </div>
-
+            <div>
+                <label for="shipping_status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shipping Status</label>
+                <select name="shipping_status" id="shipping_status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="failed">Failed</option>
+                </select>
+            </div>
             <div class="bottom-0 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
                 <button type="submit" class="text-white w-full justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                    Update status
+                    Update Status
                 </button>
                 <button type="button" data-drawer-dismiss="drawer-update-transaction-default" aria-controls="drawer-update-transaction-default" class="inline-flex w-full justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                     <svg aria-hidden="true" class="w-5 h-5 -ml-1 sm:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -167,13 +211,54 @@
 function editTransaction(id) {
     // Fetch transaction data
     fetch(`/admin/transactions/${id}/edit`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                console.error('Error fetching transaction data:', response.statusText);
+                return Promise.reject('Error fetching transaction data');
+            }
+            return response.json();
+        })
         .then(transaction => {
+            console.log('Transaction data received:', transaction);
+
             // Update form action
             document.getElementById('updateTransactionForm').action = `/admin/transactions/${id}`;
             
             // Fill form fields
-            document.getElementById('status').value = transaction.status;
+            const statusSelect = document.getElementById('status');
+            const paymentStatusSelect = document.getElementById('payment_status');
+            const shippingStatusSelect = document.getElementById('shipping_status');
+
+            console.log('Status select element:', statusSelect);
+            console.log('Payment Status select element:', paymentStatusSelect);
+            console.log('Shipping Status select element:', shippingStatusSelect);
+
+            if (statusSelect) {
+                statusSelect.value = transaction.status;
+                console.log('Status set to:', transaction.status);
+            }
+
+            if (paymentStatusSelect && transaction.payment_status !== undefined) {
+                const lowerCasePaymentStatus = transaction.payment_status.toLowerCase();
+                paymentStatusSelect.value = lowerCasePaymentStatus;
+                console.log('Payment Status received:', transaction.payment_status, 'setting to:', lowerCasePaymentStatus);
+                
+                // Trigger change event to notify Flowbite or other listeners
+                const event = new Event('change');
+                paymentStatusSelect.dispatchEvent(event);
+                console.log('Change event dispatched for Payment Status.');
+            } else {
+                console.warn('Payment Status element not found or transaction.payment_status is undefined');
+            }
+
+            if (shippingStatusSelect) {
+                shippingStatusSelect.value = transaction.shipping_status;
+                console.log('Shipping Status set to:', transaction.shipping_status);
+            }
+        })
+        .catch(error => {
+            console.error('Error in editTransaction:', error);
+            // Optionally show an error message to the user
         });
 }
 

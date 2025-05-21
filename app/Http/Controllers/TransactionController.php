@@ -89,4 +89,28 @@ class TransactionController extends Controller
             ], 500);
         }
     }
+
+    public function update(Request $request, Transaction $transaction)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,processing,paid,failed,cancelled',
+            'payment_status' => 'required|in:pending,processing,paid,failed,cancelled',
+            'shipping_status' => 'required|in:pending,processing,shipped,delivered,failed'
+        ]);
+
+        $transaction->update($validated);
+
+        return redirect()->route('admin.transactions.index')
+            ->with('success', 'Transaction status updated successfully');
+    }
+
+    public function edit(Transaction $transaction)
+    {
+        return response()->json([
+            'id' => $transaction->id,
+            'status' => $transaction->status,
+            'payment_status' => $transaction->payment_status,
+            'shipping_status' => $transaction->shipping_status
+        ]);
+    }
 } 

@@ -70,5 +70,5 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('products', AdminProductController::class);
     Route::resource('categories', CategoryController::class);
-    Route::resource('transactions', TransactionController::class)->only(['index', 'show', 'update']);
+    Route::resource('transactions', TransactionController::class);
 });

@@ -21,31 +21,42 @@ class DashboardController extends Controller
         $startDate = $dateRange['start'];
         $endDate = $dateRange['end'];
 
-        // Get sales data for the selected period
-        $salesData = Transaction::selectRaw('DATE(created_at) as date, SUM(total_price) as total')
+        // Get sales data for the selected period (only completed)
+        $salesData = Transaction::selectRaw('DATE(created_at) as date, SUM(total_amount) as total')
+            ->where('status', 'completed')
             ->whereBetween('created_at', [$startDate, $endDate])
             ->groupBy('date')
             ->get();
 
-        // Get total orders
-        $totalOrders = Transaction::count();
+        // Get total orders (only completed)
+        $totalOrders = Transaction::where('status', 'completed')->count();
 
-        // Get total customers
-        $totalCustomers = User::count();
+        // Get total customers (only those who have completed transactions)
+        $totalCustomers = User::whereHas('transactions', function($q) {
+            $q->where('status', 'completed');
+        })->count();
 
-        // Get total products
+        // Get total products (all products)
         $totalProducts = Product::count();
 
-        // Get top products
-        $topProducts = Product::withCount('transactionItems')
+        // Get top products (by completed transactions)
+        $topProducts = Product::withCount(['transactionItems as transaction_items_count' => function($q) {
+                $q->whereHas('transaction', function($t) {
+                    $t->where('status', 'completed');
+                });
+            }])
             ->orderBy('transaction_items_count', 'desc')
             ->take(5)
             ->get();
 
-        // Get top customers
-        $topCustomers = User::withCount('transactions')
-            ->withSum('transactions', 'total_price')
-            ->orderBy('transactions_sum_total_price', 'desc')
+        // Get top customers (by completed transactions)
+        $topCustomers = User::withCount(['transactions as transactions_count' => function($q) {
+                $q->where('status', 'completed');
+            }])
+            ->withSum(['transactions as transactions_sum_total_amount' => function($q) {
+                $q->where('status', 'completed');
+            }], 'total_amount')
+            ->orderBy('transactions_sum_total_amount', 'desc')
             ->take(5)
             ->get();
 
@@ -66,16 +77,18 @@ class DashboardController extends Controller
             return $totalUsers > 0 ? round(($count / $totalUsers) * 100) : 0;
         }, $ageDemographics);
 
-        // Calculate total sales for the selected period
-        $totalSales = Transaction::whereBetween('created_at', [$startDate, $endDate])
-            ->sum('total_price');
+        // Calculate total sales for the selected period (only completed)
+        $totalSales = Transaction::where('status', 'completed')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->sum('total_amount');
 
-        // Calculate sales growth
+        // Calculate sales growth (only completed)
         $previousPeriod = $this->getPreviousPeriod($period);
-        $lastPeriodSales = Transaction::whereBetween('created_at', [
-            $previousPeriod['start'],
-            $previousPeriod['end']
-        ])->sum('total_price');
+        $lastPeriodSales = Transaction::where('status', 'completed')
+            ->whereBetween('created_at', [
+                $previousPeriod['start'],
+                $previousPeriod['end']
+            ])->sum('total_amount');
 
         $salesGrowth = $lastPeriodSales > 0 
             ? (($totalSales - $lastPeriodSales) / $lastPeriodSales) * 100 

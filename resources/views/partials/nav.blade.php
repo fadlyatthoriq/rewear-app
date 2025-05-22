@@ -21,32 +21,24 @@
         @endif
       </a>
       @auth
-        <a href="/account" class="group">
-          <i class="fa-regular fa-user text-xl group-hover:text-[#2596be] transition"></i>
-        </a>
+        <div class="relative group">
+          <button class="flex items-center group focus:outline-none">
+            <i class="fa-regular fa-user text-xl group-hover:text-[#2596be] transition"></i>
+          </button>
+          <div class="absolute right-0 mt-2 w-48 bg-white text-gray-700 shadow-xl rounded-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 divide-y divide-gray-100 z-20">
+            <a href="{{ route('account') }}" class="block px-4 py-3 hover:bg-gray-50 transition text-sm">Account Setting</a>
+            <a href="{{ route('my-orders') }}" class="block px-4 py-3 hover:bg-gray-50 transition text-sm">My Orders</a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="block w-full text-left px-4 py-3 hover:bg-gray-50 transition text-sm">Logout</button>
+            </form>
+          </div>
+        </div>
       @else
         <a href="{{ route('login') }}" class="group">
           <i class="fa-regular fa-user text-xl group-hover:text-[#2596be] transition"></i>
         </a>
       @endauth
-
-      <!-- Mobile Search Toggle -->
-      <button class="md:hidden hover:text-[#2596be] transition" id="mobileSearchToggle">
-        <i class="fa-solid fa-magnifying-glass text-xl"></i>
-      </button>
-    </div>
-
-    <!-- Mobile Search -->
-    <div class="w-full md:hidden mt-2 hidden" id="mobileSearch">
-      <form action="/search" method="GET" class="flex">
-        <input type="text" name="q" placeholder="Search for clothes, shoes, accessories..."
-          class="w-full px-4 py-2 border border-gray-200 rounded-l-md focus:outline-none focus:ring-2 focus:ring-[#2596be] focus:border-[#2596be] text-sm bg-gray-50 hover:bg-white" />
-        <button type="submit"
-          class="bg-primary text-white px-4 py-2 rounded-r-md hover:bg-[#217ca6] transition shadow">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
-      </form>
-    </div>
   </div>
 </header>
 
@@ -88,26 +80,9 @@
     <div class="hidden md:flex items-center space-x-6 ml-6">
       <a href="/" class="{{ request()->is('/') ? 'text-[#2596be]' : 'hover:text-[#2596be]' }} transition font-semibold text-sm md:text-base">Home</a>
       <a href="/shop" class="{{ request()->is('shop*') ? 'text-[#2596be]' : 'hover:text-[#2596be]' }} transition font-semibold text-sm md:text-base">Shop</a>
-      <p>||</p>
-      @auth
-        <form action="{{ route('logout') }}" method="POST" class="inline">
-          @csrf
-          <button type="submit" class="hover:text-[#2596be] transition font-semibold text-sm md:text-base">Logout</button>
-        </form>
-      @else
+      @guest
         <a href="{{ route('login') }}" class="{{ request()->is('login*') ? 'text-[#2596be]' : 'hover:text-[#2596be]' }} transition font-semibold text-sm md:text-base">Login</a>
-      @endauth
+      @endguest
     </div>
   </div>
 </nav>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const mobileSearchToggle = document.getElementById('mobileSearchToggle');
-    const mobileSearch = document.getElementById('mobileSearch');
-
-    mobileSearchToggle.addEventListener('click', function() {
-      mobileSearch.classList.toggle('hidden');
-    });
-  });
-</script>

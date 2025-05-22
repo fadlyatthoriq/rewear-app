@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Cart;
 
 class User extends Authenticatable
 {
@@ -74,6 +75,9 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
+    /**
+     * Get the cart associated with the user.
+     */
     public function cart()
     {
         return $this->hasOne(Cart::class);

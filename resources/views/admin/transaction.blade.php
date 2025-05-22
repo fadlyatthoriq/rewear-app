@@ -41,6 +41,49 @@
     </div>
 </div>
 
+<!-- Status Notes -->
+<div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+    <h3 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">Status Guide</h3>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <!-- Main Status -->
+        <div class="p-3 bg-gray-50 rounded-lg dark:bg-gray-700">
+            <h4 class="mb-2 font-medium text-gray-900 dark:text-white">Transaction Status</h4>
+            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                <li><span class="inline-block w-3 h-3 mr-2 bg-gray-400 rounded-full"></span>Pending: New transaction waiting for confirmation</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-yellow-400 rounded-full"></span>Processing: Transaction is being processed</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-blue-400 rounded-full"></span>Shipped: Items have been shipped</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Completed: Transaction fully completed</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Failed: Transaction failed</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Cancelled: Transaction cancelled</li>
+            </ul>
+        </div>
+        
+        <!-- Payment Status -->
+        <div class="p-3 bg-gray-50 rounded-lg dark:bg-gray-700">
+            <h4 class="mb-2 font-medium text-gray-900 dark:text-white">Payment Status</h4>
+            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                <li><span class="inline-block w-3 h-3 mr-2 bg-gray-400 rounded-full"></span>Pending: Waiting for payment</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-yellow-400 rounded-full"></span>Processing: Payment being validated</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Paid: Payment confirmed</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Failed: Payment failed</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Cancelled: Payment cancelled</li>
+            </ul>
+        </div>
+        
+        <!-- Shipping Status -->
+        <div class="p-3 bg-gray-50 rounded-lg dark:bg-gray-700">
+            <h4 class="mb-2 font-medium text-gray-900 dark:text-white">Shipping Status</h4>
+            <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                <li><span class="inline-block w-3 h-3 mr-2 bg-gray-400 rounded-full"></span>Pending: Waiting for shipping</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-yellow-400 rounded-full"></span>Processing: Items being prepared</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-blue-400 rounded-full"></span>Shipped: Items have been shipped</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Delivered: Items received by customer</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Failed: Shipping failed</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 @if(session('success'))
 <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
     {{ session('success') }}
@@ -141,6 +184,7 @@
                                 <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
                                     @if($transaction->status === 'paid' || $transaction->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
                                     @elseif($transaction->status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                                    @elseif($transaction->status === 'shipped') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
                                     @elseif($transaction->status === 'failed' || $transaction->status === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
                                     @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
                                     @endif">

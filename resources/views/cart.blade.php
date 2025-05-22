@@ -10,15 +10,15 @@
         <div class="mt-4 sm:mt-6 md:gap-4 lg:gap-6 lg:flex lg:items-start xl:gap-8">
             <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
                 <div class="space-y-4 sm:space-y-6" id="cart-items">
-                    @forelse($cart as $id => $item)
+                    @forelse($cart as $item)
                     <div class="rounded-lg border border-gray-200 bg-white p-3 sm:p-4 md:p-6 shadow-sm transition-all duration-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
                         <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-4 md:space-y-0">
-                            <a href="{{ route('product.show', $id) }}" class="shrink-0 md:order-1">
+                            <a href="{{ route('product.show', $item->product_id) }}" class="shrink-0 md:order-1">
                                 <img src="{{ asset('storage/' . $item->product->image_url) }}" alt="{{ $item->product->name }}" class="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded">
                             </a>
 
                             <div class="w-full min-w-0 flex-1 space-y-3 sm:space-y-4 md:order-2 md:max-w-md">
-                                <a href="{{ route('product.show', $id) }}" class="text-sm sm:text-base font-medium text-gray-900 hover:underline dark:text-white">{{ $item->product->name }}</a>
+                                <a href="{{ route('product.show', $item->product_id) }}" class="text-sm sm:text-base font-medium text-gray-900 hover:underline dark:text-white">{{ $item->product->name }}</a>
                                 <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Rp. {{ number_format($item->price, 2) }} per item</p>
 
                                 <div class="flex flex-wrap items-center gap-3 sm:gap-4">
@@ -32,9 +32,9 @@
                                         </button>
                                     </form>
 
-                                    <form action="{{ route('cart.remove', $id) }}" method="POST" class="inline" id="remove-form-{{ $id }}">
+                                    <form action="{{ route('cart.remove', $item->product_id) }}" method="POST" class="inline" id="remove-form-{{ $item->product_id }}">
                                         @csrf
-                                        <button type="button" onclick="confirmRemove({{ $id }})" class="inline-flex items-center text-xs sm:text-sm font-medium text-red-600 hover:underline dark:text-red-500">
+                                        <button type="button" onclick="confirmRemove({{ $item->product_id }})" class="inline-flex items-center text-xs sm:text-sm font-medium text-red-600 hover:underline dark:text-red-500">
                                             <svg class="me-1 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
                                             </svg>
@@ -47,20 +47,20 @@
                             <div class="flex items-center justify-between md:order-3 md:justify-end">
                                 <div class="flex items-center gap-3 sm:gap-6">
                                     <div class="flex items-center border border-gray-200 rounded-lg dark:border-gray-700">
-                                        <button type="button" onclick="updateQuantity({{ $item->product->id }}, 'decrease')" class="inline-flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-l-lg border-r border-gray-200 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-primary-800 transition-colors duration-200">
+                                        <button type="button" onclick="updateQuantity({{ $item->product_id }}, 'decrease')" class="inline-flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-l-lg border-r border-gray-200 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-primary-800 transition-colors duration-200">
                                             <svg class="h-3 w-3 sm:h-4 sm:w-4 text-gray-600 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
                                             </svg>
                                         </button>
-                                        <span id="quantity-{{ $item->product->id }}" class="w-10 sm:w-14 shrink-0 border-0 bg-transparent text-center text-sm sm:text-base font-medium text-gray-900 dark:text-white">{{ $item->quantity }}</span>
-                                        <button type="button" onclick="updateQuantity({{ $item->product->id }}, 'increase')" class="inline-flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-r-lg border-l border-gray-200 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-primary-800 transition-colors duration-200">
+                                        <span id="quantity-{{ $item->product_id }}" class="w-10 sm:w-14 shrink-0 border-0 bg-transparent text-center text-sm sm:text-base font-medium text-gray-900 dark:text-white">{{ $item->quantity }}</span>
+                                        <button type="button" onclick="updateQuantity({{ $item->product_id }}, 'increase')" class="inline-flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-r-lg border-l border-gray-200 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-primary-800 transition-colors duration-200">
                                             <svg class="h-3 w-3 sm:h-4 sm:w-4 text-gray-600 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
                                             </svg>
                                         </button>
                                     </div>
                                     <div class="text-end md:w-28 sm:w-32">
-                                        <p id="total-{{ $item->product->id }}" class="item-total text-sm sm:text-base font-bold text-gray-900 dark:text-white" data-price="{{ $item->price }}">Rp. {{ number_format($item->price * $item->quantity, 2) }}</p>
+                                        <p id="total-{{ $item->product_id }}" class="item-total text-sm sm:text-base font-bold text-gray-900 dark:text-white" data-price="{{ $item->price }}">Rp. {{ number_format($item->price * $item->quantity, 2) }}</p>
                                     </div>
                                 </div>
                             </div>

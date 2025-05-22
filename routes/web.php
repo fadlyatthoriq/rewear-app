@@ -14,6 +14,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\MyOrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -60,6 +61,13 @@ Route::middleware('auth')->group(function () {
     
     // Payment Routes
     Route::post('/payment/create', [PaymentController::class, 'createPayment'])->name('payment.create');
+    
+    // My Orders Routes
+    Route::get('/my-orders', [MyOrderController::class, 'index'])->name('my-orders');
+    Route::get('/my-orders/{transaction}', [MyOrderController::class, 'show'])->name('my-orders.show');
+    Route::post('/my-orders/{transaction}/cancel', [MyOrderController::class, 'cancel'])->name('my-orders.cancel');
+    Route::post('/my-orders/{transaction}/reorder', [MyOrderController::class, 'reorder'])->name('my-orders.reorder');
+    Route::post('/my-orders/{transaction}/complete', [MyOrderController::class, 'complete'])->name('my-orders.complete');
 });
 
 // Midtrans callback route (no auth required)

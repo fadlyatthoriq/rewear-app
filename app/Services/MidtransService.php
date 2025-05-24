@@ -25,9 +25,13 @@ class MidtransService
                 throw new \Exception('Midtrans server key is not configured');
             }
 
+            // Modifikasi ini untuk testing: tambahkan timestamp agar order_id lebih unik
+            $uniqueOrderId = 'ORDER-' . $transaction->id . '-' . now()->timestamp; // Tambahkan timestamp
+
             $params = [
                 'transaction_details' => [
-                    'order_id' => 'ORDER-' . $transaction->id,
+                    // Gunakan uniqueOrderId yang baru dibuat
+                    'order_id' => $uniqueOrderId,
                     'gross_amount' => (int) $transaction->total_amount,
                 ],
                 'customer_details' => [
@@ -46,10 +50,9 @@ class MidtransService
             // Log parameters for debugging
             Log::info('Midtrans transaction parameters', $params);
 
-            $snapToken = Snap::getSnapToken($params);
-            
-            // Response dari Midtrans Snap API
-            $snapResponse = Snap::createTransaction($params);
+            // Ganti Snap::getSnapToken dan Snap::createTransaction jika menggunakan Snap API
+            // Respons dari Midtrans Snap API
+            $snapResponse = \Midtrans\Snap::createTransaction($params); // Pastikan namespace sudah benar
 
             // Pastikan respons berhasil dan memiliki token serta redirect_url
             if (empty($snapResponse) || !isset($snapResponse->token) || !isset($snapResponse->redirect_url)) {
@@ -61,7 +64,8 @@ class MidtransService
                 'status' => 'success',
                 'snap_token' => $snapResponse->token,
                 'redirect_url' => $snapResponse->redirect_url,
-                'order_id' => 'ORDER-' . $transaction->id // Menggunakan order_id dari objek transaksi lokal
+                // Simpan order_id yang benar-benar dikirim ke Midtrans
+                'order_id' => $uniqueOrderId
             ];
         } catch (\Exception $e) {
             Log::error('Midtrans transaction creation failed', [

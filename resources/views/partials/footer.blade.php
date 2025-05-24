@@ -6,7 +6,7 @@
             <img src="{{ asset('assets/images/logo.png') }}" alt="logo" class="w-28 transform hover:scale-105 transition-transform duration-300">
             <div class="mr-2">
                 <p class="text-gray-500">
-                    Your one-stop destination for trendy fashion. Discover the latest styles in clothing, accessories, and more.
+                    Your trusted marketplace for quality preloved fashion. Join us in promoting sustainable fashion by buying and selling second-hand clothing items.
                 </p>
             </div>
         </div>
@@ -27,15 +27,15 @@
             <div class="mt-4 space-y-4">
                 <p class="text-base text-gray-500">
                     <i class="fa-solid fa-location-dot mr-2"></i>
-                    123 Fashion Street, Style City
+                    Jl. Boulevard Grand Depok City, Tirtajaya, Kec. Sukmajaya, Kota Depok, Jawa Barat 16412
                 </p>
                 <p class="text-base text-gray-500">
                     <i class="fa-solid fa-phone mr-2"></i>
-                    +1 234 567 890
+                    +62 812-9202-0429
                 </p>
                 <p class="text-base text-gray-500">
                     <i class="fa-solid fa-envelope mr-2"></i>
-                    support@rewear.com
+                    yahdinoyy@gmail.com
                 </p>
             </div>
         </div>

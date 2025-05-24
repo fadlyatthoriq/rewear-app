@@ -125,6 +125,13 @@
                     <button type="submit" class="rounded-lg bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Complete Order</button>
                 </form>
             </div>
+            @else
+            <div class="flex justify-end">
+                <form action="{{ route('my-orders.reorder', $transaction) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="rounded-lg bg-primary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Order again</button>
+                </form>
+            </div>
             @endif
         </div>
     </div>

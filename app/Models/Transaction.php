@@ -34,4 +34,47 @@ class Transaction extends Model
     {
         return $this->hasMany(TransactionItem::class);
     }
+
+    // Accessor to get the overall status of the transaction
+    public function getOverallStatusAttribute()
+    {
+        if ($this->status === 'failed' || $this->status === 'cancelled') {
+            return ucfirst($this->status);
+        }
+
+        if ($this->payment_status === 'failed' || $this->payment_status === 'cancelled') {
+            return ucfirst($this->payment_status) . ' Payment';
+        }
+
+        if ($this->shipping_status === 'failed') {
+            return 'Shipping Failed';
+        }
+
+        if ($this->shipping_status === 'delivered') {
+            return 'Delivered';
+        }
+
+        if ($this->shipping_status === 'shipped') {
+            return 'Shipped';
+        }
+
+        if ($this->payment_status === 'processing') {
+            return 'Payment Processing';
+        }
+
+        if ($this->shipping_status === 'processing') {
+            return 'Shipping Processing';
+        }
+
+        if ($this->status === 'processing') {
+            return 'Processing';
+        }
+
+        if ($this->status === 'completed') {
+            return 'Completed';
+        }
+
+        // Default to transaction status if none of the above match
+        return ucfirst($this->status);
+    }
 } 

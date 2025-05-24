@@ -121,29 +121,9 @@
                                 </a>
                             </th>
                             <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'status', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center">
-                                    Status
-                                    @if(request('sort') === 'status')
-                                        <svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="{{ request('direction') === 'asc' ? 'M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z' : 'M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z' }}"/>
-                                        </svg>
-                                    @endif
-                                </a>
-                            </th>
-                            <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'payment_status', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center">
-                                    Payment Status
-                                    @if(request('sort') === 'payment_status')
-                                        <svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="{{ request('direction') === 'asc' ? 'M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z' : 'M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z' }}"/>
-                                        </svg>
-                                    @endif
-                                </a>
-                            </th>
-                            <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'shipping_status', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center">
-                                    Shipping Status
-                                    @if(request('sort') === 'shipping_status')
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'overall_status', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center">
+                                    Overall Status
+                                    @if(request('sort') === 'overall_status')
                                         <svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="{{ request('direction') === 'asc' ? 'M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z' : 'M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z' }}"/>
                                         </svg>
@@ -182,34 +162,14 @@
                             </td>
                             <td class="p-4 text-base font-medium whitespace-nowrap">
                                 <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
-                                    @if($transaction->status === 'paid' || $transaction->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
-                                    @elseif($transaction->status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
-                                    @elseif($transaction->status === 'shipped') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
-                                    @elseif($transaction->status === 'failed' || $transaction->status === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                                    @if($transaction->overall_status === 'Completed' || $transaction->overall_status === 'Paid') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                                    @elseif($transaction->overall_status === 'Processing' || $transaction->overall_status === 'Payment Processing' || $transaction->overall_status === 'Shipping Processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                                    @elseif($transaction->overall_status === 'Shipped') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
+                                    @elseif($transaction->overall_status === 'Delivered') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                                    @elseif($transaction->overall_status === 'Failed' || $transaction->overall_status === 'Cancelled' || $transaction->overall_status === 'Shipping Failed' || $transaction->overall_status === 'Failed Payment' || $transaction->overall_status === 'Cancelled Payment') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
                                     @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
                                     @endif">
-                                    {{ ucfirst($transaction->status) }}
-                                </span>
-                            </td>
-                            <td class="p-4 text-base font-medium whitespace-nowrap">
-                                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
-                                    @if($transaction->payment_status === 'paid') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
-                                    @elseif($transaction->payment_status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
-                                    @elseif($transaction->payment_status === 'failed' || $transaction->payment_status === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
-                                    @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
-                                    @endif">
-                                    {{ ucfirst($transaction->payment_status) }}
-                                </span>
-                            </td>
-                            <td class="p-4 text-base font-medium whitespace-nowrap">
-                                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
-                                    @if($transaction->shipping_status === 'shipped') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
-                                    @elseif($transaction->shipping_status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
-                                    @elseif($transaction->shipping_status === 'delivered') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
-                                    @elseif($transaction->shipping_status === 'failed') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
-                                    @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
-                                    @endif">
-                                    {{ ucfirst($transaction->shipping_status) }}
+                                    {{ $transaction->overall_status }}
                                 </span>
                             </td>
                             <td class="hidden md:table-cell p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -226,7 +186,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="p-4 text-center text-gray-500 dark:text-gray-400">
+                            <td colspan="4" class="p-4 text-center text-gray-500 dark:text-gray-400">
                                 No transactions found
                             </td>
                         </tr>

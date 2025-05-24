@@ -8,10 +8,10 @@
         <div class="absolute inset-0 bg-black bg-opacity-40"></div>
         <div class="container relative z-10">
             <h1 class="text-6xl text-white font-medium mb-4 capitalize animate-fade-in-up">
-                Discover Your Style <br> With Rewear
+                Sustainable Fashion <br> With Rewear
             </h1>
-            <p class="text-white text-lg mb-8 animate-fade-in-up delay-100">Explore our latest collection of trendy fashion items <br>
-                From casual to formal, we've got your style covered</p>
+            <p class="text-white text-lg mb-8 animate-fade-in-up delay-100">Discover quality preloved fashion items <br>
+                Give clothes a second life while saving the planet</p>
             <div class="mt-12 animate-fade-in-up delay-200">
                 <a href="{{ route('shop') }}" class="bg-[#2596be] border border-[#2596be] text-white px-8 py-3 font-medium 
                     rounded-md hover:bg-transparent hover:text-white transition-all duration-300 transform hover:scale-105">Shop Now</a>
@@ -26,9 +26,9 @@
     <div class="container py-16">
         <div class="w-10/12 grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto justify-center">
             @foreach ([
-                ['icon' => 'delivery-van.svg', 'title' => 'Free Shipping', 'description' => 'Order over $100'],
-                ['icon' => 'money-back.svg', 'title' => 'Easy Returns', 'description' => '14 days return policy'],
-                ['icon' => 'service-hours.svg', 'title' => '24/7 Support', 'description' => 'Customer support']
+                ['icon' => 'delivery-van.svg', 'title' => 'Free Shipping', 'description' => 'Order over Rp 500.000'],
+                ['icon' => 'money-back.svg', 'title' => 'Easy Returns', 'description' => '7 days return policy'],
+                ['icon' => 'service-hours.svg', 'title' => 'Quality Check', 'description' => 'All items verified']
             ] as $feature)
                 <div class="border border-[#2596be] rounded-sm px-3 py-6 flex justify-center items-center gap-5">
                     <img src="{{ asset('assets/images/icons/' . $feature['icon']) }}" alt="{{ $feature['title'] }}" class="w-12 h-12 object-contain">
@@ -198,8 +198,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: new FormData(this)
             })
             .then(response => {
+                // Check for 401 Unauthorized specifically
+                if (response.status === 401) {
+                     Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'Please login first to add items to cart',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    // Stop further processing for this case without triggering generic catch
+                    return Promise.reject('Unauthorized');
+                }
+
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    // For other non-ok responses, proceed to handle as error
+                    return response.json().then(data => {
+                         // Handle JSON errors returned by server
+                         Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: data.message || 'Something went wrong! Please try again.',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                         throw new Error(data.message || 'Something went wrong!');
+                    }).catch(() => {
+                         // Handle non-JSON errors or network issues
+                         throw new Error('Network response was not ok');
+                    });
                 }
                 return response.json();
             })
@@ -240,17 +269,8 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Check if session expired
-                if (error.message.includes('<!DOCTYPE')) {
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'error',
-                        title: 'Your session has expired. Please refresh the page.',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                } else {
+                // Only show generic error for non-unauthorized issues
+                if (error !== 'Unauthorized') {
                     Swal.fire({
                         toast: true,
                         position: 'top-end',
@@ -279,8 +299,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: new FormData(this)
             })
             .then(response => {
+                // Check for 401 Unauthorized specifically
+                 if (response.status === 401) {
+                     Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'Please login first to add items to wishlist',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    // Stop further processing for this case without triggering generic catch
+                     return Promise.reject('Unauthorized');
+                }
+
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    // For other non-ok responses, proceed to handle as error
+                    return response.json().then(data => {
+                        // Handle JSON errors returned by server
+                         Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: data.message || 'Something went wrong! Please try again.',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                         throw new Error(data.message || 'Something went wrong!');
+                    }).catch(() => {
+                         // Handle non-JSON errors or network issues
+                         throw new Error('Network response was not ok');
+                    });
                 }
                 return response.json();
             })
@@ -311,17 +360,8 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Check if session expired
-                if (error.message.includes('<!DOCTYPE')) {
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'error',
-                        title: 'Your session has expired. Please refresh the page.',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                } else {
+                // Only show generic error for non-unauthorized issues
+                if (error !== 'Unauthorized') {
                     Swal.fire({
                         toast: true,
                         position: 'top-end',

@@ -46,14 +46,14 @@
                     <p class="text-base font-medium text-gray-900 dark:text-white">{{ $transaction->created_at->format('M d, Y H:i') }}</p>
                 </div>
                 <div class="mb-4">
-                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Status</p>
+                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Overall Status</p>
                     <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
                         @if($transaction->status === 'paid' || $transaction->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
                         @elseif($transaction->status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
                         @elseif($transaction->status === 'failed' || $transaction->status === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
                         @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
                         @endif">
-                        {{ ucfirst($transaction->status) }}
+                        {{ $transaction->overall_status }}
                     </span>
                 </div>
                 <div class="mb-4">

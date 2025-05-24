@@ -55,7 +55,7 @@
                                     <td class="px-4 py-3">{{ $transaction->created_at->format('d.m.Y H:i') }}</td>
                                     <td class="px-4 py-3">
                                         <a href="{{ route('my-orders.show', $transaction) }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">
-                                            #{{ $transaction->id }}
+                                            {{ $transaction->id }}
                                         </a>
                                     </td>
                                     <td class="px-4 py-3">Rp. {{ number_format($transaction->total_amount, 2) }}</td>

@@ -256,8 +256,37 @@
         body: new FormData(this)
       })
       .then(response => {
+        // Check for 401 Unauthorized specifically
+        if (response.status === 401) {
+             Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Please login first to add items to cart',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            // Stop further processing for this case without triggering generic catch
+            return Promise.reject('Unauthorized');
+        }
+
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+            // For other non-ok responses, proceed to handle as error
+            return response.json().then(data => {
+                 // Handle JSON errors returned by server
+                 Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: data.message || 'Something went wrong! Please try again.',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                 throw new Error(data.message || 'Something went wrong!');
+            }).catch(() => {
+                 // Handle non-JSON errors or network issues
+                 throw new Error('Network response was not ok');
+            });
         }
         return response.json();
       })
@@ -298,17 +327,8 @@
       })
       .catch(error => {
         console.error('Error:', error);
-        // Check if session expired
-        if (error.message.includes('<!DOCTYPE')) {
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'error',
-            title: 'Your session has expired. Please refresh the page.',
-            showConfirmButton: false,
-            timer: 3000
-          });
-        } else {
+        // Only show generic error for non-unauthorized issues
+        if (error !== 'Unauthorized') {
           Swal.fire({
             toast: true,
             position: 'top-end',
@@ -335,8 +355,37 @@
         body: new FormData(this)
       })
       .then(response => {
+        // Check for 401 Unauthorized specifically
+         if (response.status === 401) {
+             Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Please login first to add items to wishlist',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            // Stop further processing for this case without triggering generic catch
+             return Promise.reject('Unauthorized');
+        }
+
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+            // For other non-ok responses, proceed to handle as error
+            return response.json().then(data => {
+                 // Handle JSON errors returned by server
+                 Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: data.message || 'Something went wrong! Please try again.',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                 throw new Error(data.message || 'Something went wrong!');
+            }).catch(() => {
+                 // Handle non-JSON errors or network issues
+                 throw new Error('Network response was not ok');
+            });
         }
         return response.json();
       })
@@ -367,17 +416,8 @@
       })
       .catch(error => {
         console.error('Error:', error);
-        // Check if session expired
-        if (error.message.includes('<!DOCTYPE')) {
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'error',
-            title: 'Your session has expired. Please refresh the page.',
-            showConfirmButton: false,
-            timer: 3000
-          });
-        } else {
+        // Only show generic error for non-unauthorized issues
+        if (error !== 'Unauthorized') {
           Swal.fire({
             toast: true,
             position: 'top-end',

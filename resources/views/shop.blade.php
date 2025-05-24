@@ -226,14 +226,26 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'Something went wrong!',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
+                // Check if session expired or user is not authenticated
+                if (error.message.includes('<!DOCTYPE')) {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'Please login first to add items to cart',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                } else {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Something went wrong! Please try again.',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                }
             });
         });
     });
@@ -285,13 +297,13 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Check if session expired
+                // Check if session expired or user is not authenticated
                 if (error.message.includes('<!DOCTYPE')) {
                     Swal.fire({
                         toast: true,
                         position: 'top-end',
-                        icon: 'error',
-                        title: 'Your session has expired. Please refresh the page.',
+                        icon: 'warning',
+                        title: 'Please login first to add items to wishlist',
                         showConfirmButton: false,
                         timer: 3000
                     });

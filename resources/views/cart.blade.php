@@ -22,13 +22,13 @@
                                 <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Rp. {{ number_format($item->price, 2) }} per item</p>
 
                                 <div class="flex flex-wrap items-center gap-3 sm:gap-4">
-                                    <form action="#" method="POST" class="inline">
+                                    <form action="{{ route('wishlist.add', $item->product_id) }}" method="POST" class="wishlist-form inline">
                                         @csrf
                                         <button type="submit" class="inline-flex items-center text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-900 hover:underline dark:text-gray-400 dark:hover:text-white">
                                             <svg class="me-1 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
                                             </svg>
-                                            Add to Favorites
+                                            <span class="wishlist-text">Add to Favorites</span>
                                         </button>
                                     </form>
 
@@ -146,7 +146,105 @@ function confirmRemove(id) {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
-            document.getElementById('remove-form-' + id).submit();
+            const form = document.getElementById('remove-form-' + id);
+            
+            // Show loading state
+            Swal.fire({
+                title: 'Removing item...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: new FormData(form)
+            })
+            .then(response => {
+                // Check for 401 Unauthorized specifically
+                if (response.status === 401) {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'Please login first to manage your cart',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    return Promise.reject('Unauthorized');
+                }
+
+                // Try to parse response as JSON
+                return response.text().then(text => {
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        // If response is not JSON, check if it's a redirect
+                        if (text.includes('<!DOCTYPE html>')) {
+                            // Session expired or other server-side redirect
+                            window.location.reload();
+                            return Promise.reject('Session expired');
+                        }
+                        throw new Error('Invalid response format');
+                    }
+                });
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    // Remove the item from the DOM
+                    const itemElement = document.getElementById('remove-form-' + id).closest('.rounded-lg');
+                    if (itemElement) {
+                        itemElement.remove();
+                    }
+
+                    // Update cart count in navbar
+                    const cartCountElement = document.querySelector('.cart-count');
+                    if (cartCountElement && data.cartCount) {
+                        cartCountElement.textContent = data.cartCount;
+                    }
+
+                    // Update order summary
+                    updateOrderSummary();
+
+                    // Show success message
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: data.message || 'Item removed successfully',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+
+                    // If cart is empty, reload the page to show empty state
+                    if (data.cartCount === 0) {
+                        window.location.reload();
+                    }
+                } else {
+                    throw new Error(data.message || 'Failed to remove item');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                // Don't show error for session expired as we're reloading
+                if (error !== 'Session expired' && error !== 'Unauthorized') {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: error.message || 'Something went wrong. Please try again.',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                }
+            });
         }
     });
 }
@@ -301,5 +399,111 @@ function updateOrderSummary() {
         console.error('Order summary container not found.');
     }
 }
+
+// Handle wishlist forms
+document.querySelectorAll('.wishlist-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: new FormData(this)
+        })
+        .then(response => {
+            // Check for 401 Unauthorized specifically
+            if (response.status === 401) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'Please login first to add items to wishlist',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                return Promise.reject('Unauthorized');
+            }
+
+            if (!response.ok) {
+                return response.json().then(data => {
+                    // Handle JSON errors returned by server
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: data.message || 'Something went wrong! Please try again.',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                    throw new Error(data.message || 'Something went wrong!');
+                }).catch(() => {
+                    // Handle non-JSON errors or network issues
+                    throw new Error('Network response was not ok');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Update wishlist count in navbar
+            const wishlistCountElement = document.querySelector('a[href*="wishlist"] span');
+            if (data.wishlistCount > 0) {
+                if (wishlistCountElement) {
+                    wishlistCountElement.textContent = data.wishlistCount;
+                } else {
+                    const wishlistLink = document.querySelector('a[href*="wishlist"]');
+                    const countSpan = document.createElement('span');
+                    countSpan.className = 'absolute -top-2 -right-2 bg-[#2596be] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow';
+                    countSpan.textContent = data.wishlistCount;
+                    wishlistLink.appendChild(countSpan);
+                }
+            }
+
+            // Update button state
+            const button = this.querySelector('button');
+            const icon = button.querySelector('svg');
+            const textSpan = button.querySelector('.wishlist-text');
+            
+            if (data.action === 'added') {
+                // Change to remove from wishlist
+                this.action = this.action.replace('add', 'remove');
+                icon.classList.add('text-red-500');
+                textSpan.textContent = 'Remove from Favorites';
+            } else {
+                // Change to add to wishlist
+                this.action = this.action.replace('remove', 'add');
+                icon.classList.remove('text-red-500');
+                textSpan.textContent = 'Add to Favorites';
+            }
+
+            // Show success message
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: data.message,
+                showConfirmButton: false,
+                timer: 3000
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Only show generic error for non-unauthorized issues
+            if (error !== 'Unauthorized') {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Something went wrong! Please try again.',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        });
+    });
+});
 </script>
 @endpush

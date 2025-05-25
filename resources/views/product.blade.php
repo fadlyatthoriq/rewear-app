@@ -249,7 +249,7 @@
       fetch(this.action, {
         method: 'POST',
         headers: {
-          'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
           'Accept': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'
         },
@@ -348,7 +348,7 @@
       fetch(this.action, {
         method: 'POST',
         headers: {
-          'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
           'Accept': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'
         },

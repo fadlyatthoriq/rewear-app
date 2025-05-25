@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon/favicon.ico') }}" type="image/x-icon">
 
     <!-- Styles -->
-    @vite('public/assets-admin/src/style.css')
+    @vite('resources/css/assets-admin/style.css')
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

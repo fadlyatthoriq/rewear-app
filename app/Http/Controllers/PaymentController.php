@@ -95,7 +95,9 @@ class PaymentController extends Controller
                 '147.139.165.251',
                 '147.139.209.83',
                 '147.139.167.157',
-                '147.139.192.232'
+                '147.139.192.232',
+                // Added new IP from latest error log (appears in production logs but might be sent from sandbox)
+                '34.101.92.69'
             ];
             
             if (!in_array($request->ip(), $allowedIps)) {

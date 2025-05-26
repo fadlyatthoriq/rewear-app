@@ -27,8 +27,12 @@ class PaymentController extends Controller
                 'ip' => $request->ip()
             ]);
             
+            // Log the value of isProduction and the selected IP list
+            $isProduction = config('midtrans.is_production');
+            Log::info('MIDTRANS_IS_PRODUCTION value', ['is_production' => $isProduction]);
+
             // Verify the request is coming from Midtrans
-            $allowedIps = config('midtrans.is_production') ? [
+            $allowedIps = $isProduction ? [
                 // Production IPs
                 '8.215.30.222',
                 '147.139.209.49',

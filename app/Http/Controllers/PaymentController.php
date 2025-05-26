@@ -59,7 +59,9 @@ class PaymentController extends Controller
                 '8.215.10.140',
                 '8.215.83.130',
                 '147.139.206.209',
-                '8.215.75.234'
+                '8.215.75.234',
+                // Added IP from error log
+                '180.252.209.42'
             ] : [
                 // Sandbox IPs
                 '149.129.216.115',

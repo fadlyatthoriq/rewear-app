@@ -118,31 +118,52 @@ class PaymentController extends Controller
             // Create notification object from request
             $notification = new Notification();
             
-            // Log the notification object
-            Log::info('Midtrans notification object', [
+            // Log the notification object received
+            Log::info('Midtrans notification object received', [
                 'order_id' => $notification->order_id,
                 'transaction_status' => $notification->transaction_status,
                 'payment_type' => $notification->payment_type,
-                'fraud_status' => $notification->fraud_status ?? null
+                'fraud_status' => $notification->fraud_status ?? null,
+                'gross_amount' => $notification->gross_amount // Added gross_amount for signature verification
             ]);
             
             // Validate payload
-            if (!isset($notification->order_id, $notification->transaction_id, $notification->transaction_status, $notification->payment_type)) {
-                throw new \Exception('Invalid callback payload');
+            if (!isset($notification->order_id, $notification->transaction_id, $notification->transaction_status, $notification->payment_type, $notification->gross_amount, $notification->signature_key)) {
+                Log::error('Invalid callback payload: Missing required fields', ['payload' => $request->all()]);
+                return response()->json(['status' => 'error', 'message' => 'Invalid callback payload: Missing required fields'], 400); // Respond with 400 Bad Request for invalid payload
             }
-            
+
+            // Verify Signature Key (Best Practice)
+            $hashed = hash('sha512', $notification->order_id . $notification->transaction_status . $notification->gross_amount . config('midtrans.server_key'));
+            if ($hashed !== $notification->signature_key) {
+                Log::warning('Invalid signature key', [
+                    'order_id' => $notification->order_id,
+                    'received_signature' => $notification->signature_key,
+                    'calculated_signature' => $hashed
+                ]);
+                return response()->json(['status' => 'error', 'message' => 'Invalid signature key'], 401); // Respond with 401 Unauthorized for invalid signature
+            }
+
             // Safely extract order_id
             $orderIdParts = explode('-', $notification->order_id);
-            Log::info('Order ID parts', ['parts' => $orderIdParts]);
+            Log::info('Order ID parts from notification', ['parts' => $orderIdParts, 'full_order_id' => $notification->order_id]);
             
             if (count($orderIdParts) < 2) {
+                Log::error('Invalid order_id format', ['order_id' => $notification->order_id]);
                 throw new \Exception('Invalid order_id format');
             }
             $orderId = $orderIdParts[1];
+            Log::info('Extracted Order ID', ['order_id' => $orderId]);
             
-            $transaction = Transaction::findOrFail($orderId);
+            // Find transaction using find() instead of findOrFail() to avoid 404 exception
+            $transaction = Transaction::find($orderId);
             
-            Log::info('Found transaction', [
+            if (!$transaction) {
+                Log::error('Transaction not found in DB', ['order_id_extracted' => $orderId, 'full_order_id_midtrans' => $notification->order_id]);
+                return response()->json(['status' => 'error', 'message' => 'Transaction not found'], 404); // Respond with 404 Not Found if transaction doesn't exist
+            }
+
+            Log::info('Found transaction in DB', [
                 'transaction_id' => $transaction->id,
                 'current_status' => $transaction->status,
                 'current_payment_status' => $transaction->payment_status

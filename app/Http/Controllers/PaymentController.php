@@ -107,6 +107,14 @@ class PaymentController extends Controller
             // Create notification object from request
             $notification = new Notification();
             
+            // Log the notification object
+            Log::info('Midtrans notification object', [
+                'order_id' => $notification->order_id,
+                'transaction_status' => $notification->transaction_status,
+                'payment_type' => $notification->payment_type,
+                'fraud_status' => $notification->fraud_status ?? null
+            ]);
+            
             // Validate payload
             if (!isset($notification->order_id, $notification->transaction_id, $notification->transaction_status, $notification->payment_type)) {
                 throw new \Exception('Invalid callback payload');
@@ -114,6 +122,8 @@ class PaymentController extends Controller
             
             // Safely extract order_id
             $orderIdParts = explode('-', $notification->order_id);
+            Log::info('Order ID parts', ['parts' => $orderIdParts]);
+            
             if (count($orderIdParts) < 2) {
                 throw new \Exception('Invalid order_id format');
             }

@@ -88,6 +88,53 @@
                 </div>
 
                 <div>
+                    <label for="birth_date" class="block text-sm font-medium text-gray-700 mb-1">Birth Date</label>
+                    <input type="date" name="birth_date" id="birth_date" 
+                        class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 @error('birth_date') border-red-500 @enderror" 
+                        value="{{ old('birth_date') }}">
+                    @error('birth_date')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input id="is_seller" name="is_seller" type="checkbox" 
+                            class="w-4 h-4 border-gray-300 rounded text-primary-600 focus:ring-primary-500" 
+                            value="1" {{ old('is_seller') ? 'checked' : '' }}>
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="is_seller" class="font-medium text-gray-700">I want to sell products</label>
+                    </div>
+                </div>
+                @error('is_seller')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+
+                <div id="seller-fields" class="hidden space-y-6">
+                    <div>
+                        <label for="store_name" class="block text-sm font-medium text-gray-700 mb-1">Store Name</label>
+                        <input type="text" name="store_name" id="store_name" 
+                            class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 @error('store_name') border-red-500 @enderror" 
+                            value="{{ old('store_name') }}"
+                            placeholder="Enter your store name">
+                        @error('store_name')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="store_description" class="block text-sm font-medium text-gray-700 mb-1">Store Description</label>
+                        <textarea name="store_description" id="store_description" rows="3"
+                            class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 @error('store_description') border-red-500 @enderror" 
+                            placeholder="Describe your store">{{ old('store_description') }}</textarea>
+                        @error('store_description')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                     <div class="relative">
                         <input type="password" name="password" id="password" 
@@ -168,6 +215,32 @@ function togglePassword(inputId) {
         `;
     }
 }
+
+// Update the event listener for seller checkbox
+document.getElementById('is_seller').addEventListener('change', function() {
+    const sellerFields = document.getElementById('seller-fields');
+    if (this.checked) {
+        sellerFields.classList.remove('hidden');
+        // Make store fields required when seller is checked
+        document.getElementById('store_name').required = true;
+        document.getElementById('store_description').required = true;
+    } else {
+        sellerFields.classList.add('hidden');
+        // Remove required attribute when seller is not checked
+        document.getElementById('store_name').required = false;
+        document.getElementById('store_description').required = false;
+    }
+});
+
+// Initialize seller fields visibility based on old input
+document.addEventListener('DOMContentLoaded', function() {
+    const isSellerCheckbox = document.getElementById('is_seller');
+    if (isSellerCheckbox.checked) {
+        document.getElementById('seller-fields').classList.remove('hidden');
+        document.getElementById('store_name').required = true;
+        document.getElementById('store_description').required = true;
+    }
+});
 </script>
 
 <!-- SweetAlert -->

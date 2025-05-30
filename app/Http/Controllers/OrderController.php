@@ -10,9 +10,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\MidtransService;
 use Illuminate\Support\Facades\Log;
+use App\Services\NotificationService;
+use App\Models\Order;
 
 class OrderController extends Controller
 {
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     public function checkout()
     {
         $user = Auth::user();
@@ -211,5 +220,23 @@ class OrderController extends Controller
             Log::error('Transaction creation failed: ' . $e->getMessage());
             return back()->with('error', 'Failed to create transaction: ' . $e->getMessage());
         }
+    }
+
+    public function updateStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,processing,shipped,delivered,cancelled'
+        ]);
+
+        $order->update(['status' => $request->status]);
+        
+        // Create notification for order status change
+        $this->notificationService->createOrderStatusNotification(
+            $order->user,
+            $order,
+            $request->status
+        );
+
+        return redirect()->back()->with('success', 'Order status updated successfully');
     }
 } 

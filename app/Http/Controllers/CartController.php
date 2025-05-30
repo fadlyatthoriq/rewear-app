@@ -38,6 +38,14 @@ class CartController extends Controller
             $cart = Cart::firstOrCreate(['user_id' => $user->id]);
             $item = $cart->items()->where('product_id', $product->id)->first();
 
+            // Check if product is active
+            if ($product->status !== 'active') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Sorry, this product is not available for purchase!'
+                ]);
+            }
+
             // Check if product has stock
             if ($product->stock <= 0) {
                 return response()->json([

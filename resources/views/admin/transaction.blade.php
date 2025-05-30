@@ -47,14 +47,15 @@
     <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
         <!-- Main Status -->
         <div class="p-3 bg-gray-50 rounded-lg dark:bg-gray-700">
-            <h4 class="mb-2 font-medium text-gray-900 dark:text-white">Transaction Status</h4>
+            <h4 class="mb-2 font-medium text-gray-900 dark:text-white">Overall Status</h4>
             <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                <li><span class="inline-block w-3 h-3 mr-2 bg-gray-400 rounded-full"></span>Pending: New transaction waiting for confirmation</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-yellow-400 rounded-full"></span>Processing: Transaction is being processed</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-gray-400 rounded-full"></span>Pending / Pending Shipping: Waiting for processing or shipping</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-yellow-400 rounded-full"></span>Processing / Payment Processing / Shipping Processing: Transaction or part of it is being handled</li>
                 <li><span class="inline-block w-3 h-3 mr-2 bg-blue-400 rounded-full"></span>Shipped: Items have been shipped</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Completed: Transaction fully completed</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Failed: Transaction failed</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Cancelled: Transaction cancelled</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Delivered: Items received by customer</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Completed / Success: Transaction fully completed</li>
+                 <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Paid / Payment Confirmed: Payment has been successfully processed</li>
+                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Failed / Cancelled / Shipping Failed / Failed Payment / Cancelled Payment: Transaction or part of it has failed or been cancelled</li>
             </ul>
         </div>
         
@@ -162,11 +163,11 @@
                             </td>
                             <td class="p-4 text-base font-medium whitespace-nowrap">
                                 <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
-                                    @if($transaction->overall_status === 'Completed' || $transaction->overall_status === 'Paid') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                                    @if($transaction->overall_status === 'Completed' || $transaction->overall_status === 'Success' || $transaction->overall_status === 'Paid' || $transaction->overall_status === 'Delivered' || $transaction->overall_status === 'Payment Confirmed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
                                     @elseif($transaction->overall_status === 'Processing' || $transaction->overall_status === 'Payment Processing' || $transaction->overall_status === 'Shipping Processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
                                     @elseif($transaction->overall_status === 'Shipped') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
-                                    @elseif($transaction->overall_status === 'Delivered') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
                                     @elseif($transaction->overall_status === 'Failed' || $transaction->overall_status === 'Cancelled' || $transaction->overall_status === 'Shipping Failed' || $transaction->overall_status === 'Failed Payment' || $transaction->overall_status === 'Cancelled Payment') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                                    @elseif($transaction->overall_status === 'Pending' || $transaction->overall_status === 'Pending Shipping') bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
                                     @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
                                     @endif">
                                     {{ $transaction->overall_status }}

@@ -63,7 +63,7 @@
                                         <span class="inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium
                                             @if($transaction->status === 'pending') bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300
                                             @elseif($transaction->status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
-                                            @elseif($transaction->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                                            @elseif($transaction->status === 'completed' || $transaction->status === 'success') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
                                             @elseif($transaction->status === 'shipped') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
                                             @else bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 @endif">
                                             @if($transaction->status === 'pending')
@@ -74,7 +74,7 @@
                                                 <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
                                                 </svg>
-                                            @elseif($transaction->status === 'completed')
+                                            @elseif($transaction->status === 'completed' || $transaction->status === 'success')
                                                 <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
                                                 </svg>

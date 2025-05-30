@@ -125,7 +125,7 @@
                 <div class="flex items-center justify-between gap-2 sm:gap-4">
                   <div class="flex items-center min-w-0 flex-1">
                     @php
-                      $productImage = $product->image_url ? asset('storage/' . $product->image_url) : asset('images/default-product.png');
+                      $productImage = $product->image ? $product->image : asset('images/default-product.png');
                     @endphp
                     <img class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover bg-gray-100" 
                          src="{{ $productImage }}" 
@@ -158,7 +158,7 @@
                 <div class="flex items-center space-x-3 sm:space-x-4">
                   <div class="flex-shrink-0">
                     @php
-                      $userImage = $customer->profile_picture ? asset('storage/' . $customer->profile_picture) : asset('assets-admin/static/images/avatar-default.svg');
+                      $userImage = $customer->profile_picture ? $customer->profile_picture : asset('assets-admin/static/images/avatar-default.svg');
                     @endphp
                     <img class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-100" 
                          src="{{ $userImage }}" 

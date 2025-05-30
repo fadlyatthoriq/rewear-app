@@ -49,7 +49,7 @@
             @foreach($categories as $category)
                 <div class="relative rounded-lg overflow-hidden group h-64">
                     @if($category->image_url)
-                        <img src="{{ asset($category->image_url) }}" alt="{{ $category->name }}" class="w-full h-full object-cover">
+                        <img src="{{ $category->image_url }}" alt="{{ $category->name }}" class="w-full h-full object-cover">
                     @else
                         <div class="w-full h-full bg-gray-200 flex items-center justify-center">
                             <span class="text-gray-400">No Image</span>
@@ -79,7 +79,7 @@
             @foreach($newArrivals as $product)
                 <div class="bg-white rounded-2xl shadow-md hover:shadow-xl border border-transparent hover:border-[#2596be] transition-all duration-300 group h-full flex flex-col p-4">
                     <div class="relative">
-                        <img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}" class="w-full h-64 aspect-square object-cover rounded-xl transition-transform duration-300 group-hover:scale-105">
+                        <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full h-64 aspect-square object-cover rounded-xl transition-transform duration-300 group-hover:scale-105">
                         <span class="absolute top-3 left-3 bg-[#2596be] text-white px-3 py-1 text-xs rounded-full shadow-lg font-semibold tracking-wide">New</span>
                         <div class="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
                             <a href="{{ route('product.show', $product->id) }}"
@@ -137,7 +137,7 @@
             @foreach($trendingProducts as $product)
                 <div class="bg-white rounded-2xl shadow-md hover:shadow-xl border border-transparent hover:border-[#2596be] transition-all duration-300 group h-full flex flex-col p-4">
                     <div class="relative">
-                        <img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}" class="w-full h-64 aspect-square object-cover rounded-xl transition-transform duration-300 group-hover:scale-105">
+                        <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full h-64 aspect-square object-cover rounded-xl transition-transform duration-300 group-hover:scale-105">
                         <div class="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
                             <a href="{{ route('product.show', $product->id) }}"
                                 class="bg-white text-[#2596be] shadow w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#2596be] hover:text-white transition"

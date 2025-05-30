@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ProductController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MyOrderController;
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +27,15 @@ use App\Http\Controllers\MyOrderController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// Admin Routes - Moved to top
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('products', AdminProductController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('transactions', TransactionController::class);
+    Route::resource('users', UserController::class);
+});
 
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -56,7 +67,8 @@ Route::middleware('auth')->group(function () {
     
     // Account Routes
     Route::get('/account', [AccountController::class, 'index'])->name('account');
-    Route::post('/account/update', [AccountController::class, 'update'])->name('account.update');
+    Route::put('/account/profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile');
+    Route::put('/account/seller', [AccountController::class, 'updateSellerInfo'])->name('account.updateSellerInfo');
     Route::post('/account/password', [AccountController::class, 'updatePassword'])->name('account.password');
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
     Route::post('/checkout', [OrderController::class, 'processCheckout'])->name('checkout.process');
@@ -65,6 +77,7 @@ Route::middleware('auth')->group(function () {
     
     // Payment Routes
     Route::post('/payment/create', [PaymentController::class, 'createPayment'])->name('payment.create');
+    Route::get('/payment/finish', [PaymentController::class, 'finishPayment'])->name('payment.finish');
     
     // My Orders Routes
     Route::get('/my-orders', [MyOrderController::class, 'index'])->name('my-orders');
@@ -72,15 +85,21 @@ Route::middleware('auth')->group(function () {
     Route::post('/my-orders/{transaction}/cancel', [MyOrderController::class, 'cancel'])->name('my-orders.cancel');
     Route::post('/my-orders/{transaction}/reorder', [MyOrderController::class, 'reorder'])->name('my-orders.reorder');
     Route::post('/my-orders/{transaction}/complete', [MyOrderController::class, 'complete'])->name('my-orders.complete');
+
+    // Product Management Routes - Non-admin
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+    // Notification routes
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::post('/notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unreadCount');
+    Route::get('/notifications/recent', [NotificationController::class, 'recent'])->name('notifications.recent');
 });
 
 // Midtrans callback route (no auth required)
 Route::post('/payment/callback', [PaymentController::class, 'handleCallback'])->name('payment.callback');
-
-// Admin Routes
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('products', AdminProductController::class);
-    Route::resource('categories', CategoryController::class);
-    Route::resource('transactions', TransactionController::class);
-});

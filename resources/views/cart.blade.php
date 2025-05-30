@@ -14,7 +14,7 @@
                     <div class="rounded-lg border border-gray-200 bg-white p-3 sm:p-4 md:p-6 shadow-sm transition-all duration-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
                         <div class="space-y-4 md:flex md:items-center md:justify-between md:gap-4 md:space-y-0">
                             <a href="{{ route('product.show', $item->product_id) }}" class="shrink-0 md:order-1">
-                                <img src="{{ asset('storage/' . $item->product->image_url) }}" alt="{{ $item->product->name }}" class="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded">
+                                <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded">
                             </a>
 
                             <div class="w-full min-w-0 flex-1 space-y-3 sm:space-y-4 md:order-2 md:max-w-md">

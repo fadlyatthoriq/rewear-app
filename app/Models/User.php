@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Cart;
+use App\Models\Product;
+use App\Models\Notification;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -27,6 +30,9 @@ class User extends Authenticatable
         'address',
         'birth_date',
         'profile_picture',
+        'is_seller',
+        'store_name',
+        'store_description',
     ];
 
     /**
@@ -48,6 +54,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'birth_date' => 'date',
+        'is_seller' => 'boolean',
     ];
 
     protected $appends = ['age'];
@@ -60,7 +67,7 @@ class User extends Authenticatable
     /**
      * Get the transactions for the user.
      */
-    public function transactions()
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }
@@ -76,6 +83,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user is a seller.
+     *
+     * @return bool
+     */
+    public function isSeller(): bool
+    {
+        return $this->is_seller;
+    }
+
+    /**
      * Get the cart associated with the user.
      */
     public function cart()
@@ -83,8 +100,21 @@ class User extends Authenticatable
         return $this->hasOne(Cart::class);
     }
 
+    /**
+     * Get the notifications for the user.
+     */
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+
     public function wishlist()
     {
         return $this->hasMany(Wishlist::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

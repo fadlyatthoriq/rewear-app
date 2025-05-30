@@ -11,12 +11,14 @@ class HomeController extends Controller
     public function index()
     {
         // Get featured products (new arrivals)
-        $newArrivals = Product::latest()
+        $newArrivals = Product::where('status', 'active')
+            ->latest()
             ->take(4)
             ->get();
 
         // Get trending products (most sold)
-        $trendingProducts = Product::withCount('transactionItems')
+        $trendingProducts = Product::where('status', 'active')
+            ->withCount('transactionItems')
             ->orderBy('transaction_items_count', 'desc')
             ->take(4)
             ->get();

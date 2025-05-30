@@ -60,20 +60,13 @@ class TransactionController extends Controller
         ]);
 
         $validated = $request->validate([
-            'status' => 'required|in:pending,processing,shipped,completed,failed,cancelled',
-            'payment_status' => 'required|in:pending,processing,paid,failed,cancelled',
             'shipping_status' => 'required|in:pending,processing,shipped,delivered,failed'
         ]);
 
-        // Update all status fields directly
-        $transaction->update($validated);
+        $transaction->update(['shipping_status' => $validated['shipping_status']]);
         
         Log::info('Transaction status updated', [
             'transaction_id' => $transaction->id,
-            'old_status' => $transaction->getOriginal('status'),
-            'new_status' => $validated['status'],
-            'old_payment_status' => $transaction->getOriginal('payment_status'),
-            'new_payment_status' => $validated['payment_status'],
             'old_shipping_status' => $transaction->getOriginal('shipping_status'),
             'new_shipping_status' => $validated['shipping_status']
         ]);
@@ -86,8 +79,6 @@ class TransactionController extends Controller
     {
         return response()->json([
             'id' => $transaction->id,
-            'status' => $transaction->status,
-            'payment_status' => $transaction->payment_status,
             'shipping_status' => $transaction->shipping_status
         ]);
     }

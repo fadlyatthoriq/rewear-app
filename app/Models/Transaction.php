@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Transaction extends Model
 {
@@ -38,6 +40,7 @@ class Transaction extends Model
     // Accessor to get the overall status of the transaction
     public function getOverallStatusAttribute()
     {
+        // Prioritize failed or cancelled states
         if ($this->status === 'failed' || $this->status === 'cancelled') {
             return ucfirst($this->status);
         }
@@ -50,6 +53,7 @@ class Transaction extends Model
             return 'Shipping Failed';
         }
 
+        // Prioritize shipping/delivery status as it's a later stage
         if ($this->shipping_status === 'delivered') {
             return 'Delivered';
         }
@@ -58,6 +62,7 @@ class Transaction extends Model
             return 'Shipped';
         }
 
+        // Then consider processing states
         if ($this->payment_status === 'processing') {
             return 'Payment Processing';
         }
@@ -70,11 +75,21 @@ class Transaction extends Model
             return 'Processing';
         }
 
-        if ($this->status === 'completed') {
-            return 'Completed';
+        // If payment is paid but shipping is pending, show payment status
+        if ($this->payment_status === 'paid') {
+             // If payment is paid but shipping is still pending, maybe show 'Payment Confirmed' or similar, 
+             // or just let the 'Pending' shipping status take precedence if appropriate for your flow.
+             // Based on the image, 'Paid' payment status is shown, so let's reflect that payment is done.
+             return 'Payment Confirmed'; // Or 'Paid'
         }
 
-        // Default to transaction status if none of the above match
+        // If shipping is still pending, this is the most accurate overall status for that stage
+        if ($this->shipping_status === 'pending') {
+            return 'Pending Shipping'; // Or just 'Pending' if that's the desired initial state name
+        }
+
+        // Finally, if none of the above, fall back to the general status
+        // This might catch 'completed' or other specific statuses not covered above
         return ucfirst($this->status);
     }
 } 

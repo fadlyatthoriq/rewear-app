@@ -14,6 +14,14 @@
         <span class="absolute -top-2 -right-2 bg-[#2596be] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow">{{ $wishlistCount }}</span>
         @endif
       </a>
+      @auth
+        <div class="relative">
+          <button @click="openNotificationModal = true" class="relative p-2 text-gray-600 hover:text-gray-900 focus:outline-none">
+            <i class="fas fa-bell text-xl"></i>
+            <span id="notification-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+          </button>
+        </div>
+      @endauth
       <a href="/cart" class="relative group">
         <i class="fa-solid fa-bag-shopping text-xl group-hover:text-[#2596be] transition"></i>
         @if($cartCount > 0)
@@ -39,6 +47,7 @@
           <i class="fa-regular fa-user text-xl group-hover:text-[#2596be] transition"></i>
         </a>
       @endauth
+    </div>
   </div>
 </header>
 
@@ -86,3 +95,95 @@
     </div>
   </div>
 </nav>
+
+@push('scripts')
+<script>
+    // Keep updateNotifications for the badge
+    function updateNotifications() {
+        fetch('/notifications/unread-count')
+            .then(response => response.json())
+            .then(data => {
+                const badge = document.getElementById('notification-badge');
+                if (data.count > 0) {
+                    badge.textContent = data.count;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            });
+    }
+
+    // This function loads notifications into the modal
+    function loadNotificationsModal() {
+        const container = document.getElementById('notification-modal-list');
+        // Show loading state while fetching
+        container.innerHTML = `
+            <div class="px-4 py-4 text-center text-gray-500">
+                Loading notifications...
+            </div>
+        `;
+
+        fetch('/notifications/recent')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.notifications.length === 0) {
+                    container.innerHTML = `
+                        <div class="px-4 py-4 text-center text-gray-500">
+                            No notifications yet.
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = data.notifications.map(notification => `
+                    <a href="${notification.link}" class="block px-4 py-3 hover:bg-gray-100 ${notification.is_read ? '' : 'bg-blue-50 font-semibold'} transition-colors duration-150">
+                        <div class="flex items-start space-x-3">
+                            <div class="flex-shrink-0 mt-1 text-lg">
+                                <i class="fas ${getNotificationIcon(notification.type)} ${notification.is_read ? 'text-gray-400' : 'text-[#2596be]'}"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium ${notification.is_read ? 'text-gray-700' : 'text-gray-900'}">${notification.title}</p>
+                                <p class="text-xs ${notification.is_read ? 'text-gray-500' : 'text-gray-600'} mt-1">${notification.message}</p>
+                                <p class="text-xs text-gray-500 mt-1">${notification.created_at}</p>
+                            </div>
+                        </div>
+                    </a>
+                `).join('');
+            }).catch(error => {
+                console.error('Error loading notifications:', error);
+                container.innerHTML = `
+                    <div class="px-4 py-4 text-center text-red-500">
+                        Failed to load notifications.\n${error}
+                    </div>
+                `;
+            });
+    }
+
+    function getNotificationIcon(type) {
+        switch(type) {
+            case 'order_status':
+                return 'fa-shopping-bag';
+            case 'new_product':
+                return 'fa-box';
+            case 'discount':
+                return 'fa-tag';
+            case 'admin_notification':
+                return 'fa-bell';
+            default:
+                return 'fa-bell';
+        }
+    }
+
+    // Update notification count every minute
+    setInterval(updateNotifications, 60000);
+    
+    // Initial load of count
+    updateNotifications();
+
+</script>
+@endpush

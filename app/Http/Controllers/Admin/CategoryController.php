@@ -5,11 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Cloudinary\Cloudinary;
 use RealRashid\SweetAlert\Facades\Alert;
-use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
+    protected $cloudinary;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin');
+        $this->cloudinary = app('cloudinary');
+    }
+
     public function index(Request $request)
     {
         $query = Category::query();
@@ -39,55 +48,92 @@ class CategoryController extends Controller
         return view('admin.category', compact('categories'));
     }
 
+    public function create()
+    {
+        return view('admin.categories.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:100|unique:categories',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:6000'
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        $data = $request->except('image');
-        
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->storeAs('public/categories', $imageName);
-            $data['image_url'] = 'storage/categories/' . $imageName;
+            $result = $this->cloudinary->uploadApi()->upload(
+                $request->file('image')->getRealPath(),
+                [
+                    'folder' => 'categories',
+                    'resource_type' => 'image',
+                    'transformation' => [
+                        'width' => 400,
+                        'height' => 400,
+                        'crop' => 'fill'
+                    ]
+                ]
+            );
+            
+            $imageUrl = $result['secure_url'];
         }
 
-        Category::create($data);
+        Category::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'image' => $imageUrl
+        ]);
 
         Alert::success('Success', 'Category created successfully');
         return redirect()->route('admin.categories.index');
     }
 
+    public function edit(Category $category)
+    {
+        return view('admin.categories.edit', compact('category'));
+    }
+
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required|string|max:100|unique:categories,name,' . $category->id,
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:6000'
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        $data = $request->except('image');
-        
         if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($category->image_url) {
-                $oldImagePath = str_replace('storage/', 'public/', $category->image_url);
-                if (Storage::exists($oldImagePath)) {
-                    Storage::delete($oldImagePath);
+            // Delete old image from Cloudinary if exists
+            if ($category->image) {
+                $publicId = $this->getPublicIdFromUrl($category->image);
+                if ($publicId) {
+                    $this->cloudinary->uploadApi()->destroy($publicId);
                 }
             }
 
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->storeAs('public/categories', $imageName);
-            $data['image_url'] = 'storage/categories/' . $imageName;
+            // Upload new image
+            $result = $this->cloudinary->uploadApi()->upload(
+                $request->file('image')->getRealPath(),
+                [
+                    'folder' => 'categories',
+                    'resource_type' => 'image',
+                    'transformation' => [
+                        'width' => 400,
+                        'height' => 400,
+                        'crop' => 'fill'
+                    ]
+                ]
+            );
+            
+            $imageUrl = $result['secure_url'];
+        } else {
+            $imageUrl = $category->image;
         }
 
-        $category->update($data);
+        $category->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'image' => $imageUrl
+        ]);
 
         Alert::success('Success', 'Category updated successfully');
         return redirect()->route('admin.categories.index');
@@ -95,11 +141,11 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        // Delete image if exists
-        if ($category->image_url) {
-            $imagePath = str_replace('storage/', 'public/', $category->image_url);
-            if (Storage::exists($imagePath)) {
-                Storage::delete($imagePath);
+        // Delete image from Cloudinary if exists
+        if ($category->image) {
+            $publicId = $this->getPublicIdFromUrl($category->image);
+            if ($publicId) {
+                $this->cloudinary->uploadApi()->destroy($publicId);
             }
         }
 
@@ -109,12 +155,12 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index');
     }
 
-    public function edit(Category $category)
+    private function getPublicIdFromUrl($url)
     {
-        try {
-            return response()->json($category);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch category data'], 500);
+        $pattern = '/\/v\d+\/([^\/]+)\./';
+        if (preg_match($pattern, $url, $matches)) {
+            return $matches[1];
         }
+        return null;
     }
 } 

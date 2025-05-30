@@ -17,7 +17,15 @@
                             <span class="flex-1 ml-3 text-left whitespace-nowrap font-medium" sidebar-toggle-item>Management</span>
                             <svg sidebar-toggle-item class="w-6 h-6 transition-transform duration-200 {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.categories.*') || request()->routeIs('admin.transactions.*') ? 'rotate-180' : '' }}" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                         </button>
-                        <ul id="dropdown-crud" class="space-y-2 py-2 {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.categories.*') || request()->routeIs('admin.transactions.*') ? '' : 'hidden' }}">
+                        <ul id="dropdown-crud" class="space-y-2 py-2 {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.categories.*') || request()->routeIs('admin.transactions.*') || request()->routeIs('admin.users.*') ? '' : 'hidden' }}">
+                            <li>
+                                <a href="{{ route('admin.users.index') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2.5 group hover:bg-gray-100 transition-all duration-200 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('admin.users.*') ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/50 dark:text-primary-400' : '' }}">
+                                    <svg class="w-5 h-5 transition duration-200 {{ request()->routeIs('admin.users.*') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white' }}" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+                                    </svg>
+                                    <span class="ml-3 font-medium">Users</span>
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ route('admin.products.index') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2.5 group hover:bg-gray-100 transition-all duration-200 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('admin.products.*') ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/50 dark:text-primary-400' : '' }}">
                                     <svg class="w-5 h-5 transition duration-200 {{ request()->routeIs('admin.products.*') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white' }}" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

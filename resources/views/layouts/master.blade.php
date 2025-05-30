@@ -23,10 +23,24 @@
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+
     @stack('styles')
 </head>
 
-<body class="antialiased">
+<body class="antialiased" x-data="{ 
+    openNotificationModal: false,
+    init() {
+        // This $watch is no longer needed as the modal component handles its own data fetching
+        // this.$watch('openNotificationModal', (value) => {
+        //     if (value) {
+        //         loadNotificationsModal();
+        //     }
+        // });
+    }
+}">
    @include('partials.nav')
 
    @yield('banner')
@@ -42,5 +56,53 @@
 
    @include('sweetalert::alert')
 
+   <!-- Notification Modal (Alpine.js) -->
+   @include('components.notification-modal')
+
 </body>
 </html>
+
+@push('scripts')
+<script>
+    // Keep updateNotifications for the badge
+    function updateNotifications() {
+        fetch('/notifications/unread-count')
+            .then(response => response.json())
+            .then(data => {
+                const badge = document.getElementById('notification-badge');
+                if (data.count > 0) {
+                    badge.textContent = data.count;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            });
+    }
+
+    // This function loads notifications into the modal
+    // This is now handled within the notification-modal component itself
+    // function loadNotificationsModal() { ... }
+
+    function getNotificationIcon(type) {
+        switch(type) {
+            case 'order_status':
+                return 'fa-shopping-bag';
+            case 'new_product':
+                return 'fa-box';
+            case 'discount':
+                return 'fa-tag';
+             case 'admin_notification':
+                return 'fa-bell'; // Assuming a default bell for admin notifications
+            default:
+                return 'fa-bell';
+        }
+    }
+
+    // Update notification count every minute
+    setInterval(updateNotifications, 60000);
+    
+    // Initial load of count
+    updateNotifications();
+
+</script>
+@endpush

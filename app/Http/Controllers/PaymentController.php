@@ -7,14 +7,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Config;
 use Midtrans\Notification;
+use App\Services\NotificationService;
+use Illuminate\Support\Facades\Validator;
+use Midtrans\Midtrans;
 
 class PaymentController extends Controller
 {
-    public function __construct()
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
     {
         // Initialize Midtrans configuration
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
+        $this->notificationService = $notificationService;
     }
 
     public function handleCallback(Request $request)
@@ -216,6 +222,9 @@ class PaymentController extends Controller
                 'midtrans_status' => $transactionStatus
             ]);
             
+            // Create notification for admin about new order
+            $this->notificationService->createAdminCheckoutNotification($transaction->order);
+            
             return response()->json(['status' => 'success']);
         } catch (\Exception $e) {
             Log::error('Error processing Midtrans callback', [
@@ -226,5 +235,148 @@ class PaymentController extends Controller
             
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
+    }
+
+    public function createPayment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'transaction_id' => 'required|exists:transactions,id',
+            'payment_method' => 'required|in:bank_transfer,credit_card,e_wallet',
+            'bank' => 'required_if:payment_method,bank_transfer|string|in:bca,bni,mandiri,bri',
+            'card_number' => 'required_if:payment_method,credit_card|string|regex:/^[0-9]{16}$/',
+            'card_expiry' => 'required_if:payment_method,credit_card|string|regex:/^(0[1-9]|1[0-2])\/([0-9]{2})$/',
+            'card_cvv' => 'required_if:payment_method,credit_card|string|regex:/^[0-9]{3,4}$/',
+            'e_wallet_type' => 'required_if:payment_method,e_wallet|string|in:gopay,ovo,dana,linkaja',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $transaction = Transaction::with(['user', 'items.product'])
+                ->findOrFail($request->transaction_id);
+
+            // Verify transaction ownership
+            if ($transaction->user_id !== auth()->id()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Unauthorized access to transaction'
+                ], 403);
+            }
+
+            // Verify transaction status
+            if ($transaction->status !== 'pending') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid transaction status'
+                ], 400);
+            }
+
+            // Sanitize sensitive data
+            $paymentData = [
+                'transaction_details' => [
+                    'order_id' => $transaction->id,
+                    'gross_amount' => (int) $transaction->total_amount
+                ],
+                'customer_details' => [
+                    'first_name' => $transaction->user->name,
+                    'email' => $transaction->user->email,
+                    'phone' => $transaction->user->phone
+                ],
+                'item_details' => $transaction->items->map(function ($item) {
+                    return [
+                        'id' => $item->product_id,
+                        'price' => (int) $item->price,
+                        'quantity' => $item->quantity,
+                        'name' => $item->product->name
+                    ];
+                })->toArray()
+            ];
+
+            // Add payment method specific data
+            switch ($request->payment_method) {
+                case 'bank_transfer':
+                    $paymentData['bank_transfer'] = [
+                        'bank' => $request->bank
+                    ];
+                    break;
+                case 'credit_card':
+                    // Only send last 4 digits to Midtrans
+                    $paymentData['credit_card'] = [
+                        'card_number' => substr($request->card_number, -4),
+                        'expiry_month' => explode('/', $request->card_expiry)[0],
+                        'expiry_year' => '20' . explode('/', $request->card_expiry)[1],
+                        'cvv' => '***'
+                    ];
+                    break;
+                case 'e_wallet':
+                    $paymentData['e_wallet'] = [
+                        'type' => $request->e_wallet_type
+                    ];
+                    break;
+            }
+
+            // Log payment attempt
+            Log::info('Payment attempt', [
+                'transaction_id' => $transaction->id,
+                'user_id' => auth()->id(),
+                'payment_method' => $request->payment_method,
+                'amount' => $transaction->total_amount
+            ]);
+
+            $snapToken = Midtrans::getSnapToken($paymentData);
+
+            return response()->json([
+                'status' => 'success',
+                'snap_token' => $snapToken
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Payment creation failed', [
+                'error' => $e->getMessage(),
+                'transaction_id' => $request->transaction_id,
+                'user_id' => auth()->id()
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Payment creation failed'
+            ], 500);
+        }
+    }
+
+    public function finishPayment(Request $request)
+    {
+        // This method will be called after the user finishes the payment on Midtrans side
+        // The request will contain payment status information from Midtrans via GET parameters
+
+        $orderId = $request->input('order_id');
+
+        // Safely extract order_id (still needed if format is ORDER-ID)
+        $orderIdParts = explode('-', $orderId);
+
+        if (count($orderIdParts) < 2) {
+            Log::error('Invalid order_id format in finishPayment', ['order_id' => $orderId]);
+            // Redirect to an error page or show a generic message
+            return view('payment.payment-fail', ['message' => 'Invalid order ID format.']); // Assuming a payment-fail view exists
+        }
+        $extractedOrderId = $orderIdParts[1];
+
+        // Find transaction using the extracted order ID
+        $transaction = Transaction::find($extractedOrderId);
+
+        if (!$transaction) {
+            Log::error('Transaction not found in DB in finishPayment', ['order_id_extracted' => $extractedOrderId, 'full_order_id_midtrans' => $orderId]);
+            // Redirect to an error page or show a generic message
+            return view('payment.payment-fail', ['message' => 'Transaction not found.']); // Assuming a payment-fail view exists
+        }
+
+        // Pass the transaction object to the view
+        return view('payment.payment-finish', ['transaction' => $transaction]);
     }
 } 

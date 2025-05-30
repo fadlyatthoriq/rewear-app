@@ -242,8 +242,8 @@ function editCategory(id) {
             // Handle current image display
             const currentImageDiv = document.getElementById('current_image');
             const currentImagePreview = document.getElementById('current_image_preview');
-            if (category.image_url) {
-                currentImagePreview.src = category.image_url;
+            if (category.image) {
+                currentImagePreview.src = category.image;
                 currentImageDiv.classList.remove('hidden');
             } else {
                 currentImageDiv.classList.add('hidden');

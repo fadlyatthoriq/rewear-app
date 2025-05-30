@@ -35,7 +35,7 @@ class CartSeeder extends Seeder
                 'name' => $product->name,
                 'quantity' => rand(1, 3),
                 'price' => $product->price,
-                'image' => $product->image_url
+                'image' => $product->image
             ];
         }
 

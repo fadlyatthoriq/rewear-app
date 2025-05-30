@@ -83,7 +83,7 @@
                     <div class="space-y-3 sm:space-y-4">
                         @foreach($items as $item)
                         <div class="flex items-center space-x-3 sm:space-x-4">
-                            <img src="{{ asset('storage/' . $item->product->image_url) }}" alt="{{ $item->product->name }}" class="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded">
+                            <img src="{{ $item->product->image }}" alt="{{ $item->product->name }}" class="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded">
                             <div class="flex-1 min-w-0">
                                 <h3 class="text-xs sm:text-sm font-medium text-gray-900 truncate">{{ $item->product->name }}</h3>
                                 <p class="text-xs sm:text-sm text-gray-500">Quantity: {{ $item->quantity }}</p>

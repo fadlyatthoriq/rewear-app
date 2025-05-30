@@ -8,9 +8,9 @@
       <div class="lg:grid lg:grid-cols-2 lg:gap-12 xl:gap-16 bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg">
         <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
           <div class="aspect-square overflow-hidden rounded-xl bg-gray-100 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg" id="product-image-container">
-            @if($product->image_url)
+            @if($product->image)
               <img class="w-full h-full object-cover transform transition-transform duration-300 hover:scale-105" 
-                   src="{{ asset('storage/' . $product->image_url) }}" 
+                   src="{{ $product->image }}" 
                    alt="{{ $product->name }}" />
             @else
               <img class="w-full h-full object-cover dark:hidden transform transition-transform duration-300 hover:scale-105" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="Product Image Placeholder" />
@@ -89,6 +89,20 @@
             <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
               {{ $product->description ?? 'No description available.' }}
             </p>
+          </div>
+
+          <!-- Seller Information -->
+          <div class="border-t pt-6">
+            <h3 class="text-lg font-semibold mb-4">Seller Information</h3>
+            <div class="flex items-center space-x-4">
+              <img src="{{ $product->seller->profile_picture ? $product->seller->profile_picture : asset('images/default-avatar.png') }}" 
+                   alt="{{ $product->seller->name }}" 
+                   class="w-10 h-10 rounded-full">
+              <div>
+                <h4 class="font-medium">{{ $product->seller->store_name ?? $product->seller->name }}</h4>
+                <p class="text-sm text-gray-600">Member since {{ $product->seller->created_at->format('M Y') }}</p>
+              </div>
+            </div>
           </div>
 
         </div>

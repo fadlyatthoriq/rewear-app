@@ -10,7 +10,7 @@ class ShopController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with('category');
+        $query = Product::with('category')->where('status', 'active');
 
         // Filter by category
         if ($request->has('category') && $request->category !== '') {

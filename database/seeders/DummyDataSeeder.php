@@ -4,297 +4,453 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\Category;
-use Carbon\Carbon;
 
 class DummyDataSeeder extends Seeder
 {
     public function run()
     {
-        // Create categories
-        $categories = [
-            [
-                'name' => 'Women\'s',
-                'description' => null,
-                'image_url' => 'storage/categories/1747472974_pexels-castorlystock-3682293.jpg'
-            ],
-            [
-                'name' => 'Men\'s',
-                'description' => null,
-                'image_url' => 'storage/categories/1747472906_pexels-solliefoto-298863.jpg'
-            ],
-            [
-                'name' => 'Health & Beauty',
-                'description' => 'Health & Beauty collection',
-                'image_url' => 'storage/categories/1747472831_pexels-n-voitkevich-8468019.jpg'
-            ],
-            [
-                'name' => 'Babies & Kids',
-                'description' => null,
-                'image_url' => 'storage/categories/1747472620_asmund-gimre-NrJA1TPi0P8-unsplash.jpg'
-            ],
-            [
-                'name' => 'Luxury',
-                'description' => null,
-                'image_url' => 'storage/categories/1747472874_pexels-nappy-1058959.jpg'
-            ],
-            [
-                'name' => 'Electronics',
-                'description' => null,
-                'image_url' => 'storage/categories/1747472684_pexels-pixabay-356056.jpg'
-            ]
-        ];
+        // Get seller users
+        $fashionStore = User::where('email', 'fashion@rewear.com')->first();
+        $vintageShop = User::where('email', 'vintage@rewear.com')->first();
+        $kidsFashion = User::where('email', 'kids@rewear.com')->first();
+        $sportyStyle = User::where('email', 'sporty@rewear.com')->first();
+        $beautyStore = User::where('email', 'beauty@rewear.com')->first();
+        $luxuryBoutique = User::where('email', 'luxury@rewear.com')->first();
 
-        foreach ($categories as $category) {
-            Category::firstOrCreate(['name' => $category['name']], $category);
-        }
+        // Get categories
+        $womensCategory = Category::where('name', 'Women\'s')->first();
+        $mensCategory = Category::where('name', 'Men\'s')->first();
+        $luxuryCategory = Category::where('name', 'Luxury')->first();
+        $healthBeautyCategory = Category::where('name', 'Health & Beauty')->first();
+        $babiesKidsCategory = Category::where('name', 'Babies & Kids')->first();
+        $electronicsCategory = Category::where('name', 'Electronics')->first();
 
-        // Create products
-        $products = [
-            [
-                'category_id' => 1,
-                'name' => 'Stripe Knit Shirt',
-                'description' => "All size\r\nNo minus \r\nLike new",
-                'price' => 90000.00,
-                'stock' => 2,
-                'image_url' => 'products/a2CHCCFdCqC5mPQR3LCaReVq2EQcdXmlpSgN9GE3.jpg'
-            ],
-            [
-                'category_id' => 1,
-                'name' => 'ATMOSPHERE - Crop Top Tosca',
-                'description' => null,
-                'price' => 50000.00,
-                'stock' => 1,
-                'image_url' => 'products/xOewLjjf9sUieXzKs4Un1LeVSDCkatJ02TVM3Y0f.jpg'
-            ],
-            [
-                'category_id' => 1,
-                'name' => 'Cardigan PLAY Abu',
-                'description' => 'Minus tag bawah cutting',
-                'price' => 150000.00,
-                'stock' => 1,
-                'image_url' => 'products/AGyEmi3I756GAwB32CAusxdrdIKXRV2qvD6EwUIX.jpg'
-            ],
-            [
-                'category_id' => 1,
-                'name' => 'UNIQLO Cardigan Shoffle Pink',
-                'description' => "Uniqlo Cardigan Shoffle Pink\r\nTag tagan masih amann \r\nSize L kecil (kids section)\r\nM fit to L \r\nNego Tipis",
-                'price' => 200000.00,
-                'stock' => 1,
-                'image_url' => 'products/rTLqbxdIP7F3f72BXJQPYRiEUHTfb58WM3Iy3Y22.jpg'
-            ],
-            [
-                'category_id' => 1,
-                'name' => 'Cardigan Uniqlo Hitam Kerah O',
-                'description' => "ld 110\r\np 60\r\nMINUS NODA SAMAR DIBAGIAN BELAKANG",
-                'price' => 88000.00,
-                'stock' => 1,
-                'image_url' => 'products/jJcYl5U0mQWNNByMWpJDP1OUvgqSkLp9B4bkZaif.jpg'
-            ],
-            [
-                'category_id' => 2,
-                'name' => 'Jaket NIKE Running',
-                'description' => "Jacket Nike Running \r\n#ready aggsstuff\r\nSize on Taq : L \r\nP x L    : 68 X L 58 \r\nMinus  : Tidak ada",
-                'price' => 99000.00,
-                'stock' => 1,
-                'image_url' => 'products/l7wJuAFDsB2KU9BiuG7gHiJWm88wy7gxjIbcGX2M.jpg'
-            ],
-            [
-                'category_id' => 2,
-                'name' => 'Preloved Kaos UNIQLO',
-                'description' => "Ukuran S, tapi cenderung besar\r\nBaik dan tebal",
-                'price' => 30000.00,
-                'stock' => 1,
-                'image_url' => 'products/GtWiohzAcmTblVaRLIVMhtxPNERAlk32BvpibA7i.jpg'
-            ],
-            [
-                'category_id' => 2,
-                'name' => 'Jaket Gym Master Reversible',
-                'description' => "size L\r\nPanjang 68cm\r\nLebar 118cm\r\nNominus\r\nGoodcondition",
-                'price' => 130000.00,
-                'stock' => 1,
-                'image_url' => 'products/ODnwWsWPU5EVb2e7oStjYD0gUlOsvmXctuUp0j6x.jpg'
-            ],
-            [
-                'category_id' => 2,
-                'name' => 'T-Shirt Swellow Kaos',
-                'description' => 'ukuran m (sekali pakai)',
-                'price' => 250000.00,
-                'stock' => 1,
-                'image_url' => 'products/eYLMdmyj4zO17WjYDAr01J02CAznhoULWBLeIOye.jpg'
-            ],
-            [
-                'category_id' => 2,
-                'name' => 'Vintage Golden Bear Navy Harrington Work Jacket',
-                'description' => "•Size M fit L (P63xL58) Ld116 Boxy\r\n\r\nGeser foto untuk detail ——>\r\n\r\nitem deskripsi : 𝗪𝗮𝗿𝗻𝗮 𝗯𝗶𝘀𝗮 𝘀𝗮𝗷𝗮 𝘀𝗲𝗱𝗶𝗸𝗶𝘁 𝗯𝗲𝗿𝗯𝗲𝗱𝗮 𝗸𝗮𝗿𝗲𝗻𝗮 𝗲𝗳𝗲𝗸 𝗰𝗮𝗵𝗮𝘆𝗮 ! ,sudah di loundry ,warna navy pekat ,bahan canvas ,very goodcondition.\r\n\r\n📩 For order / lebih detail Chat or WA \r\nWa : 0882001848112\r\nIg : hakki.thrifttops & hakkistuff.id\r\nRekber +13% Admin\r\nLok : Bandung ,Jawa Barat",
-                'price' => 199000.00,
-                'stock' => 1,
-                'image_url' => 'products/OF1bgkHTCEOFpqFUIuqOO42MqlzEkHs9jB5m1CNh.jpg'
-            ],
-            [
-                'category_id' => 3,
-                'name' => 'Lip Cream Velvet BRASOV',
-                'description' => "dijual soalnya salah shade\r\nwarna nya thai tea cakep gt \r\nbisa oyenn 🧡",
-                'price' => 20000.00,
-                'stock' => 1,
-                'image_url' => 'products/X8oUb52RsQ2krcGjBT0YwDJzSUBBgJvcz1MnNA7w.jpg'
-            ],
-            [
-                'category_id' => 3,
-                'name' => 'OMG Face Wash',
-                'description' => 'Masih segel yaa',
-                'price' => 12000.00,
-                'stock' => 1,
-                'image_url' => 'products/vW4OkEnGAup0eGRWTu8I1YiswlHcunMbtoPFZXcz.jpg'
-            ],
-            [
-                'category_id' => 3,
-                'name' => 'Amos Professional Unix Hair Dryer',
-                'description' => "Authentic 💯\r\nbeli di official store\r\nPemakaian Pribadi \r\n 🚩Malang",
-                'price' => 100000.00,
-                'stock' => 1,
-                'image_url' => 'products/9fqHH6WKiqfVvIHPfLVCphkJXBKLW4LGJFTZAdrI.jpg'
-            ],
-            [
-                'category_id' => 3,
-                'name' => 'Supremacy In Oud Adnan EDP',
-                'description' => "Bought for 620.000\r\nSisa juice 60%\r\nFullset with box\r\nNego santai",
-                'price' => 380000.00,
-                'stock' => 1,
-                'image_url' => 'products/cfJ1GU20Qsf4d3N8N8NUKz0VtPLR8XMbq4NBTBjB.jpg'
-            ],
-            [
-                'category_id' => 3,
-                'name' => 'Lavojoy - Hold Me Tight Pro Shampoo',
-                'description' => "Brand new masih segel\r\nDijual karena udah ada sampo lain\r\n\r\n📦 Pengiriman:\r\n• Kirim manual dari Benhil, Jakarta aja ya\r\n• Nggak bisa lewat e-commerce\r\n• Pengiriman hanya tiap weekend (Sabtu/Minggu)\r\nMakasih udah ngerti yaa! 😊",
-                'price' => 75000.00,
-                'stock' => 1,
-                'image_url' => 'products/IbSkdcJYWA3BGAYGgDE0hE8GDbnKADHEaBEqZDdB.jpg'
-            ],
-            [
-                'category_id' => 6,
-                'name' => 'Digicam Sony DSC S930',
-                'description' => "kondisi fisik masih lumayan\r\nminus Kuningan batre udh karat mungkin perlu di Servis",
-                'price' => 500000.00,
-                'stock' => 1,
-                'image_url' => 'products/0MSx87hODTm7hTIrjqoo7m3JIvbhInD1bfb0deZX.jpg'
-            ],
-            [
-                'category_id' => 6,
-                'name' => 'JBL GO 2 Black Blueetooth Speaker Authentic',
-                'description' => "Authentic 💯\r\nbeli di official store\r\nPemakaian Pribadi \r\n 🚩Malang",
-                'price' => 100000.00,
-                'stock' => 1,
-                'image_url' => 'products/mgKk3iOlNRrJtMGpOGFlPRdI97ZIrS0Bl2IVKFYP.jpg'
-            ],
-            [
-                'category_id' => 6,
-                'name' => 'Kamera Canon Eos M10 with Box',
-                'description' => "Kamera Canon EOS M10 Fullset KIT\r\nLCD vignet tidak ngaruh hasil\r\nkondisi :\r\naf mf normal\r\naudio video normal\r\nTouchscreen normal\r\nFlash Nyala\r\nHasil Jepretan tajam\r\nKelengkapan :\r\n- Kamera\r\n- Baterai\r\n- Charger\r\n- Box\r\n\r\nlok : Jogja",
-                'price' => 3650000.00,
-                'stock' => 1,
-                'image_url' => 'products/9L2nS3AyYPjjMysY2fj11Mai1X3KEi4UEnO3GGVb.jpg'
-            ],
-            [
-                'category_id' => 6,
-                'name' => 'Macbook Pro 2017',
-                'description' => "Good Condition!!\r\nMac OS terbaru, Storage 8/250, CC rendah, Pemakaian 4/5 Jam Nugas / Games / Netflix Lancar",
-                'price' => 2000000.00,
-                'stock' => 1,
-                'image_url' => 'products/P5HHfKNxTN2lgsLm6gbzJlzO2I5tzxq3cZeJhlNI.jpg'
-            ],
-            [
-                'category_id' => 6,
-                'name' => 'PC gaming intel core i5 9400f GTX 1060 512GB',
-                'description' => "Dijual PC, Spec:\r\n- Intel Core i5 9400f\r\n- Mobo Asrock H310\r\n- VGA GTX 1060 3GB\r\n- RAM 16GB (2x8GB) \r\n- SSD 2x240GB\r\n- PSU Corsair VX 550W\r\n\r\nGak nego dapet bonus",
-                'price' => 4200000.00,
-                'stock' => 1,
-                'image_url' => 'products/IRtPGsQ7gpMLZSyUqYDJOCbOxfjnSSVTChbqeLcC.jpg'
-            ],
-            [
-                'category_id' => 5,
-                'name' => 'Sleepsuit Adem',
-                'description' => "HARGA NETT, NO NEGO ❗❗❗\r\nCek Ongkir di Tokren \"Zydbabykids\"\r\n\r\n✔️ Keterangan ada di gambar, kalau ada berbulu, noda, minusnya sudah dijelaskan ya. harap baca dg teliti. Barang mantan ya mom, jangan berekspektasi tinggi. \r\n✔️ Transaksi di Tokren +12% admin oren. \r\n✔️ Pembayaran split (apabila terjadi kehilangan barang dlm perjalanan akan diganti sesuai co) kecuali barang kembali ke seller, silahkan chat terlebih dahulu. WAJIB VIDEO UNBOXING\r\n✔️ Warna di foto bisa real bisa beda tergantung pencahayaan di kamera hp\r\n✔️ Membeli = Setuju, No Complain. \r\n✔️ Harap memberikan review yg bijak di kolom komentar \r\n\r\nHappy Shopping mom\r\n\r\n#prelovedbanjarmasin #babystuff #garagesale #prelovedjaket #thriftimport #thrift #prelovedbranded #bajubayi #prelovedbayi #prelovedbajuanak #prelovedsleepsuit #jaketwinteranak #jaketbulanganak #kemejaanak",
-                'price' => 25000.00,
-                'stock' => 1,
-                'image_url' => 'products/A3BoZ7ZnDaocx38zD8JfwdQqFVT5FoRhRszw9k71.jpg'
-            ],
-            [
-                'category_id' => 5,
-                'name' => 'ERGOBABY OMNI 360 AIRMESH CHAMBRAY ORIGINAL',
-                'description' => null,
-                'price' => 1550000.00,
-                'stock' => 1,
-                'image_url' => 'products/EZkQDRjJPNM5rNEIXVw40Fx3SgdXW6TmFoSttBCC.jpg'
-            ],
-            [
-                'category_id' => 5,
-                'name' => 'Rok petticoat anak rok pengembang dress anak',
-                'description' => "Rok petticoat anak, bahan organza, berfuring, pinggang karet\r\nSize 120 - 130 ( untuk usia 4 - 6 tahun) \r\n\r\nBrand -\r\nLP 46 - 70\r\nP 29",
-                'price' => 35000.00,
-                'stock' => 1,
-                'image_url' => 'products/1aoif8f8rp8wlcx1oqYU6PJHwwTBXosOIZQ6aqUs.jpg'
-            ],
-            [
-                'category_id' => 5,
-                'name' => '110 Dress H&M Linen Biru Denim Anak Perempuan 3-4 Tahun',
-                'description' => "• Pada foto pertama, warna diusahakan akan diedit semirip mungkin dengan aslinya.\r\n• Kadang ada barang yang sudah nett karena sudah termasuk freeong/admin marketplace yang sudah disubsidi (tergantung barangnya)\r\n• Kalau nego sadis otomatis di blok ya 🙏🏻\r\n\r\nPengiriman bisa melalui:\r\n✅ wahana (ongkir 5-15rb, rata2 7rb)\r\n✅ marketplace +admin (oren, ijo) bisa co link kecil sisanya transfer",
-                'price' => 25000.00,
-                'stock' => 1,
-                'image_url' => 'products/PDZ1XLubpq7qYQq7S7BMCDZAU4OgN9IgMMs5TDah.jpg'
-            ],
-            [
-                'category_id' => 5,
-                'name' => 'Stroller pockit',
-                'description' => 'stroller pockit gen 2s\r\nlike new',
-                'price' => 700000.00,
-                'stock' => 1,
-                'image_url' => 'products/03YJ9hIDuqyZTFRPW6nKQDHHSdPleS5fsEUNNc5G.jpg'
-            ],
-            [
-                'category_id' => 6,
-                'name' => 'KATE SPADE KNOTT MINI SATCHEL',
-                'description' => "KATE SPADE KNOTT MINI SATCHEL\r\n\r\nKondisi: almost VVGC (hanya ada noda secuil di bagian salam, selebihnya VVGC)\r\nKelengkapan: Price Tag, Long Strap, DB Pengganti\r\n\r\n\r\n#katespade #katespadebags #katespadeauthentic #katespadeknott #barangauthentic #barangbranded #prelovedauthentic #prelovedmurah #prelovedjkt",
-                'price' => 1500000.00,
-                'stock' => 1,
-                'image_url' => 'products/bmIwTqQEKVRj7h1KVTau2fgp0HL9xKS8JYeFjwC3.jpg'
-            ],
-            [
-                'category_id' => 6,
-                'name' => 'Coach Nolita',
-                'description' => "Coach nolita🖤\r\nAuthentic💯\r\nMuluss pamakaian wajar😍",
-                'price' => 800000.00,
-                'stock' => 1,
-                'image_url' => 'products/9HXzljYx5GCkM1gGWLHMlNvLrX9YiL4vNZJstwU4.jpg'
-            ],
-            [
-                'category_id' => 6,
-                'name' => 'Tas Charles & Keith Alcott Scraft',
-                'description' => "Tas Charles & Keith Alcott Scraft\r\nLike new\r\nPemakaian 2x\r\nMasih mulus semua no deffect\r\nBisa toko oren ada biaya admin 10%",
-                'price' => 850000.00,
-                'stock' => 1,
-                'image_url' => 'products/BRk6dWTSn29o0nzsxe3nuNXdtSlmt1gQmASYxU24.jpg'
-            ],
-            [
-                'category_id' => 6,
-                'name' => 'LV Speedy 30 Monogram 2005',
-                'description' => "bag db pengganti padlock (nempel)\r\nkondisi apa ada nya \r\nnett no nego",
-                'price' => 2750000.00,
-                'stock' => 1,
-                'image_url' => 'products/iBwPNS1z9I4YsFNj1c2vaAoHy4Je3AOhWIPHEz4o.jpg'
-            ],
-            [
-                'category_id' => 6,
-                'name' => 'Coach Bag Reversible New',
-                'description' => "Original Coach Bag\r\nNever been used\r\nTipe reversible, 1 tas bisa dipakai 2 mode sehingga seperti punya 2 tas\r\nPanjang 32cm, Tinggi 26cm\r\nDust bag dan paper bag lengkap\r\nNego tipis\r\n\r\nMinat DM",
-                'price' => 1799000.00,
-                'stock' => 1,
-                'image_url' => 'products/SvshcDypurJ6ciReNftp0SqJCCpVfMF6NPP6NXud.jpg'
-            ]
-        ];
+        // Women's Category Products
+        Product::create([
+            'name' => 'Zara Summer Floral Dress',
+            'description' => 'Beautiful floral dress from Zara, perfect for summer. Size M, never worn.',
+            'price' => 299000,
+            'stock' => 1,
+            'category_id' => $womensCategory->id,
+            'user_id' => $fashionStore->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567205/products/x6taalscjo4gajaugtxh.jpg',
+            'condition' => 'new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:06:46'
+        ]);
 
-        foreach ($products as $product) {
-            Product::firstOrCreate(['name' => $product['name']], $product);
-        }
+        Product::create([
+            'name' => 'Nike Dri-FIT Running Shorts',
+            'description' => 'Lightweight running shorts with built-in liner. Size S, excellent condition.',
+            'price' => 199000,
+            'stock' => 1,
+            'category_id' => $womensCategory->id,
+            'user_id' => $sportyStyle->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748571940/products/ui66wrpluujtvay6iwko.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 19:25:42'
+        ]);
+
+        Product::create([
+            'name' => 'H&M Blazer',
+            'description' => 'Classic black blazer, perfect for office wear. Size S, like new condition.',
+            'price' => 249000,
+            'stock' => 1,
+            'category_id' => $womensCategory->id,
+            'user_id' => $fashionStore->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567426/products/o95ahqh0vrmvu8hitwrk.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:10:27'
+        ]);
+
+        Product::create([
+            'name' => 'Adidas Yoga Pants',
+            'description' => 'High-waisted yoga pants with pockets. Size M, excellent condition.',
+            'price' => 179000,
+            'stock' => 1,
+            'category_id' => $womensCategory->id,
+            'user_id' => $sportyStyle->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567141/products/fwjmkzedmjl5gx84nbn1.jpg',
+            'condition' => 'good',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:05:42'
+        ]);
+
+        Product::create([
+            'name' => 'Uniqlo Cardigan',
+            'description' => 'Soft knit cardigan in beige. Size L, good condition.',
+            'price' => 159000,
+            'stock' => 1,
+            'category_id' => $womensCategory->id,
+            'user_id' => $fashionStore->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567483/products/wz6poladotysfziz6vb0.avif',
+            'condition' => 'good',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:11:24'
+        ]);
+
+        // Men's Category Products
+        Product::create([
+            'name' => 'Uniqlo Slim Fit Jeans',
+            'description' => 'Classic slim fit jeans from Uniqlo. Size 32, excellent condition.',
+            'price' => 199000,
+            'stock' => 1,
+            'category_id' => $mensCategory->id,
+            'user_id' => $fashionStore->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567532/products/wlhracgn895oiwxaacqc.avif',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:12:13'
+        ]);
+
+        Product::create([
+            'name' => 'Adidas Originals T-Shirt',
+            'description' => 'Classic Adidas Originals t-shirt. Size L, good condition.',
+            'price' => 149000,
+            'stock' => 1,
+            'category_id' => $mensCategory->id,
+            'user_id' => $sportyStyle->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748547602/products/rulow2lzw5gizqfgm6xs.jpg',
+            'condition' => 'good',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 12:40:03'
+        ]);
+
+        Product::create([
+            'name' => 'Nike Air Jordan T-Shirt',
+            'description' => 'Limited edition Air Jordan graphic tee. Size XL, new with tags.',
+            'price' => 299000,
+            'stock' => 1,
+            'category_id' => $mensCategory->id,
+            'user_id' => $sportyStyle->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567575/products/yc5nyd1ertebgdyrvrfj.avif',
+            'condition' => 'new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:12:56'
+        ]);
+
+        Product::create([
+            'name' => 'Zara Formal Shirt',
+            'description' => 'Crisp white formal shirt. Size M, like new condition.',
+            'price' => 229000,
+            'stock' => 1,
+            'category_id' => $mensCategory->id,
+            'user_id' => $fashionStore->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567616/products/kyd6v8y9nczvovphng3m.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:13:38'
+        ]);
+
+        Product::create([
+            'name' => 'H&M Chino Pants',
+            'description' => 'Classic khaki chino pants. Size 34, good condition.',
+            'price' => 179000,
+            'stock' => 1,
+            'category_id' => $mensCategory->id,
+            'user_id' => $fashionStore->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567716/products/lspnld0c20862tlpl5zr.jpg',
+            'condition' => 'good',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:15:16'
+        ]);
+
+        // Luxury Category Products
+        Product::create([
+            'name' => 'Louis Vuitton Neverfull MM',
+            'description' => 'Authentic LV Neverfull MM in Damier Ebene. Comes with dust bag and receipt.',
+            'price' => 15990000,
+            'stock' => 1,
+            'category_id' => $luxuryCategory->id,
+            'user_id' => $luxuryBoutique->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567847/products/o199k2pu9eefc4oeh7dn.avif',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:17:30'
+        ]);
+
+        Product::create([
+            'name' => 'Gucci Marmont Mini Bag',
+            'description' => 'Authentic Gucci Marmont Mini in Black. Includes dust bag and authenticity card.',
+            'price' => 12990000,
+            'stock' => 1,
+            'category_id' => $luxuryCategory->id,
+            'user_id' => $luxuryBoutique->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567899/products/uju95meitr4klbby9oyg.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:18:20'
+        ]);
+
+        Product::create([
+            'name' => 'Chanel Classic Flap Bag',
+            'description' => 'Authentic Chanel Classic Flap in Black. Includes authenticity card and box.',
+            'price' => 89900000,
+            'stock' => 1,
+            'category_id' => $luxuryCategory->id,
+            'user_id' => $luxuryBoutique->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748572032/products/gdfafnh1tfh6lk9xbhnu.webp',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 19:27:14'
+        ]);
+
+        Product::create([
+            'name' => 'Hermes Birkin 30',
+            'description' => 'Authentic Hermes Birkin 30 in Togo leather. Includes dust bag and receipt.',
+            'price' => 199900000,
+            'stock' => 1,
+            'category_id' => $luxuryCategory->id,
+            'user_id' => $luxuryBoutique->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748572090/products/rd10nrmqv1zfq7mzsuuw.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 19:28:10'
+        ]);
+
+        Product::create([
+            'name' => 'Prada Re-Edition 2005',
+            'description' => 'Authentic Prada Re-Edition 2005 in Black. Includes dust bag and authenticity card.',
+            'price' => 8990000,
+            'stock' => 1,
+            'category_id' => $luxuryCategory->id,
+            'user_id' => $luxuryBoutique->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568072/products/eo7r5l8purunvur9ji6p.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:21:13'
+        ]);
+
+        // Health & Beauty Products
+        Product::create([
+            'name' => 'SK-II Facial Treatment Essence',
+            'description' => 'Original SK-II Facial Treatment Essence 230ml. Unopened, sealed.',
+            'price' => 1899000,
+            'stock' => 1,
+            'category_id' => $healthBeautyCategory->id,
+            'user_id' => $beautyStore->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568105/products/vdakzgkougdehlt6hl97.jpg',
+            'condition' => 'new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:21:46'
+        ]);
+
+        Product::create([
+            'name' => 'Estee Lauder Advanced Night Repair',
+            'description' => 'Estee Lauder ANR Serum 50ml. 80% remaining, purchased 2 months ago.',
+            'price' => 1299000,
+            'stock' => 1,
+            'category_id' => $healthBeautyCategory->id,
+            'user_id' => $beautyStore->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568135/products/sll75fu1amasiqqo3pa8.jpg',
+            'condition' => 'good',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:22:16'
+        ]);
+
+        Product::create([
+            'name' => 'La Mer Moisturizing Cream',
+            'description' => 'La Mer Moisturizing Cream 60ml. Unopened, sealed.',
+            'price' => 4999000,
+            'stock' => 1,
+            'category_id' => $healthBeautyCategory->id,
+            'user_id' => $beautyStore->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568168/products/rrv84y1xkemykhvsqipd.jpg',
+            'condition' => 'new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:22:48'
+        ]);
+
+        Product::create([
+            'name' => 'Chanel Chance Eau Tendre',
+            'description' => 'Chanel Chance Eau Tendre EDP 100ml. 90% remaining.',
+            'price' => 1999000,
+            'stock' => 1,
+            'category_id' => $healthBeautyCategory->id,
+            'user_id' => $beautyStore->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568192/products/xmfleyozpo33ee5ch4mc.jpg',
+            'condition' => 'good',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:23:13'
+        ]);
+
+        Product::create([
+            'name' => 'Dior Forever Foundation',
+            'description' => 'Dior Forever Foundation in 2N. Used once, like new condition.',
+            'price' => 899000,
+            'stock' => 1,
+            'category_id' => $healthBeautyCategory->id,
+            'user_id' => $beautyStore->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568214/products/lkc1imtt0zh4yusucdaw.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:23:35'
+        ]);
+
+        // Babies & Kids Products
+        Product::create([
+            'name' => 'H&M Kids Winter Jacket',
+            'description' => 'Warm winter jacket for kids age 4-5 years. Lightly used, excellent condition.',
+            'price' => 149000,
+            'stock' => 1,
+            'category_id' => $babiesKidsCategory->id,
+            'user_id' => $kidsFashion->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567790/products/vmgfl2tfrchdd7rpulc3.jpg',
+            'condition' => 'good',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:16:31'
+        ]);
+
+        Product::create([
+            'name' => 'Gap Kids Denim Overalls',
+            'description' => 'Cute denim overalls for kids age 3-4 years. Like new condition.',
+            'price' => 199000,
+            'stock' => 1,
+            'category_id' => $babiesKidsCategory->id,
+            'user_id' => $kidsFashion->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568248/products/kzlfha8pypywvhnvxqcs.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:24:09'
+        ]);
+
+        Product::create([
+            'name' => 'Nike Kids Air Force 1',
+            'description' => 'Nike Kids Air Force 1 in white. Size EU 30, new with box.',
+            'price' => 799000,
+            'stock' => 1,
+            'category_id' => $babiesKidsCategory->id,
+            'user_id' => $kidsFashion->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568279/products/l17d8vaur83cuqaptgnn.jpg',
+            'condition' => 'new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:24:40'
+        ]);
+
+        Product::create([
+            'name' => 'Zara Kids Summer Dress',
+            'description' => 'Floral summer dress for girls age 5-6 years. New with tags.',
+            'price' => 249000,
+            'stock' => 1,
+            'category_id' => $babiesKidsCategory->id,
+            'user_id' => $kidsFashion->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568308/products/aip4vrxydttopanttpeh.jpg',
+            'condition' => 'new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:25:09'
+        ]);
+
+        Product::create([
+            'name' => 'Uniqlo Kids Pajama Set',
+            'description' => 'Cotton pajama set for kids age 4-5 years. Good condition.',
+            'price' => 129000,
+            'stock' => 1,
+            'category_id' => $babiesKidsCategory->id,
+            'user_id' => $kidsFashion->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568339/products/cu4zxhhut6umfj1dovgr.jpg',
+            'condition' => 'good',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:25:40'
+        ]);
+
+        // Electronics Products
+        Product::create([
+            'name' => 'Apple AirPods Pro 2',
+            'description' => 'Apple AirPods Pro 2nd Generation. Includes charging case and all accessories.',
+            'price' => 2499000,
+            'stock' => 1,
+            'category_id' => $electronicsCategory->id,
+            'user_id' => $luxuryBoutique->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568366/products/hai2ipdthohvhfyy2o7j.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:26:07'
+        ]);
+
+        Product::create([
+            'name' => 'Samsung Galaxy Watch 5',
+            'description' => 'Samsung Galaxy Watch 5 40mm. Includes original box and charger.',
+            'price' => 2999000,
+            'stock' => 1,
+            'category_id' => $electronicsCategory->id,
+            'user_id' => $luxuryBoutique->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568405/products/mpcn7ac6yvpn7owtietd.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:26:46'
+        ]);
+
+        Product::create([
+            'name' => 'iPad Pro 11" 2022',
+            'description' => 'iPad Pro 11" 2022 128GB WiFi. Includes original box and accessories.',
+            'price' => 9999000,
+            'stock' => 1,
+            'category_id' => $electronicsCategory->id,
+            'user_id' => $luxuryBoutique->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568430/products/nppk89aggqc53go7ubpl.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:27:10'
+        ]);
+
+        Product::create([
+            'name' => 'Sony WH-1000XM4',
+            'description' => 'Sony WH-1000XM4 Wireless Headphones. Includes carrying case and cables.',
+            'price' => 3499000,
+            'stock' => 1,
+            'category_id' => $electronicsCategory->id,
+            'user_id' => $luxuryBoutique->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568454/products/mvckg4jmvsqiavdxl8fe.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:27:35'
+        ]);
+
+        Product::create([
+            'name' => 'DJI Mini 3 Pro',
+            'description' => 'DJI Mini 3 Pro Drone. Includes controller, batteries, and carrying case.',
+            'price' => 8999000,
+            'stock' => 1,
+            'category_id' => $electronicsCategory->id,
+            'user_id' => $luxuryBoutique->id,
+            'image' => 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568483/products/tlwbrjrt1ubcaphk8pso.jpg',
+            'condition' => 'like_new',
+            'status' => 'active',
+            'created_at' => '2025-05-29 12:24:55',
+            'updated_at' => '2025-05-29 18:28:04'
+        ]);
     }
 } 

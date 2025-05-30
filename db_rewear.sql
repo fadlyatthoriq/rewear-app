@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2025 at 05:31 PM
+-- Generation Time: May 30, 2025 at 04:29 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -74,12 +74,12 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `description`, `image_url`, `created_at`, `updated_at`) VALUES
-(1, 'Women\'s', NULL, 'storage/categories/1747472974_pexels-castorlystock-3682293.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(2, 'Men\'s', NULL, 'storage/categories/1747472906_pexels-solliefoto-298863.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(3, 'Health & Beauty', 'Health & Beauty collection', 'storage/categories/1747472831_pexels-n-voitkevich-8468019.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(4, 'Babies & Kids', NULL, 'storage/categories/1747472620_asmund-gimre-NrJA1TPi0P8-unsplash.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(5, 'Luxury', NULL, 'storage/categories/1747472874_pexels-nappy-1058959.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(6, 'Electronics', NULL, 'storage/categories/1747472684_pexels-pixabay-356056.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26');
+(1, 'Women\'s', 'Koleksi pakaian wanita terbaik', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748530084/1747472974_pexels-castorlystock-3682293_fpr1rs.jpg', '2025-05-29 12:24:55', '2025-05-29 12:24:55'),
+(2, 'Men\'s', 'Koleksi pakaian pria terbaik', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748530078/1747472906_pexels-solliefoto-298863_imb1df.jpg', '2025-05-29 12:24:55', '2025-05-29 12:24:55'),
+(3, 'Health & Beauty', 'Health & Beauty collection', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748530107/1747472831_pexels-n-voitkevich-8468019_wesgyg.jpg', '2025-05-29 12:24:55', '2025-05-29 12:24:55'),
+(4, 'Babies & Kids', 'Koleksi pakaian bayi dan anak-anak', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748530075/1747472620_asmund-gimre-NrJA1TPi0P8-unsplash_cmsv1s.jpg', '2025-05-29 12:24:55', '2025-05-29 12:24:55'),
+(5, 'Luxury', 'Koleksi barang mewah dan eksklusif', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748530100/1747472874_pexels-nappy-1058959_la9vc7.jpg', '2025-05-29 12:24:55', '2025-05-29 12:24:55'),
+(6, 'Electronics', 'Koleksi elektronik dan gadget', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748530075/1747472684_pexels-pixabay-356056_tw5pgh.jpg', '2025-05-29 12:24:55', '2025-05-29 12:24:55');
 
 -- --------------------------------------------------------
 
@@ -120,14 +120,12 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (4, '2024_03_14_000001_create_users_table', 1),
 (5, '2024_03_14_000002_create_categories_table', 1),
 (6, '2024_03_14_000003_create_products_table', 1),
-(7, '2024_03_15_000000_add_profile_picture_to_users_table', 1),
-(8, '2024_03_19_create_transactions_table', 1),
-(9, '2025_05_15_165207_add_email_verified_at_to_users_table', 1),
-(10, '2025_05_18_074239_create_carts_table', 1),
-(11, '2025_05_18_074712_create_cart_items_table', 1),
-(12, '2025_05_18_143804_create_wishlists_table', 1),
-(13, '2025_05_19_125211_create_transaction_items_table', 1),
-(14, '2025_05_19_125341_add_midtrans_columns_to_transactions_table', 1);
+(7, '2024_03_19_create_transactions_table', 1),
+(8, '2025_05_18_074239_create_carts_table', 1),
+(9, '2025_05_18_074712_create_cart_items_table', 1),
+(10, '2025_05_18_143804_create_wishlists_table', 1),
+(11, '2025_05_19_125211_create_transaction_items_table', 1),
+(12, '2025_05_19_125341_add_midtrans_columns_to_transactions_table', 1);
 
 -- --------------------------------------------------------
 
@@ -168,12 +166,15 @@ CREATE TABLE `personal_access_tokens` (
 
 CREATE TABLE `products` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `category_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `name` varchar(100) NOT NULL,
-  `description` text DEFAULT NULL,
-  `price` decimal(12,2) NOT NULL,
-  `stock` int(11) NOT NULL DEFAULT 0,
-  `image_url` varchar(255) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `price` decimal(15,2) NOT NULL,
+  `stock` int(11) NOT NULL,
+  `category_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `condition` enum('new','like_new','good','fair') NOT NULL DEFAULT 'new',
+  `status` enum('active','inactive','sold') NOT NULL DEFAULT 'active',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -182,37 +183,37 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `category_id`, `name`, `description`, `price`, `stock`, `image_url`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Stripe Knit Shirt', 'All size\r\nNo minus \r\nLike new', 90000.00, 2, 'products/a2CHCCFdCqC5mPQR3LCaReVq2EQcdXmlpSgN9GE3.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(2, 1, 'ATMOSPHERE - Crop Top Tosca', NULL, 50000.00, 1, 'products/xOewLjjf9sUieXzKs4Un1LeVSDCkatJ02TVM3Y0f.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(3, 1, 'Cardigan PLAY Abu', 'Minus tag bawah cutting', 150000.00, 1, 'products/AGyEmi3I756GAwB32CAusxdrdIKXRV2qvD6EwUIX.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(4, 1, 'UNIQLO Cardigan Shoffle Pink', 'Uniqlo Cardigan Shoffle Pink\r\nTag tagan masih amann \r\nSize L kecil (kids section)\r\nM fit to L \r\nNego Tipis', 200000.00, 1, 'products/rTLqbxdIP7F3f72BXJQPYRiEUHTfb58WM3Iy3Y22.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(5, 1, 'Cardigan Uniqlo Hitam Kerah O', 'ld 110\r\np 60\r\nMINUS NODA SAMAR DIBAGIAN BELAKANG', 88000.00, 1, 'products/jJcYl5U0mQWNNByMWpJDP1OUvgqSkLp9B4bkZaif.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(6, 2, 'Jaket NIKE Running', 'Jacket Nike Running \r\n#ready aggsstuff\r\nSize on Taq : L \r\nP x L    : 68 X L 58 \r\nMinus  : Tidak ada', 99000.00, 1, 'products/l7wJuAFDsB2KU9BiuG7gHiJWm88wy7gxjIbcGX2M.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(7, 2, 'Preloved Kaos UNIQLO', 'Ukuran S, tapi cenderung besar\r\nBaik dan tebal', 30000.00, 1, 'products/GtWiohzAcmTblVaRLIVMhtxPNERAlk32BvpibA7i.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(8, 2, 'Jaket Gym Master Reversible', 'size L\r\nPanjang 68cm\r\nLebar 118cm\r\nNominus\r\nGoodcondition', 130000.00, 1, 'products/ODnwWsWPU5EVb2e7oStjYD0gUlOsvmXctuUp0j6x.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(9, 2, 'T-Shirt Swellow Kaos', 'ukuran m (sekali pakai)', 250000.00, 1, 'products/eYLMdmyj4zO17WjYDAr01J02CAznhoULWBLeIOye.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(10, 2, 'Vintage Golden Bear Navy Harrington Work Jacket', '•Size M fit L (P63xL58) Ld116 Boxy\r\n\r\nGeser foto untuk detail ——>\r\n\r\nitem deskripsi : 𝗪𝗮𝗿𝗻𝗮 𝗯𝗶𝘀𝗮 𝘀𝗮𝗷𝗮 𝘀𝗲𝗱𝗶𝗸𝗶𝘁 𝗯𝗲𝗿𝗯𝗲𝗱𝗮 𝗸𝗮𝗿𝗲𝗻𝗮 𝗲𝗳𝗲𝗸 𝗰𝗮𝗵𝗮𝘆𝗮 ! ,sudah di loundry ,warna navy pekat ,bahan canvas ,very goodcondition.\r\n\r\n📩 For order / lebih detail Chat or WA \r\nWa : 0882001848112\r\nIg : hakki.thrifttops & hakkistuff.id\r\nRekber +13% Admin\r\nLok : Bandung ,Jawa Barat', 199000.00, 1, 'products/OF1bgkHTCEOFpqFUIuqOO42MqlzEkHs9jB5m1CNh.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(11, 3, 'Lip Cream Velvet BRASOV', 'dijual soalnya salah shade\r\nwarna nya thai tea cakep gt \r\nbisa oyenn 🧡', 20000.00, 1, 'products/X8oUb52RsQ2krcGjBT0YwDJzSUBBgJvcz1MnNA7w.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(12, 3, 'OMG Face Wash', 'Masih segel yaa', 12000.00, 1, 'products/vW4OkEnGAup0eGRWTu8I1YiswlHcunMbtoPFZXcz.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(13, 3, 'Amos Professional Unix Hair Dryer', 'Authentic 💯\r\nbeli di official store\r\nPemakaian Pribadi \r\n 🚩Malang', 100000.00, 1, 'products/9fqHH6WKiqfVvIHPfLVCphkJXBKLW4LGJFTZAdrI.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(14, 3, 'Supremacy In Oud Adnan EDP', 'Bought for 620.000\r\nSisa juice 60%\r\nFullset with box\r\nNego santai', 380000.00, 1, 'products/cfJ1GU20Qsf4d3N8N8NUKz0VtPLR8XMbq4NBTBjB.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(15, 3, 'Lavojoy - Hold Me Tight Pro Shampoo', 'Brand new masih segel\r\nDijual karena udah ada sampo lain\r\n\r\n📦 Pengiriman:\r\n• Kirim manual dari Benhil, Jakarta aja ya\r\n• Nggak bisa lewat e-commerce\r\n• Pengiriman hanya tiap weekend (Sabtu/Minggu)\r\nMakasih udah ngerti yaa! 😊', 75000.00, 1, 'products/IbSkdcJYWA3BGAYGgDE0hE8GDbnKADHEaBEqZDdB.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(16, 6, 'Digicam Sony DSC S930', 'kondisi fisik masih lumayan\r\nminus Kuningan batre udh karat mungkin perlu di Servis', 500000.00, 1, 'products/0MSx87hODTm7hTIrjqoo7m3JIvbhInD1bfb0deZX.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(17, 6, 'JBL GO 2 Black Blueetooth Speaker Authentic', 'Authentic 💯\r\nbeli di official store\r\nPemakaian Pribadi \r\n 🚩Malang', 100000.00, 1, 'products/mgKk3iOlNRrJtMGpOGFlPRdI97ZIrS0Bl2IVKFYP.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(18, 6, 'Kamera Canon Eos M10 with Box', 'Kamera Canon EOS M10 Fullset KIT\r\nLCD vignet tidak ngaruh hasil\r\nkondisi :\r\naf mf normal\r\naudio video normal\r\nTouchscreen normal\r\nFlash Nyala\r\nHasil Jepretan tajam\r\nKelengkapan :\r\n- Kamera\r\n- Baterai\r\n- Charger\r\n- Box\r\n\r\nlok : Jogja', 3650000.00, 1, 'products/9L2nS3AyYPjjMysY2fj11Mai1X3KEi4UEnO3GGVb.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(19, 6, 'Macbook Pro 2017', 'Good Condition!!\r\nMac OS terbaru, Storage 8/250, CC rendah, Pemakaian 4/5 Jam Nugas / Games / Netflix Lancar', 2000000.00, 1, 'products/P5HHfKNxTN2lgsLm6gbzJlzO2I5tzxq3cZeJhlNI.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(20, 6, 'PC gaming intel core i5 9400f GTX 1060 512GB', 'Dijual PC, Spec:\r\n- Intel Core i5 9400f\r\n- Mobo Asrock H310\r\n- VGA GTX 1060 3GB\r\n- RAM 16GB (2x8GB) \r\n- SSD 2x240GB\r\n- PSU Corsair VX 550W\r\n\r\nGak nego dapet bonus', 4200000.00, 1, 'products/IRtPGsQ7gpMLZSyUqYDJOCbOxfjnSSVTChbqeLcC.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(21, 5, 'Sleepsuit Adem', 'HARGA NETT, NO NEGO ❗❗❗\r\nCek Ongkir di Tokren \"Zydbabykids\"\r\n\r\n✔️ Keterangan ada di gambar, kalau ada berbulu, noda, minusnya sudah dijelaskan ya. harap baca dg teliti. Barang mantan ya mom, jangan berekspektasi tinggi. \r\n✔️ Transaksi di Tokren +12% admin oren. \r\n✔️ Pembayaran split (apabila terjadi kehilangan barang dlm perjalanan akan diganti sesuai co) kecuali barang kembali ke seller, silahkan chat terlebih dahulu. WAJIB VIDEO UNBOXING\r\n✔️ Warna di foto bisa real bisa beda tergantung pencahayaan di kamera hp\r\n✔️ Membeli = Setuju, No Complain. \r\n✔️ Harap memberikan review yg bijak di kolom komentar \r\n\r\nHappy Shopping mom\r\n\r\n#prelovedbanjarmasin #babystuff #garagesale #prelovedjaket #thriftimport #thrift #prelovedbranded #bajubayi #prelovedbayi #prelovedbajuanak #prelovedsleepsuit #jaketwinteranak #jaketbulanganak #kemejaanak', 25000.00, 1, 'products/A3BoZ7ZnDaocx38zD8JfwdQqFVT5FoRhRszw9k71.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(22, 5, 'ERGOBABY OMNI 360 AIRMESH CHAMBRAY ORIGINAL', NULL, 1550000.00, 1, 'products/EZkQDRjJPNM5rNEIXVw40Fx3SgdXW6TmFoSttBCC.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(23, 5, 'Rok petticoat anak rok pengembang dress anak', 'Rok petticoat anak, bahan organza, berfuring, pinggang karet\r\nSize 120 - 130 ( untuk usia 4 - 6 tahun) \r\n\r\nBrand -\r\nLP 46 - 70\r\nP 29', 35000.00, 1, 'products/1aoif8f8rp8wlcx1oqYU6PJHwwTBXosOIZQ6aqUs.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(24, 5, '110 Dress H&M Linen Biru Denim Anak Perempuan 3-4 Tahun', '• Pada foto pertama, warna diusahakan akan diedit semirip mungkin dengan aslinya.\r\n• Kadang ada barang yang sudah nett karena sudah termasuk freeong/admin marketplace yang sudah disubsidi (tergantung barangnya)\r\n• Kalau nego sadis otomatis di blok ya 🙏🏻\r\n\r\nPengiriman bisa melalui:\r\n✅ wahana (ongkir 5-15rb, rata2 7rb)\r\n✅ marketplace +admin (oren, ijo) bisa co link kecil sisanya transfer', 25000.00, 1, 'products/PDZ1XLubpq7qYQq7S7BMCDZAU4OgN9IgMMs5TDah.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(25, 5, 'Stroller pockit', 'stroller pockit gen 2s\\r\\nlike new', 700000.00, 1, 'products/03YJ9hIDuqyZTFRPW6nKQDHHSdPleS5fsEUNNc5G.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(26, 6, 'KATE SPADE KNOTT MINI SATCHEL', 'KATE SPADE KNOTT MINI SATCHEL\r\n\r\nKondisi: almost VVGC (hanya ada noda secuil di bagian salam, selebihnya VVGC)\r\nKelengkapan: Price Tag, Long Strap, DB Pengganti\r\n\r\n\r\n#katespade #katespadebags #katespadeauthentic #katespadeknott #barangauthentic #barangbranded #prelovedauthentic #prelovedmurah #prelovedjkt', 1500000.00, 1, 'products/bmIwTqQEKVRj7h1KVTau2fgp0HL9xKS8JYeFjwC3.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(27, 6, 'Coach Nolita', 'Coach nolita🖤\r\nAuthentic💯\r\nMuluss pamakaian wajar😍', 800000.00, 1, 'products/9HXzljYx5GCkM1gGWLHMlNvLrX9YiL4vNZJstwU4.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(28, 6, 'Tas Charles & Keith Alcott Scraft', 'Tas Charles & Keith Alcott Scraft\r\nLike new\r\nPemakaian 2x\r\nMasih mulus semua no deffect\r\nBisa toko oren ada biaya admin 10%', 850000.00, 1, 'products/BRk6dWTSn29o0nzsxe3nuNXdtSlmt1gQmASYxU24.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(29, 6, 'LV Speedy 30 Monogram 2005', 'bag db pengganti padlock (nempel)\r\nkondisi apa ada nya \r\nnett no nego', 2750000.00, 1, 'products/iBwPNS1z9I4YsFNj1c2vaAoHy4Je3AOhWIPHEz4o.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26'),
-(30, 6, 'Coach Bag Reversible New', 'Original Coach Bag\r\nNever been used\r\nTipe reversible, 1 tas bisa dipakai 2 mode sehingga seperti punya 2 tas\r\nPanjang 32cm, Tinggi 26cm\r\nDust bag dan paper bag lengkap\r\nNego tipis\r\n\r\nMinat DM', 1799000.00, 1, 'products/SvshcDypurJ6ciReNftp0SqJCCpVfMF6NPP6NXud.jpg', '2025-05-24 08:31:26', '2025-05-24 08:31:26');
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `category_id`, `user_id`, `image`, `condition`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Zara Summer Floral Dress', 'Beautiful floral dress from Zara, perfect for summer. Size M, never worn.', 299000.00, 1, 1, 3, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567205/products/x6taalscjo4gajaugtxh.jpg', 'new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:06:46'),
+(2, 'Nike Dri-FIT Running Shorts', 'Lightweight running shorts with built-in liner. Size S, excellent condition.', 199000.00, 1, 1, 6, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748571940/products/ui66wrpluujtvay6iwko.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 19:25:42'),
+(3, 'H&M Blazer', 'Classic black blazer, perfect for office wear. Size S, like new condition.', 249000.00, 1, 1, 3, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567426/products/o95ahqh0vrmvu8hitwrk.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:10:27'),
+(4, 'Adidas Yoga Pants', 'High-waisted yoga pants with pockets. Size M, excellent condition.', 179000.00, 1, 1, 6, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567141/products/fwjmkzedmjl5gx84nbn1.jpg', 'good', 'active', '2025-05-29 12:24:55', '2025-05-29 18:05:42'),
+(5, 'Uniqlo Cardigan', 'Soft knit cardigan in beige. Size L, good condition.', 159000.00, 1, 1, 3, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567483/products/wz6poladotysfziz6vb0.avif', 'good', 'active', '2025-05-29 12:24:55', '2025-05-29 18:11:24'),
+(6, 'Uniqlo Slim Fit Jeans', 'Classic slim fit jeans from Uniqlo. Size 32, excellent condition.', 199000.00, 1, 2, 3, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567532/products/wlhracgn895oiwxaacqc.avif', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:12:13'),
+(7, 'Adidas Originals T-Shirt', 'Classic Adidas Originals t-shirt. Size L, good condition.', 149000.00, 1, 2, 6, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748547602/products/rulow2lzw5gizqfgm6xs.jpg', 'good', 'active', '2025-05-29 12:24:55', '2025-05-29 12:40:03'),
+(8, 'Nike Air Jordan T-Shirt', 'Limited edition Air Jordan graphic tee. Size XL, new with tags.', 299000.00, 1, 2, 6, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567575/products/yc5nyd1ertebgdyrvrfj.avif', 'new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:12:56'),
+(9, 'Zara Formal Shirt', 'Crisp white formal shirt. Size M, like new condition.', 229000.00, 1, 2, 3, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567616/products/kyd6v8y9nczvovphng3m.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:13:38'),
+(10, 'H&M Chino Pants', 'Classic khaki chino pants. Size 34, good condition.', 179000.00, 1, 2, 3, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567716/products/lspnld0c20862tlpl5zr.jpg', 'good', 'active', '2025-05-29 12:24:55', '2025-05-29 18:15:16'),
+(11, 'Louis Vuitton Neverfull MM', 'Authentic LV Neverfull MM in Damier Ebene. Comes with dust bag and receipt.', 15990000.00, 1, 5, 4, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567847/products/o199k2pu9eefc4oeh7dn.avif', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:17:30'),
+(12, 'Gucci Marmont Mini Bag', 'Authentic Gucci Marmont Mini in Black. Includes dust bag and authenticity card.', 12990000.00, 1, 5, 4, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567899/products/uju95meitr4klbby9oyg.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:18:20'),
+(13, 'Chanel Classic Flap Bag', 'Authentic Chanel Classic Flap in Black. Includes authenticity card and box.', 89900000.00, 1, 5, 4, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748572032/products/gdfafnh1tfh6lk9xbhnu.webp', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 19:27:14'),
+(14, 'Hermes Birkin 30', 'Authentic Hermes Birkin 30 in Togo leather. Includes dust bag and receipt.', 199900000.00, 1, 5, 4, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748572090/products/rd10nrmqv1zfq7mzsuuw.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 19:28:10'),
+(15, 'Prada Re-Edition 2005', 'Authentic Prada Re-Edition 2005 in Black. Includes dust bag and authenticity card.', 8990000.00, 1, 5, 4, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568072/products/eo7r5l8purunvur9ji6p.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:21:13'),
+(16, 'SK-II Facial Treatment Essence', 'Original SK-II Facial Treatment Essence 230ml. Unopened, sealed.', 1899000.00, 1, 3, 8, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568105/products/vdakzgkougdehlt6hl97.jpg', 'new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:21:46'),
+(17, 'Estee Lauder Advanced Night Repair', 'Estee Lauder ANR Serum 50ml. 80% remaining, purchased 2 months ago.', 1299000.00, 1, 3, 8, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568135/products/sll75fu1amasiqqo3pa8.jpg', 'good', 'active', '2025-05-29 12:24:55', '2025-05-29 18:22:16'),
+(18, 'La Mer Moisturizing Cream', 'La Mer Moisturizing Cream 60ml. Unopened, sealed.', 4999000.00, 1, 3, 8, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568168/products/rrv84y1xkemykhvsqipd.jpg', 'new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:22:48'),
+(19, 'Chanel Chance Eau Tendre', 'Chanel Chance Eau Tendre EDP 100ml. 90% remaining.', 1999000.00, 1, 3, 8, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568192/products/xmfleyozpo33ee5ch4mc.jpg', 'good', 'active', '2025-05-29 12:24:55', '2025-05-29 18:23:13'),
+(20, 'Dior Forever Foundation', 'Dior Forever Foundation in 2N. Used once, like new condition.', 899000.00, 1, 3, 8, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568214/products/lkc1imtt0zh4yusucdaw.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:23:35'),
+(21, 'H&M Kids Winter Jacket', 'Warm winter jacket for kids age 4-5 years. Lightly used, excellent condition.', 149000.00, 1, 4, 7, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748567790/products/vmgfl2tfrchdd7rpulc3.jpg', 'good', 'active', '2025-05-29 12:24:55', '2025-05-29 18:16:31'),
+(22, 'Gap Kids Denim Overalls', 'Cute denim overalls for kids age 3-4 years. Like new condition.', 199000.00, 1, 4, 7, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568248/products/kzlfha8pypywvhnvxqcs.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:24:09'),
+(23, 'Nike Kids Air Force 1', 'Nike Kids Air Force 1 in white. Size EU 30, new with box.', 799000.00, 1, 4, 7, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568279/products/l17d8vaur83cuqaptgnn.jpg', 'new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:24:40'),
+(24, 'Zara Kids Summer Dress', 'Floral summer dress for girls age 5-6 years. New with tags.', 249000.00, 1, 4, 7, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568308/products/aip4vrxydttopanttpeh.jpg', 'new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:25:09'),
+(25, 'Uniqlo Kids Pajama Set', 'Cotton pajama set for kids age 4-5 years. Good condition.', 129000.00, 1, 4, 7, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568339/products/cu4zxhhut6umfj1dovgr.jpg', 'good', 'active', '2025-05-29 12:24:55', '2025-05-29 18:25:40'),
+(26, 'Apple AirPods Pro 2', 'Apple AirPods Pro 2nd Generation. Includes charging case and all accessories.', 2499000.00, 1, 6, 4, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568366/products/hai2ipdthohvhfyy2o7j.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:26:07'),
+(27, 'Samsung Galaxy Watch 5', 'Samsung Galaxy Watch 5 40mm. Includes original box and charger.', 2999000.00, 1, 6, 4, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568405/products/mpcn7ac6yvpn7owtietd.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:26:46'),
+(28, 'iPad Pro 11\" 2022', 'iPad Pro 11\" 2022 128GB WiFi. Includes original box and accessories.', 9999000.00, 1, 6, 4, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568430/products/nppk89aggqc53go7ubpl.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:27:10'),
+(29, 'Sony WH-1000XM4', 'Sony WH-1000XM4 Wireless Headphones. Includes carrying case and cables.', 3499000.00, 1, 6, 4, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568454/products/mvckg4jmvsqiavdxl8fe.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:27:35'),
+(30, 'DJI Mini 3 Pro', 'DJI Mini 3 Pro Drone. Includes controller, batteries, and carrying case.', 8999000.00, 1, 6, 4, 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748568483/products/tlwbrjrt1ubcaphk8pso.jpg', 'like_new', 'active', '2025-05-29 12:24:55', '2025-05-29 18:28:04');
 
 -- --------------------------------------------------------
 
@@ -267,29 +268,37 @@ CREATE TABLE `transaction_items` (
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('user','admin') NOT NULL DEFAULT 'user',
-  `phone` varchar(20) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
   `address` text DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
+  `role` enum('user','admin') NOT NULL DEFAULT 'user',
+  `profile_picture` varchar(255) DEFAULT NULL,
+  `is_seller` tinyint(1) NOT NULL DEFAULT 0,
+  `store_name` varchar(255) DEFAULT NULL,
+  `store_description` text DEFAULT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `profile_picture` varchar(255) DEFAULT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `phone`, `address`, `birth_date`, `remember_token`, `created_at`, `updated_at`, `profile_picture`, `email_verified_at`) VALUES
-(1, 'Admin', 'admin@rewear.com', '$2y$12$ePcQLx/ol9KBh8KNiCvkd.OAbc57NxAY92oXPSJ1koAskbbdRxy46', 'admin', '081234567890', 'Jl. Admin No. 1', '1990-01-01', NULL, '2025-05-24 08:31:25', '2025-05-24 08:31:25', NULL, '2025-05-24 08:31:23'),
-(2, 'User', 'user@rewear.com', '$2y$12$3qR2nnJofUNN66NHoHLbuOOEa2KLyAatED8lpQPXzdVUAqBpwhQfK', 'user', '089876543210', 'Jl. User No. 1', '1992-05-15', NULL, '2025-05-24 08:31:26', '2025-05-24 08:31:26', NULL, '2025-05-24 08:31:26'),
-(3, 'John Doe', 'john@example.com', '$2y$12$l2ldikHPYuUD7DzJXsWLYO8KCl3ipGsZAhYuvSbNCKuCGZzcOXWoW', 'user', '081234567891', 'Jl. John Doe No. 1', '1995-03-20', NULL, '2025-05-24 08:31:26', '2025-05-24 08:31:26', NULL, '2025-05-24 08:31:26'),
-(4, 'Jane Smith', 'jane@example.com', '$2y$12$zJDs7Lwih7hivq3M2MKx6.yMLyf6t5qJYvpZEOe2GuGR.w49gSFXO', 'user', '081234567892', 'Jl. Jane Smith No. 1', '1993-07-10', NULL, '2025-05-24 08:31:26', '2025-05-24 08:31:26', NULL, '2025-05-24 08:31:26');
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `address`, `birth_date`, `role`, `profile_picture`, `is_seller`, `store_name`, `store_description`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', 'admin@rewear.com', '2025-05-29 12:24:52', '$2y$12$f7xckeG6II9XeFzT98hWce15ST1rm8zBIbk.eeVa2EiVLyrUfplGq', '081234567890', 'Jl. Admin No. 1', '1990-01-01', 'admin', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748527264/profiles/vgzzewwq1ve4oj9pc33d.png', 0, NULL, NULL, NULL, '2025-05-29 12:24:52', '2025-05-29 12:24:52'),
+(2, 'User', 'user@rewear.com', '2025-05-29 12:24:52', '$2y$12$T3pXiwTYvkc1rht9gBL4Uez8oTdrlbdJLw5.tzfJn1cYkuDPmMTE6', '089876543210', 'Jl. User No. 1', '1992-05-15', 'user', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748527264/profiles/vgzzewwq1ve4oj9pc33d.png', 0, NULL, NULL, NULL, '2025-05-29 12:24:52', '2025-05-29 12:24:52'),
+(3, 'Fashion Store', 'fashion@rewear.com', '2025-05-29 12:24:52', '$2y$12$NDPQugFQJ2jCJppyfyzioehoybuEHNFoK4XE7wAs1h4bccxPTjGtS', '081234567893', 'Jl. Fashion Store No. 1', '1988-06-20', 'user', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748527581/profiles/prmji0fyfqw4hghzjgy4.png', 1, 'Fashion Store', 'Toko fashion terpercaya dengan koleksi terbaru', NULL, '2025-05-29 12:24:52', '2025-05-29 12:24:52'),
+(4, 'Vintage Shop', 'vintage@rewear.com', '2025-05-29 12:24:53', '$2y$12$672TuS/v0CmIqN7.dbCajOabWSpglDMBrJcK3vj17/i.kdazW1Qai', '081234567894', 'Jl. Vintage Shop No. 1', '1991-09-15', 'user', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748527581/profiles/prmji0fyfqw4hghzjgy4.png', 1, 'Vintage Shop', 'Koleksi pakaian vintage berkualitas', NULL, '2025-05-29 12:24:53', '2025-05-29 12:24:53'),
+(5, 'Luxury Boutique', 'luxury@rewear.com', '2025-05-29 12:24:53', '$2y$12$4q.vwtrNqF1FxGHlyLpWPuAOnL85P2V8CW3zYpH9dNfU5XwyTRqUW', '081234567895', 'Jl. Luxury Boutique No. 1', '1985-03-10', 'user', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748527581/profiles/prmji0fyfqw4hghzjgy4.png', 1, 'Luxury Boutique', 'Koleksi barang mewah dan eksklusif', NULL, '2025-05-29 12:24:53', '2025-05-29 12:24:53'),
+(6, 'Sporty Style', 'sporty@rewear.com', '2025-05-29 12:24:54', '$2y$12$xo.NFEqZMdT1uV0l/DLS6.9ZTsNj7.JaGCtMUSryTr2aRyTO7zfky', '081234567896', 'Jl. Sporty Style No. 1', '1993-11-25', 'user', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748527581/profiles/prmji0fyfqw4hghzjgy4.png', 1, 'Sporty Style', 'Koleksi pakaian olahraga dan casual sporty', NULL, '2025-05-29 12:24:54', '2025-05-29 12:24:54'),
+(7, 'Kids Fashion', 'kids@rewear.com', '2025-05-29 12:24:54', '$2y$12$aEDCcERF9TFM5xNyGDHyEuunevikzUt/NkA053y6rIHNDn4t5QxvS', '081234567897', 'Jl. Kids Fashion No. 1', '1990-07-18', 'user', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748527581/profiles/prmji0fyfqw4hghzjgy4.png', 1, 'Kids Fashion', 'Koleksi pakaian anak-anak yang lucu dan nyaman', NULL, '2025-05-29 12:24:54', '2025-05-29 12:24:54'),
+(8, 'Beauty Store', 'beauty@rewear.com', '2025-05-29 12:24:55', '$2y$12$DRpEZsYbx2cfus6kQeMJxOU15UWFOWZsJOeicEW9M8Ibea6CkbH0y', '081234567898', 'Jl. Beauty Store No. 1', '1992-04-12', 'user', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748527581/profiles/prmji0fyfqw4hghzjgy4.png', 1, 'Beauty Store', 'Koleksi produk kecantikan dan perawatan kulit terbaik', NULL, '2025-05-29 12:24:55', '2025-05-29 12:24:55'),
+(9, 'Jane Smith', 'jane@example.com', '2025-05-29 12:24:55', '$2y$12$U9x2U8qhwQbK.AhSic6PrucqMpgG549bxRvMZE9o70bYFANuKsKmq', '081234567892', 'Jl. Jane Smith No. 1', '1993-07-10', 'user', 'https://res.cloudinary.com/du3v8hhr2/image/upload/v1748527264/profiles/vgzzewwq1ve4oj9pc33d.png', 0, NULL, NULL, NULL, '2025-05-29 12:24:55', '2025-05-29 12:24:55');
 
 -- --------------------------------------------------------
 
@@ -362,7 +371,8 @@ ALTER TABLE `personal_access_tokens`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `products_category_id_foreign` (`category_id`);
+  ADD KEY `products_category_id_foreign` (`category_id`),
+  ADD KEY `products_user_id_foreign` (`user_id`);
 
 --
 -- Indexes for table `transactions`
@@ -426,7 +436,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -456,7 +466,7 @@ ALTER TABLE `transaction_items`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `wishlists`
@@ -485,7 +495,8 @@ ALTER TABLE `cart_items`
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
-  ADD CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `products_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `transactions`

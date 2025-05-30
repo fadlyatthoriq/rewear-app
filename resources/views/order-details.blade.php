@@ -34,7 +34,7 @@
                                 <dd class="inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium
                                     @if($transaction->status === 'pending') bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-300
                                     @elseif($transaction->status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
-                                    @elseif($transaction->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                                    @elseif($transaction->status === 'completed' || $transaction->status === 'success') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
                                     @else bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 @endif">
                                     {{ ucfirst($transaction->status) }}
                                 </dd>
@@ -75,8 +75,8 @@
                             <li class="py-4">
                                 <div class="flex items-center space-x-4">
                                     <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 dark:border-gray-700">
-                                        @if($item->product->image_url)
-                                            <img src="{{ asset('storage/' . $item->product->image_url) }}" 
+                                        @if($item->product->image)
+                                            <img src="{{ $item->product->image }}" 
                                                  alt="{{ $item->product->name }}" 
                                                  class="h-full w-full object-cover object-center">
                                         @else

@@ -48,9 +48,11 @@
                 <div class="mb-4">
                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Overall Status</p>
                     <span class="px-2.5 py-0.5 rounded-full text-xs font-medium
-                        @if($transaction->status === 'paid' || $transaction->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
-                        @elseif($transaction->status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
-                        @elseif($transaction->status === 'failed' || $transaction->status === 'cancelled') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                        @if($transaction->overall_status === 'Completed' || $transaction->overall_status === 'Success' || $transaction->overall_status === 'Paid' || $transaction->overall_status === 'Delivered' || $transaction->overall_status === 'Payment Confirmed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                        @elseif($transaction->overall_status === 'Processing' || $transaction->overall_status === 'Payment Processing' || $transaction->overall_status === 'Shipping Processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                        @elseif($transaction->overall_status === 'Shipped') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
+                        @elseif($transaction->overall_status === 'Failed' || $transaction->overall_status === 'Cancelled' || $transaction->overall_status === 'Shipping Failed' || $transaction->overall_status === 'Failed Payment' || $transaction->overall_status === 'Cancelled Payment') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                        @elseif($transaction->overall_status === 'Pending' || $transaction->overall_status === 'Pending Shipping') bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
                         @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
                         @endif">
                         {{ $transaction->overall_status }}
@@ -112,8 +114,8 @@
                     <tr class="border-b dark:border-gray-700">
                         <td class="px-4 py-3">
                             <div class="flex items-center">
-                                @if($item->product->image_url)
-                                <img src="{{ asset('storage/' . $item->product->image_url) }}" class="w-8 h-8 mr-3 rounded-full" alt="{{ $item->product->name }}">
+                                @if($item->product->image)
+                                <img src="{{ $item->product->image }}" class="w-8 h-8 mr-3 rounded-full" alt="{{ $item->product->name }}">
                                 @endif
                                 <div>
                                     <p class="font-medium text-gray-900 dark:text-white">{{ $item->product->name }}</p>
@@ -163,32 +165,11 @@
         @method('PUT')
         <div class="space-y-4">
             <div>
-                <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
-                <select name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="shipped">Shipped</option>
-                    <option value="completed">Completed</option>
-                    <option value="failed">Failed</option>
-                    <option value="cancelled">Cancelled</option>
-                </select>
-            </div>
-            <div>
-                <label for="payment_status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Payment Status</label>
-                <select name="payment_status" id="payment_status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="paid">Paid</option>
-                    <option value="failed">Failed</option>
-                    <option value="cancelled">Cancelled</option>
-                </select>
-            </div>
-            <div>
                 <label for="shipping_status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Shipping Status</label>
                 <select name="shipping_status" id="shipping_status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                     <option value="pending">Pending</option>
                     <option value="processing">Processing</option>
-                    <option value="shipped">Shipped</option>
+                    <option value="shipped" {{ $transaction->delivery_method === 'store pickup' ? 'selected' : '' }}>Shipped</option>
                     <option value="delivered">Delivered</option>
                     <option value="failed">Failed</option>
                 </select>
@@ -225,31 +206,9 @@ function editTransaction(id) {
             document.getElementById('updateTransactionForm').action = `/admin/transactions/${id}`;
             
             // Fill form fields
-            const statusSelect = document.getElementById('status');
-            const paymentStatusSelect = document.getElementById('payment_status');
             const shippingStatusSelect = document.getElementById('shipping_status');
 
-            console.log('Status select element:', statusSelect);
-            console.log('Payment Status select element:', paymentStatusSelect);
             console.log('Shipping Status select element:', shippingStatusSelect);
-
-            if (statusSelect) {
-                statusSelect.value = transaction.status;
-                console.log('Status set to:', transaction.status);
-            }
-
-            if (paymentStatusSelect && transaction.payment_status !== undefined) {
-                const lowerCasePaymentStatus = transaction.payment_status.toLowerCase();
-                paymentStatusSelect.value = lowerCasePaymentStatus;
-                console.log('Payment Status received:', transaction.payment_status, 'setting to:', lowerCasePaymentStatus);
-                
-                // Trigger change event to notify Flowbite or other listeners
-                const event = new Event('change');
-                paymentStatusSelect.dispatchEvent(event);
-                console.log('Change event dispatched for Payment Status.');
-            } else {
-                console.warn('Payment Status element not found or transaction.payment_status is undefined');
-            }
 
             if (shippingStatusSelect) {
                 shippingStatusSelect.value = transaction.shipping_status;

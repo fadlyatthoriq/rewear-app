@@ -161,7 +161,8 @@ class OrderController extends Controller
                     'customer_name' => $checkout['name'],
                     'customer_email' => $checkout['email'],
                     'customer_phone' => $checkout['phone'],
-                    'customer_address' => $checkout['address']
+                    'customer_address' => $checkout['address'],
+                    'payment_expiry' => now()->addHours(24)
                 ]);
 
                 if (!$transaction) {
@@ -199,6 +200,9 @@ class OrderController extends Controller
                     'midtrans_payment_token' => $payment['snap_token'],
                     'payment_expiry' => now()->addHours(24)
                 ]);
+
+                // Create admin notification for new order
+                $this->notificationService->createAdminCheckoutNotification($transaction);
 
                 // Clear cart after successful transaction
                 $cart->items()->delete();

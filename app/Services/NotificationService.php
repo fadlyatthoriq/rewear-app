@@ -52,17 +52,27 @@ class NotificationService
         }
     }
 
-    public function createAdminCheckoutNotification($order)
+    public function createAdminCheckoutNotification($transaction)
     {
+        // Get all admin users
         $admins = User::where('role', 'admin')->get();
-        
+
+        if ($admins->isEmpty()) {
+            \Illuminate\Support\Facades\Log::info('No admin users found for checkout notification.');
+            return;
+        }
+
+        // Ensure transaction object has the necessary relationships loaded (user)
+        $transaction->load('user');
+
+        // Create notification for each admin
         foreach ($admins as $admin) {
             Notification::create([
                 'user_id' => $admin->id,
                 'type' => 'admin_notification',
                 'title' => 'New Order Received',
-                'message' => "New order #{$order->id} has been placed by {$order->user->name}",
-                'link' => route('admin.orders.show', $order->id)
+                'message' => "New transaction #{$transaction->id} has been initiated by {$transaction->user->name}",
+                'link' => route('admin.transactions.show', $transaction->id)
             ]);
         }
     }

@@ -25,6 +25,30 @@
                     Toggle dark mode
                     <div class="tooltip-arrow" data-popper-arrow></div>
                 </div>
+
+                <!-- Notifications -->
+                <div class="flex items-center ml-3">
+                    <button id="notificationButton" data-dropdown-toggle="notificationDropdown" class="relative p-2 text-gray-500 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700">
+                        <span class="sr-only">View notifications</span>
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
+                        </svg>
+                        <span id="notificationBadge" class="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full hidden"></span>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="notificationDropdown" class="z-50 hidden max-w-sm my-4 overflow-hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-700 dark:divide-gray-600" style="min-width: 20rem;">
+                        <div class="block px-4 py-2 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                            Notifications
+                        </div>
+                        <div id="notificationList" class="max-h-96 overflow-y-auto">
+                            <!-- Notifications will be loaded here -->
+                        </div>
+                        <div class="block px-4 py-2 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-white">
+                            <a href="{{ route('admin.notifications.index') }}" class="text-sm text-blue-600 hover:underline dark:text-blue-500">View all notifications</a>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Profile -->
                 @auth
                 <div class="flex items-center ml-3">
@@ -102,6 +126,92 @@
                 localStorage.setItem('color-theme', 'dark');
             }
         }
+    });
+</script>
+
+<script>
+    // Notification functionality
+    function updateNotificationBadge() {
+        fetch('/admin/notifications/unread-count')
+            .then(response => response.json())
+            .then(data => {
+                const badge = document.getElementById('notificationBadge');
+                if (data.count > 0) {
+                    badge.textContent = data.count > 99 ? '99+' : data.count;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            });
+    }
+
+    function loadNotifications() {
+        fetch('/admin/notifications/recent')
+            .then(response => response.json())
+            .then(data => {
+                const notificationList = document.getElementById('notificationList');
+                notificationList.innerHTML = '';
+
+                if (data.notifications.length === 0) {
+                    notificationList.innerHTML = `
+                        <div class="p-4 text-center text-gray-500 dark:text-gray-400">
+                            No notifications
+                        </div>
+                    `;
+                    return;
+                }
+
+                data.notifications.forEach(notification => {
+                    const notificationElement = document.createElement('div');
+                    notificationElement.className = `p-4 border-b border-gray-200 dark:border-gray-600 ${notification.is_read ? 'bg-white dark:bg-gray-700' : 'bg-gray-50 dark:bg-gray-800'}`;
+                    notificationElement.innerHTML = `
+                        <div class="flex items-start">
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">${notification.title}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">${notification.message}</p>
+                                <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">${notification.created_at}</p>
+                            </div>
+                            ${!notification.is_read ? `
+                                <button onclick="markAsRead(${notification.id})" class="ml-2 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                    Mark as read
+                                </button>
+                            ` : ''}
+                        </div>
+                    `;
+                    notificationList.appendChild(notificationElement);
+                });
+            });
+    }
+
+    function markAsRead(notificationId) {
+        fetch(`/admin/notifications/${notificationId}/mark-as-read`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(() => {
+            updateNotificationBadge();
+            loadNotifications();
+        });
+    }
+
+    // Initial load
+    updateNotificationBadge();
+    loadNotifications();
+
+    // Refresh notifications every 30 seconds
+    setInterval(() => {
+        updateNotificationBadge();
+        loadNotifications();
+    }, 30000);
+
+    // Load notifications when dropdown is opened
+    document.getElementById('notificationButton').addEventListener('click', () => {
+        loadNotifications();
     });
 </script>
 @endpush

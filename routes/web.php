@@ -16,7 +16,8 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MyOrderController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NotificationController as UserNotificationController;
+use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +36,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('categories', CategoryController::class);
     Route::resource('transactions', TransactionController::class);
     Route::resource('users', UserController::class);
+    
+    // Admin Notification Routes
+    Route::get('/notifications', [AdminNotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{notification}/mark-as-read', [AdminNotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::post('/notifications/mark-all-as-read', [AdminNotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+    Route::get('/notifications/unread-count', [AdminNotificationController::class, 'unreadCount'])->name('notifications.unreadCount');
+    Route::get('/notifications/recent', [AdminNotificationController::class, 'recent'])->name('notifications.recent');
 });
 
 // Public Routes
@@ -86,19 +94,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/my-orders/{transaction}/reorder', [MyOrderController::class, 'reorder'])->name('my-orders.reorder');
     Route::post('/my-orders/{transaction}/complete', [MyOrderController::class, 'complete'])->name('my-orders.complete');
 
+    // User Notification Routes
+    Route::get('/notifications', [UserNotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{notification}/mark-as-read', [UserNotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::post('/notifications/mark-all-as-read', [UserNotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+    Route::get('/notifications/unread-count', [UserNotificationController::class, 'unreadCount'])->name('notifications.unreadCount');
+    Route::get('/notifications/recent', [UserNotificationController::class, 'recent'])->name('notifications.recent');
+
     // Product Management Routes - Non-admin
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-
-    // Notification routes
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::post('/notifications/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
-    Route::post('/notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
-    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unreadCount');
-    Route::get('/notifications/recent', [NotificationController::class, 'recent'])->name('notifications.recent');
 });
 
 // Midtrans callback route (no auth required)

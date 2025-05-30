@@ -51,6 +51,14 @@
                                     <span class="ml-3 font-medium">Transactions</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('admin.notifications.index') }}" class="text-base text-gray-900 rounded-lg flex items-center p-2.5 group hover:bg-gray-100 transition-all duration-200 pl-11 dark:text-gray-200 dark:hover:bg-gray-700 {{ request()->routeIs('admin.notifications.*') ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/50 dark:text-primary-400' : '' }}">
+                                    <svg class="w-5 h-5 transition duration-200 {{ request()->routeIs('admin.notifications.*') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white' }}" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
+                                    </svg>
+                                    <span class="ml-3 font-medium">Notifications</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

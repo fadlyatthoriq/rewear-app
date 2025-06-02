@@ -16,129 +16,244 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --primary-color: #4F46E5;
+            --primary-hover: #4338CA;
+            --error-color: #EF4444;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+            min-height: 100vh;
+        }
+
+        .register-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .register-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.75rem;
+            background-color: #F9FAFB;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid #E5E7EB;
+            border-radius: 0.75rem;
+            background-color: #F9FAFB;
+            transition: all 0.3s ease;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .checkbox-wrapper:hover {
+            background-color: #F9FAFB;
+        }
+
+        .seller-fields {
+            transition: all 0.3s ease;
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .seller-fields.show {
+            opacity: 1;
+            height: auto;
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-to-br from-primary-50 to-primary-100 font-sans">
     <!-- Back Button -->
-    <a href="{{ url('/') }}" class="fixed top-4 left-4 sm:top-6 sm:left-6 inline-flex items-center px-2 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg sm:rounded-xl shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
-        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <a href="{{ url('/') }}" class="fixed top-4 left-4 sm:top-6 sm:left-6 inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-xl shadow-sm hover:bg-white hover:shadow-md transition-all duration-300">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
         </svg>
         <span class="hidden sm:inline">Back to Home</span>
         <span class="sm:hidden">Back</span>
     </a>
 
-    <div class="flex flex-col items-center justify-center min-h-screen px-6 py-8">
+    <div class="register-container">
         <a href="{{ url('/') }}" class="flex items-center justify-center mb-8 text-2xl font-semibold text-gray-900 hover:opacity-80 transition-opacity">
-            <img src="{{ asset('assets/images/logo.png') }}" class="h-10 mr-3" alt="Logo">
+            <img src="{{ asset('assets/images/logo.png') }}" class="h-12 mr-3" alt="Logo">
         </a>
         
-        <!-- Card -->
-        <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-xl backdrop-blur-sm bg-opacity-90">
-            <h2 class="text-3xl font-bold text-center text-gray-900">
-                Create Account
-            </h2>
-            <p class="text-center text-gray-600">Join us and start your journey</p>
+        <!-- Register Card -->
+        <div class="register-card">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                    Create Account
+                </h2>
+                <p class="text-gray-600">Join us and start your journey</p>
+            </div>
 
             <form class="space-y-6" method="POST" action="{{ route('register') }}">
                 @csrf
                 
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your name</label>
+                <div class="space-y-2">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Your name</label>
                     <input type="text" name="name" id="name" 
-                        class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 @error('name') border-red-500 @enderror" 
+                        class="form-input @error('name') border-error-color @enderror" 
                         value="{{ old('name') }}"
                         placeholder="John Doe" required>
                     @error('name')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="error-message">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+                <div class="space-y-2">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
                     <input type="email" name="email" id="email" 
-                        class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 @error('email') border-red-500 @enderror" 
+                        class="form-input @error('email') border-error-color @enderror" 
                         value="{{ old('email') }}"
                         placeholder="name@company.com" required>
                     @error('email')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="error-message">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div>
-                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone number</label>
+                <div class="space-y-2">
+                    <label for="phone" class="block text-sm font-medium text-gray-700">Phone number</label>
                     <input type="tel" name="phone" id="phone" 
-                        class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 @error('phone') border-red-500 @enderror" 
+                        class="form-input @error('phone') border-error-color @enderror" 
                         value="{{ old('phone') }}"
                         placeholder="+62 812-3456-7890">
                     @error('phone')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="error-message">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div>
-                    <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                <div class="space-y-2">
+                    <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
                     <textarea name="address" id="address" rows="3"
-                        class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 @error('address') border-red-500 @enderror" 
+                        class="form-textarea @error('address') border-error-color @enderror" 
                         placeholder="Enter your full address">{{ old('address') }}</textarea>
                     @error('address')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="error-message">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div>
-                    <label for="birth_date" class="block text-sm font-medium text-gray-700 mb-1">Birth Date</label>
+                <div class="space-y-2">
+                    <label for="birth_date" class="block text-sm font-medium text-gray-700">Birth Date</label>
                     <input type="date" name="birth_date" id="birth_date" 
-                        class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 @error('birth_date') border-red-500 @enderror" 
+                        class="form-input @error('birth_date') border-error-color @enderror" 
                         value="{{ old('birth_date') }}">
                     @error('birth_date')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="error-message">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div class="flex items-start">
-                    <div class="flex items-center h-5">
-                        <input id="is_seller" name="is_seller" type="checkbox" 
-                            class="w-4 h-4 border-gray-300 rounded text-primary-600 focus:ring-primary-500" 
-                            value="1" {{ old('is_seller') ? 'checked' : '' }}>
-                    </div>
-                    <div class="ml-3 text-sm">
-                        <label for="is_seller" class="font-medium text-gray-700">I want to sell products</label>
-                    </div>
+                <div class="checkbox-wrapper">
+                    <input id="is_seller" name="is_seller" type="checkbox" 
+                        class="w-4 h-4 mt-1 border-gray-300 rounded text-primary-600 focus:ring-primary-500" 
+                        value="1" {{ old('is_seller') ? 'checked' : '' }}>
+                    <label for="is_seller" class="text-sm font-medium text-gray-700">I want to sell products</label>
                 </div>
                 @error('is_seller')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    <p class="error-message">{{ $message }}</p>
                 @enderror
 
-                <div id="seller-fields" class="hidden space-y-6">
-                    <div>
-                        <label for="store_name" class="block text-sm font-medium text-gray-700 mb-1">Store Name</label>
+                <div id="seller-fields" class="seller-fields {{ old('is_seller') ? 'show' : '' }}">
+                    <div class="space-y-2">
+                        <label for="store_name" class="block text-sm font-medium text-gray-700">Store Name</label>
                         <input type="text" name="store_name" id="store_name" 
-                            class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 @error('store_name') border-red-500 @enderror" 
+                            class="form-input @error('store_name') border-error-color @enderror" 
                             value="{{ old('store_name') }}"
                             placeholder="Enter your store name">
                         @error('store_name')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="error-message">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div>
-                        <label for="store_description" class="block text-sm font-medium text-gray-700 mb-1">Store Description</label>
+                    <div class="space-y-2 mt-4">
+                        <label for="store_description" class="block text-sm font-medium text-gray-700">Store Description</label>
                         <textarea name="store_description" id="store_description" rows="3"
-                            class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 @error('store_description') border-red-500 @enderror" 
+                            class="form-textarea @error('store_description') border-error-color @enderror" 
                             placeholder="Describe your store">{{ old('store_description') }}</textarea>
                         @error('store_description')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="error-message">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
 
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div class="space-y-2">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                     <div class="relative">
                         <input type="password" name="password" id="password" 
-                            class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 @error('password') border-red-500 @enderror" 
+                            class="form-input @error('password') border-error-color @enderror" 
                             placeholder="••••••••" required>
                         <button type="button" 
                             class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
@@ -150,15 +265,15 @@
                         </button>
                     </div>
                     @error('password')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="error-message">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Confirm password</label>
+                <div class="space-y-2">
+                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm password</label>
                     <div class="relative">
                         <input type="password" name="password_confirmation" id="password_confirmation" 
-                            class="mt-1 block w-full px-4 py-3 bg-white border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
+                            class="form-input" 
                             placeholder="••••••••" required>
                         <button type="button" 
                             class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
@@ -171,26 +286,24 @@
                     </div>
                 </div>
 
-                <div class="flex items-start">
-                    <div class="flex items-center h-5">
-                        <input id="terms" name="terms" type="checkbox" 
-                            class="w-4 h-4 border-gray-300 rounded text-primary-600 focus:ring-primary-500" 
-                            required>
-                    </div>
-                    <div class="ml-3 text-sm">
-                        <label for="terms" class="font-medium text-gray-700">I accept the <a href="#" class="text-primary-600 hover:text-primary-500 transition-colors">Terms and Conditions</a></label>
-                    </div>
+                <div class="checkbox-wrapper">
+                    <input id="terms" name="terms" type="checkbox" 
+                        class="w-4 h-4 mt-1 border-gray-300 rounded text-primary-600 focus:ring-primary-500" 
+                        required>
+                    <label for="terms" class="text-sm font-medium text-gray-700">
+                        I accept the <a href="#" class="text-primary-600 hover:text-primary-500 transition-colors">Terms and Conditions</a>
+                    </label>
                 </div>
                 @error('terms')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    <p class="error-message">{{ $message }}</p>
                 @enderror
 
                 <button type="submit" 
-                    class="w-full px-4 py-3 text-sm font-medium text-white bg-primary-600 rounded-xl hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
-                    Create account
+                    class="btn-primary w-full flex justify-center items-center">
+                    <span>Create account</span>
                 </button>
 
-                <div class="text-sm text-center text-gray-600">
+                <div class="text-center text-sm text-gray-600">
                     Already have an account? <a href="{{ route('login') }}" class="font-medium text-primary-600 hover:text-primary-500 transition-colors">Login here</a>
                 </div>
             </form>
@@ -216,16 +329,42 @@ function togglePassword(inputId) {
     }
 }
 
-// Update the event listener for seller checkbox
+// Add loading state to form submission
+document.querySelector('form').addEventListener('submit', function(e) {
+    const submitButton = this.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Creating account...
+    `;
+});
+
+// Add input focus animations
+const inputs = document.querySelectorAll('.form-input, .form-textarea');
+inputs.forEach(input => {
+    input.addEventListener('focus', function() {
+        this.parentElement.classList.add('scale-105');
+        this.parentElement.style.transition = 'transform 0.2s ease';
+    });
+    
+    input.addEventListener('blur', function() {
+        this.parentElement.classList.remove('scale-105');
+    });
+});
+
+// Update the event listener for seller checkbox with animation
 document.getElementById('is_seller').addEventListener('change', function() {
     const sellerFields = document.getElementById('seller-fields');
     if (this.checked) {
-        sellerFields.classList.remove('hidden');
+        sellerFields.classList.add('show');
         // Make store fields required when seller is checked
         document.getElementById('store_name').required = true;
         document.getElementById('store_description').required = true;
     } else {
-        sellerFields.classList.add('hidden');
+        sellerFields.classList.remove('show');
         // Remove required attribute when seller is not checked
         document.getElementById('store_name').required = false;
         document.getElementById('store_description').required = false;
@@ -236,7 +375,7 @@ document.getElementById('is_seller').addEventListener('change', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const isSellerCheckbox = document.getElementById('is_seller');
     if (isSellerCheckbox.checked) {
-        document.getElementById('seller-fields').classList.remove('hidden');
+        document.getElementById('seller-fields').classList.add('show');
         document.getElementById('store_name').required = true;
         document.getElementById('store_description').required = true;
     }

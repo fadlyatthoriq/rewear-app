@@ -1,5 +1,7 @@
 @extends('layouts.admin-master')
 
+@section('title', 'Transactions')
+
 @section('content')
 <div class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
     <div class="w-full mb-1">
@@ -7,7 +9,7 @@
             <nav class="flex mb-5" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 text-sm font-medium md:space-x-2">
                     <li class="inline-flex items-center">
-                        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-white">
+                        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center text-gray-700 hover:text-primary-600 dark:text-gray-300 dark:hover:text-white transition-colors duration-200">
                             <svg class="w-5 h-5 mr-2.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
                             Dashboard
                         </a>
@@ -27,8 +29,8 @@
                 <form class="sm:pr-3" action="{{ route('admin.transactions.index') }}" method="GET">
                     <label for="transactions-search" class="sr-only">Search</label>
                     <div class="relative w-48 mt-1 sm:w-64 xl:w-96">
-                        <input type="text" name="search" id="transactions-search" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 pr-12 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search for transactions" value="{{ request('search') }}">
-                        <button type="submit" class="absolute right-1 top-1.5 p-1.5 text-sm font-medium text-gray-500 bg-gray-100 rounded-lg border border-gray-200 hover:bg-gray-200 hover:text-gray-700 focus:ring-2 focus:outline-none focus:ring-gray-200 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-500 dark:hover:bg-gray-500 dark:hover:text-white dark:focus:ring-gray-500">
+                        <input type="text" name="search" id="transactions-search" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 pr-12 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 transition-colors duration-200" placeholder="Search for transactions" value="{{ request('search') }}">
+                        <button type="submit" class="absolute right-1 top-1.5 p-1.5 text-sm font-medium text-gray-500 bg-gray-100 rounded-lg border border-gray-200 hover:bg-gray-200 hover:text-gray-700 focus:ring-2 focus:outline-none focus:ring-gray-200 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-500 dark:hover:bg-gray-500 dark:hover:text-white dark:focus:ring-gray-500 transition-colors duration-200">
                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
@@ -46,40 +48,39 @@
     <h3 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">Status Guide</h3>
     <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
         <!-- Main Status -->
-        <div class="p-3 bg-gray-50 rounded-lg dark:bg-gray-700">
-            <h4 class="mb-2 font-medium text-gray-900 dark:text-white">Overall Status</h4>
+        <div class="p-4 bg-gray-50 rounded-lg dark:bg-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+            <h4 class="mb-3 font-medium text-gray-900 dark:text-white">Overall Status</h4>
             <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                <li><span class="inline-block w-3 h-3 mr-2 bg-gray-400 rounded-full"></span>Pending / Pending Shipping: Waiting for processing or shipping</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-yellow-400 rounded-full"></span>Processing / Payment Processing / Shipping Processing: Transaction or part of it is being handled</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-blue-400 rounded-full"></span>Shipped: Items have been shipped</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Delivered: Items received by customer</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Completed / Success: Transaction fully completed</li>
-                 <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Paid / Payment Confirmed: Payment has been successfully processed</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Failed / Cancelled / Shipping Failed / Failed Payment / Cancelled Payment: Transaction or part of it has failed or been cancelled</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-gray-400 rounded-full"></span>Pending / Pending Shipping</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-yellow-400 rounded-full"></span>Processing / Payment Processing</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-blue-400 rounded-full"></span>Shipped</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Delivered / Completed</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Paid / Payment Confirmed</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Failed / Cancelled</li>
             </ul>
         </div>
         
         <!-- Payment Status -->
-        <div class="p-3 bg-gray-50 rounded-lg dark:bg-gray-700">
-            <h4 class="mb-2 font-medium text-gray-900 dark:text-white">Payment Status</h4>
+        <div class="p-4 bg-gray-50 rounded-lg dark:bg-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+            <h4 class="mb-3 font-medium text-gray-900 dark:text-white">Payment Status</h4>
             <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                <li><span class="inline-block w-3 h-3 mr-2 bg-gray-400 rounded-full"></span>Pending: Waiting for payment</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-yellow-400 rounded-full"></span>Processing: Payment being validated</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Paid: Payment confirmed</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Failed: Payment failed</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Cancelled: Payment cancelled</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-gray-400 rounded-full"></span>Pending</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-yellow-400 rounded-full"></span>Processing</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Paid</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Failed</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Cancelled</li>
             </ul>
         </div>
         
         <!-- Shipping Status -->
-        <div class="p-3 bg-gray-50 rounded-lg dark:bg-gray-700">
-            <h4 class="mb-2 font-medium text-gray-900 dark:text-white">Shipping Status</h4>
+        <div class="p-4 bg-gray-50 rounded-lg dark:bg-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+            <h4 class="mb-3 font-medium text-gray-900 dark:text-white">Shipping Status</h4>
             <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                <li><span class="inline-block w-3 h-3 mr-2 bg-gray-400 rounded-full"></span>Pending: Waiting for shipping</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-yellow-400 rounded-full"></span>Processing: Items being prepared</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-blue-400 rounded-full"></span>Shipped: Items have been shipped</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Delivered: Items received by customer</li>
-                <li><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Failed: Shipping failed</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-gray-400 rounded-full"></span>Pending</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-yellow-400 rounded-full"></span>Processing</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-blue-400 rounded-full"></span>Shipped</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-green-400 rounded-full"></span>Delivered</li>
+                <li class="flex items-center"><span class="inline-block w-3 h-3 mr-2 bg-red-400 rounded-full"></span>Failed</li>
             </ul>
         </div>
     </div>
@@ -99,7 +100,7 @@
                     <thead class="bg-gray-100 dark:bg-gray-700">
                         <tr>
                             <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center">
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'id', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
                                     Transaction ID
                                     @if(request('sort') === 'id')
                                         <svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -112,7 +113,7 @@
                                 Customer
                             </th>
                             <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'total_amount', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center">
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'total_amount', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
                                     Total Amount
                                     @if(request('sort') === 'total_amount')
                                         <svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -122,7 +123,7 @@
                                 </a>
                             </th>
                             <th scope="col" class="p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'overall_status', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center">
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'overall_status', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
                                     Overall Status
                                     @if(request('sort') === 'overall_status')
                                         <svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -132,7 +133,7 @@
                                 </a>
                             </th>
                             <th scope="col" class="hidden md:table-cell p-4 text-xs font-medium text-left text-gray-500 uppercase dark:text-gray-400">
-                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center">
+                                <a href="{{ request()->fullUrlWithQuery(['sort' => 'created_at', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}" class="flex items-center hover:text-gray-700 dark:hover:text-gray-300 transition-colors duration-200">
                                     Date
                                     @if(request('sort') === 'created_at')
                                         <svg class="w-3 h-3 ml-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -148,10 +149,12 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                         @forelse($transactions as $transaction)
-                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
                             <td class="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <div>#{{ $transaction->id }}</div>
-                                <div class="md:hidden text-sm text-gray-500">
+                                <div class="flex items-center">
+                                    <span class="mr-2">#{{ $transaction->id }}</span>
+                                </div>
+                                <div class="md:hidden text-sm text-gray-500 mt-1">
                                     {{ $transaction->user->name }} • {{ $transaction->created_at->format('M d, Y H:i') }}
                                 </div>
                             </td>
@@ -178,7 +181,7 @@
                             </td>
                             <td class="p-4 space-x-2 whitespace-nowrap">
                                 <div class="flex flex-col sm:flex-row gap-2">
-                                    <a href="{{ route('admin.transactions.show', $transaction) }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <a href="{{ route('admin.transactions.show', $transaction) }}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors duration-200">
                                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
                                         Detail
                                     </a>
@@ -187,8 +190,14 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" class="p-4 text-center text-gray-500 dark:text-gray-400">
-                                No transactions found
+                            <td colspan="6" class="p-4 text-center text-gray-500 dark:text-gray-400">
+                                <div class="flex flex-col items-center justify-center py-8">
+                                    <svg class="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                    <p class="text-lg font-medium">No transactions found</p>
+                                    <p class="text-sm text-gray-500">Try adjusting your search or filter to find what you're looking for.</p>
+                                </div>
                             </td>
                         </tr>
                         @endforelse
@@ -207,7 +216,9 @@
     </div>
     <div class="flex items-center space-x-3">
         @if($transactions->hasPages())
-            {{ $transactions->links() }}
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                {{ $transactions->links() }}
+            </div>
         @endif
     </div>
 </div>
@@ -222,7 +233,14 @@ function deleteTransaction(id) {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes, delete it!',
+        customClass: {
+            popup: 'dark:bg-gray-800 dark:text-white',
+            title: 'dark:text-white',
+            content: 'dark:text-gray-300',
+            confirmButton: 'dark:bg-blue-600 dark:hover:bg-blue-700',
+            cancelButton: 'dark:bg-red-600 dark:hover:bg-red-700'
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             // Create form and submit

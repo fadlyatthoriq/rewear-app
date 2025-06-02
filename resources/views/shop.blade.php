@@ -3,150 +3,198 @@
 @section('title', 'Shop')
 
 @section('main')
-<div class="container pb-16">
-    <!-- Search and Filter Section -->
-    <div class="bg-white rounded-lg p-4 mb-6 border border-gray-100">
-        <div class="flex items-center justify-between mb-4">
-            <h2 class="text-base font-semibold text-[#2596be] tracking-wide flex items-center gap-2">
-                <i class="fa-solid fa-filter text-[#2596be] text-base"></i>
-                Search & Filter Products
-            </h2>
-            <div class="flex items-center gap-1 text-xs text-[#2596be] font-medium" title="Total products shown" style="background: none; box-shadow: none; padding: 0;">
-                <i class="fa-solid fa-boxes-stacked text-sm"></i>
-                <span>
-                    @if(request()->hasAny(['search','category']) && $products->total() > 0)
-                        Showing <span class="font-bold">{{ $products->count() }}</span> of <span class="font-bold">{{ $products->total() }}</span> products
-                    @elseif($products->total() > 0)
-                        Total <span class="font-bold">{{ $products->total() }}</span> products available
-                    @else
-                        No products found
-                    @endif
-                </span>
-            </div>
+<section class="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8 antialiased dark:from-gray-900 dark:to-gray-800 md:py-12">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <!-- Header Section -->
+        <div class="mb-8 text-center">
+            <h1 class="mb-3 text-2xl font-bold tracking-tight text-gray-900 dark:text-white md:text-3xl">Our Products</h1>
+            <p class="text-sm text-gray-600 dark:text-gray-400 md:text-base">Discover our collection of high-quality products</p>
         </div>
-        <form action="{{ route('shop') }}" method="GET" class="space-y-4">
-            <!-- Search Bar -->
-            <div class="w-full">
-                <div class="relative group">
-                    <input type="text" 
-                        id="search"
-                        name="search" 
-                        value="{{ request('search') }}" 
-                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-[#2596be] focus:border-[#2596be] pl-10 text-gray-700 bg-white transition-all duration-200 group-hover:border-[#2596be] text-sm"
-                        placeholder="Search products...">
-                </div>
-            </div>
 
-            <!-- Filters Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <!-- Category Filter -->
-                <div class="relative">
-                    <select id="category" 
-                        name="category" 
-                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-[#2596be] focus:border-[#2596be] appearance-none bg-white transition-all duration-200 pr-8 text-sm">
-                        <option value="" disabled {{ !request('category') ? 'selected' : '' }}>All Categories</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Sort By -->
-                <div class="relative">
-                    <select id="sort" 
-                        name="sort" 
-                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-[#2596be] focus:border-[#2596be] appearance-none bg-white transition-all duration-200 pr-8 text-sm">
-                        <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Latest</option>
-                        <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>Price</option>
-                        <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name</option>
-                    </select>
-                </div>
-
-                <!-- Sort Direction -->
-                <div class="relative">
-                    <select id="direction" 
-                        name="direction" 
-                        class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-1 focus:ring-[#2596be] focus:border-[#2596be] appearance-none bg-white transition-all duration-200 pr-8 text-sm">
-                        <option value="desc" {{ request('direction') == 'desc' ? 'selected' : '' }}>Descending</option>
-                        <option value="asc" {{ request('direction') == 'asc' ? 'selected' : '' }}>Ascending</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Filter Button -->
-            <div class="flex justify-end gap-3">
-                <a href="{{ route('shop') }}" 
-                    class="px-8 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition flex items-center gap-2 shadow font-semibold text-sm">
-                    <i class="fa-solid fa-rotate"></i>
-                    Reset Filters
-                </a>
-                <button type="submit" 
-                    class="px-8 py-2 bg-primary text-white rounded hover:bg-[#1f7a9c] transition flex items-center gap-2 shadow font-semibold text-sm">
-                    <i class="fa-solid fa-filter"></i>
-                    Apply Filters
-                </button>
-            </div>
-        </form>
-    </div>
-
-    <!-- Products Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        @forelse($products as $product)
-            <div class="bg-white rounded-2xl shadow-md hover:shadow-xl border border-transparent hover:border-[#2596be] transition-all duration-300 group h-full flex flex-col p-4">
-                <div class="relative">
-                    <img src="{{ $product->image }}" alt="{{ $product->name }}" class="w-full h-64 aspect-square object-cover rounded-xl transition-transform duration-300 group-hover:scale-105">
-                    <div class="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                        <a href="{{ route('product.show', $product->id) }}"
-                            class="bg-white text-[#2596be] shadow w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#2596be] hover:text-white transition"
-                            title="view product">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </a>
-                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST" class="wishlist-form">
-                            @csrf
-                            <button type="submit"
-                                class="bg-white text-[#2596be] shadow w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#2596be] hover:text-white transition"
-                                title="add to wishlist">
-                                <i class="fa-solid fa-heart"></i>
-                            </button>
-                        </form>
+        <!-- Search and Filter Section -->
+        <div class="mb-8 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <div class="p-6">
+                <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+                    <h2 class="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
+                        <svg class="h-5 w-5 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"/>
+                        </svg>
+                        Search & Filter Products
+                    </h2>
+                    <div class="flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                        <svg class="h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16M4 12h16M4 20h16"/>
+                        </svg>
+                        <span>
+                            @if(request()->hasAny(['search','category']) && $products->total() > 0)
+                                Showing <span class="font-bold">{{ $products->count() }}</span> of <span class="font-bold">{{ $products->total() }}</span> products
+                            @elseif($products->total() > 0)
+                                Total <span class="font-bold">{{ $products->total() }}</span> products available
+                            @else
+                                No products found
+                            @endif
+                        </span>
                     </div>
                 </div>
-                <div class="flex-1 flex flex-col pt-4 pb-2">
-                    <a href="{{ route('product.show', $product->id) }}">
-                        <h4 class="uppercase font-bold text-lg mb-2 text-gray-800 hover:text-[#2596be] transition">{{ $product->name }}</h4>
-                    </a>
-                    <div class="flex items-baseline mb-1 space-x-2">
-                        <p class="text-2xl text-[#2596be] font-extrabold">Rp. {{ number_format($product->price) }}</p>
+
+                <form action="{{ route('shop') }}" method="GET" class="space-y-6">
+                    <!-- Search Bar -->
+                    <div class="relative">
+                        <input type="text" 
+                            id="search"
+                            name="search" 
+                            value="{{ request('search') }}" 
+                            class="block w-full rounded-lg border border-gray-200 bg-white p-2.5 pl-10 text-sm text-gray-900 transition-colors focus:border-primary focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
+                            placeholder="Search products...">
                     </div>
-                    <div class="flex items-center">
-                        <div class="text-sm text-gray-600">
-                            Stock: <span class="font-semibold">{{ $product->stock }}</span>
+
+                    <!-- Filters Grid -->
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        <!-- Category Filter -->
+                        <div class="relative">
+                            <label for="category" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+                            <select id="category" 
+                                name="category" 
+                                class="block w-full rounded-lg border border-gray-200 bg-white p-2.5 text-sm text-gray-900 transition-colors focus:border-primary focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-primary dark:focus:ring-primary">
+                                <option value="" disabled {{ !request('category') ? 'selected' : '' }}>All Categories</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Sort By -->
+                        <div class="relative">
+                            <label for="sort" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Sort By</label>
+                            <select id="sort" 
+                                name="sort" 
+                                class="block w-full rounded-lg border border-gray-200 bg-white p-2.5 text-sm text-gray-900 transition-colors focus:border-primary focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-primary dark:focus:ring-primary">
+                                <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>Latest</option>
+                                <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>Price</option>
+                                <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name</option>
+                            </select>
+                        </div>
+
+                        <!-- Sort Direction -->
+                        <div class="relative">
+                            <label for="direction" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Sort Direction</label>
+                            <select id="direction" 
+                                name="direction" 
+                                class="block w-full rounded-lg border border-gray-200 bg-white p-2.5 text-sm text-gray-900 transition-colors focus:border-primary focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:focus:border-primary dark:focus:ring-primary">
+                                <option value="desc" {{ request('direction') == 'desc' ? 'selected' : '' }}>Descending</option>
+                                <option value="asc" {{ request('direction') == 'asc' ? 'selected' : '' }}>Ascending</option>
+                            </select>
                         </div>
                     </div>
-                </div>
-                <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mt-auto add-to-cart-form">
-                    @csrf
-                    <button type="submit" class="w-full py-2 text-center text-white bg-primary font-bold rounded shadow hover:bg-white hover:text-primary hover:border-primary hover:shadow-xl hover:scale-105 border-2 border-primary transition-all duration-300">
-                        Add to cart
-                    </button>
+
+                    <!-- Filter Buttons -->
+                    <div class="flex flex-wrap justify-end gap-4">
+                        <a href="{{ route('shop') }}" 
+                            class="inline-flex items-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 transition-colors hover:bg-gray-100 hover:text-primary focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
+                            <svg class="mr-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                            </svg>
+                            Reset Filters
+                        </a>
+                        <button type="submit" 
+                            class="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#1e7a9c] focus:outline-none focus:ring-4 focus:ring-primary/50 dark:bg-primary dark:hover:bg-[#1e7a9c] dark:focus:ring-primary/50">
+                            <svg class="mr-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0 4-4m0 0 4 4m-4-4v12"/>
+                            </svg>
+                            Apply Filters
+                        </button>
+                    </div>
                 </form>
             </div>
-        @empty
-            <div class="col-span-full text-center py-8">
-                <p class="text-gray-500 text-lg">No products found matching your criteria.</p>
-            </div>
-        @endforelse
-    </div>
+        </div>
 
-    <!-- Pagination -->
-    <div class="mt-4">
-        <div class="flex items-center justify-center">
-            {{ $products->links('pagination::tailwind') }}
+        <!-- Products Grid -->
+        <div class="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            @forelse($products as $product)
+                <div class="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
+                    <!-- Product Image -->
+                    <div class="relative aspect-square w-full overflow-hidden">
+                        <img src="{{ $product->image }}" 
+                             alt="{{ $product->name }}" 
+                             class="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105">
+                        <div class="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <a href="{{ route('product.show', $product->id) }}"
+                                class="rounded-full bg-white/90 p-2 text-gray-500 backdrop-blur-sm transition-colors hover:bg-white hover:text-primary dark:bg-gray-800/90 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+                                title="View product">
+                                <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-width="2" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z"/>
+                                    <path stroke="currentColor" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                </svg>
+                            </a>
+                            <form action="{{ route('wishlist.add', $product->id) }}" method="POST" class="wishlist-form">
+                                @csrf
+                                <button type="submit"
+                                    class="rounded-full bg-white/90 p-2 text-primary backdrop-blur-sm transition-colors hover:bg-white hover:text-red-600 dark:bg-gray-800/90 dark:text-primary dark:hover:bg-gray-800 dark:hover:text-red-500"
+                                    title="Add to wishlist">
+                                    <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="flex flex-1 flex-col p-4">
+                        <a href="{{ route('product.show', $product->id) }}" 
+                           class="mb-2 text-sm font-semibold leading-tight text-gray-900 transition-colors hover:text-primary dark:text-white dark:hover:text-primary md:text-base">
+                            {{ $product->name }}
+                        </a>
+                        <div class="mt-auto space-y-2">
+                            <div class="flex items-baseline gap-2">
+                                <p class="text-xl font-bold text-primary dark:text-primary">
+                                    Rp {{ number_format($product->price, 0, ',', '.') }}
+                                </p>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                                <svg class="mr-1.5 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
+                                </svg>
+                                Stock: <span class="ml-1 font-semibold">{{ $product->stock }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add to Cart Button -->
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="add-to-cart-form p-4 pt-0">
+                        @csrf
+                        <button type="submit" 
+                                class="inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#1e7a9c] focus:outline-none focus:ring-4 focus:ring-primary/50 dark:bg-primary dark:hover:bg-[#1e7a9c] dark:focus:ring-primary/50">
+                            <svg class="mr-2 h-4 w-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"/>
+                            </svg>
+                            Add to cart
+                        </button>
+                    </form>
+                </div>
+            @empty
+                <div class="col-span-full">
+                    <div class="mx-auto max-w-md rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                        <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h1.5L8 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm.75-3H7.5M11 7H6.312M17 4v6m-3-3h6"/>
+                        </svg>
+                        <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">No products found</h3>
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Try adjusting your search or filter criteria.</p>
+                    </div>
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-8">
+            <div class="flex items-center justify-center">
+                {{ $products->links('pagination::tailwind') }}
+            </div>
         </div>
     </div>
-</div>
+</section>
 
 @push('styles')
 <style>
@@ -160,15 +208,15 @@
     }
 
     .pagination a {
-        @apply px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-[#2596be] hover:text-white hover:border-[#2596be] transition-all duration-200;
+        @apply rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-primary hover:text-white hover:border-primary dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-primary dark:hover:text-white;
     }
 
     .pagination span {
-        @apply px-4 py-2 text-sm font-medium text-white bg-[#2596be] border border-[#2596be] rounded-lg;
+        @apply rounded-lg border border-primary bg-primary px-4 py-2 text-sm font-medium text-white dark:border-primary dark:bg-primary;
     }
 
     .pagination .disabled {
-        @apply px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-200 rounded-lg cursor-not-allowed;
+        @apply cursor-not-allowed rounded-lg border border-gray-200 bg-gray-100 px-4 py-2 text-sm font-medium text-gray-400 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-500;
     }
 </style>
 @endpush
@@ -201,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         } else {
                             const cartLink = document.querySelector('a[href="/cart"]');
                             const countSpan = document.createElement('span');
-                            countSpan.className = 'absolute -top-2 -right-2 bg-[#2596be] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow cart-count';
+                            countSpan.className = 'absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow cart-count';
                             countSpan.textContent = data.cartCount;
                             cartLink.appendChild(countSpan);
                         }
@@ -281,7 +329,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         const wishlistLink = document.querySelector('a[href*="wishlist"]');
                         const countSpan = document.createElement('span');
-                        countSpan.className = 'absolute -top-2 -right-2 bg-[#2596be] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow';
+                        countSpan.className = 'absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shadow';
                         countSpan.textContent = data.wishlistCount;
                         wishlistLink.appendChild(countSpan);
                     }

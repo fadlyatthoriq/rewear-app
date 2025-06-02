@@ -70,7 +70,7 @@ class AuthController extends Controller
             }
             
             Alert::success('Success', 'Welcome back! You have successfully logged in.');
-            return redirect()->intended('/');
+            return redirect('/');
         }
 
         RateLimiter::hit($this->throttleKey($request));

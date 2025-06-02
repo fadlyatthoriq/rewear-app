@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 30, 2025 at 10:36 AM
+-- Generation Time: May 31, 2025 at 08:47 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -126,7 +126,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (10, '2025_05_18_074712_create_cart_items_table', 1),
 (11, '2025_05_18_143804_create_wishlists_table', 1),
 (12, '2025_05_19_125211_create_transaction_items_table', 1),
-(13, '2025_05_19_125341_add_midtrans_columns_to_transactions_table', 1);
+(13, '2025_05_19_125341_add_midtrans_columns_to_transactions_table', 1),
+(14, '2025_05_30_132741_add_status_and_condition_to_products_table', 1);
 
 -- --------------------------------------------------------
 
@@ -151,41 +152,30 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `user_id`, `type`, `title`, `message`, `link`, `is_read`, `created_at`, `updated_at`) VALUES
-(1, 2, 'new_product', 'New Product Available', 'New product Zara Summer Floral Dress is now available!', 'http://localhost/product/1', 0, '2025-05-29 21:35:44', '2025-05-30 01:35:44'),
-(2, 3, 'new_product', 'New Product Available', 'New product Zara Summer Floral Dress is now available!', 'http://localhost/product/1', 0, '2025-05-28 10:35:44', '2025-05-30 01:35:44'),
-(3, 4, 'new_product', 'New Product Available', 'New product Zara Summer Floral Dress is now available!', 'http://localhost/product/1', 0, '2025-05-29 15:35:44', '2025-05-30 01:35:44'),
-(4, 5, 'new_product', 'New Product Available', 'New product Zara Summer Floral Dress is now available!', 'http://localhost/product/1', 0, '2025-05-28 14:35:44', '2025-05-30 01:35:44'),
-(5, 6, 'new_product', 'New Product Available', 'New product Zara Summer Floral Dress is now available!', 'http://localhost/product/1', 0, '2025-05-28 17:35:44', '2025-05-30 01:35:44'),
-(6, 2, 'new_product', 'New Product Available', 'New product Nike Dri-FIT Running Shorts is now available!', 'http://localhost/product/2', 0, '2025-05-29 04:35:44', '2025-05-30 01:35:44'),
-(7, 3, 'new_product', 'New Product Available', 'New product Nike Dri-FIT Running Shorts is now available!', 'http://localhost/product/2', 0, '2025-05-29 06:35:44', '2025-05-30 01:35:44'),
-(8, 4, 'new_product', 'New Product Available', 'New product Nike Dri-FIT Running Shorts is now available!', 'http://localhost/product/2', 0, '2025-05-29 18:35:44', '2025-05-30 01:35:44'),
-(9, 5, 'new_product', 'New Product Available', 'New product Nike Dri-FIT Running Shorts is now available!', 'http://localhost/product/2', 0, '2025-05-29 12:35:44', '2025-05-30 01:35:44'),
-(10, 6, 'new_product', 'New Product Available', 'New product Nike Dri-FIT Running Shorts is now available!', 'http://localhost/product/2', 0, '2025-05-29 13:35:44', '2025-05-30 01:35:44'),
-(11, 2, 'new_product', 'New Product Available', 'New product H&M Blazer is now available!', 'http://localhost/product/3', 0, '2025-05-28 13:35:44', '2025-05-30 01:35:44'),
-(12, 3, 'new_product', 'New Product Available', 'New product H&M Blazer is now available!', 'http://localhost/product/3', 0, '2025-05-29 05:35:44', '2025-05-30 01:35:44'),
-(13, 4, 'new_product', 'New Product Available', 'New product H&M Blazer is now available!', 'http://localhost/product/3', 0, '2025-05-28 07:35:44', '2025-05-30 01:35:44'),
-(14, 5, 'new_product', 'New Product Available', 'New product H&M Blazer is now available!', 'http://localhost/product/3', 0, '2025-05-29 14:35:44', '2025-05-30 01:35:44'),
-(15, 6, 'new_product', 'New Product Available', 'New product H&M Blazer is now available!', 'http://localhost/product/3', 0, '2025-05-29 12:35:44', '2025-05-30 01:35:44'),
-(16, 2, 'discount', 'Product Discount', 'Zara Summer Floral Dress is now on sale!', 'http://localhost/product/1', 0, '2025-05-28 13:35:44', '2025-05-30 01:35:44'),
-(17, 3, 'discount', 'Product Discount', 'Zara Summer Floral Dress is now on sale!', 'http://localhost/product/1', 0, '2025-05-29 19:35:44', '2025-05-30 01:35:44'),
-(18, 4, 'discount', 'Product Discount', 'Zara Summer Floral Dress is now on sale!', 'http://localhost/product/1', 0, '2025-05-27 07:35:44', '2025-05-30 01:35:44'),
-(19, 5, 'discount', 'Product Discount', 'Zara Summer Floral Dress is now on sale!', 'http://localhost/product/1', 0, '2025-05-30 00:35:44', '2025-05-30 01:35:44'),
-(20, 6, 'discount', 'Product Discount', 'Zara Summer Floral Dress is now on sale!', 'http://localhost/product/1', 0, '2025-05-27 19:35:44', '2025-05-30 01:35:44'),
-(21, 2, 'discount', 'Product Discount', 'Nike Dri-FIT Running Shorts is now on sale!', 'http://localhost/product/2', 0, '2025-05-29 01:35:44', '2025-05-30 01:35:44'),
-(22, 3, 'discount', 'Product Discount', 'Nike Dri-FIT Running Shorts is now on sale!', 'http://localhost/product/2', 0, '2025-05-29 12:35:44', '2025-05-30 01:35:44'),
-(23, 4, 'discount', 'Product Discount', 'Nike Dri-FIT Running Shorts is now on sale!', 'http://localhost/product/2', 0, '2025-05-27 12:35:44', '2025-05-30 01:35:44'),
-(24, 5, 'discount', 'Product Discount', 'Nike Dri-FIT Running Shorts is now on sale!', 'http://localhost/product/2', 0, '2025-05-27 21:35:44', '2025-05-30 01:35:44'),
-(25, 6, 'discount', 'Product Discount', 'Nike Dri-FIT Running Shorts is now on sale!', 'http://localhost/product/2', 0, '2025-05-27 16:35:44', '2025-05-30 01:35:44'),
-(26, 2, 'discount', 'Product Discount', 'H&M Blazer is now on sale!', 'http://localhost/product/3', 0, '2025-05-28 00:35:44', '2025-05-30 01:35:44'),
-(27, 3, 'discount', 'Product Discount', 'H&M Blazer is now on sale!', 'http://localhost/product/3', 0, '2025-05-27 15:35:44', '2025-05-30 01:35:44'),
-(28, 4, 'discount', 'Product Discount', 'H&M Blazer is now on sale!', 'http://localhost/product/3', 0, '2025-05-29 15:35:44', '2025-05-30 01:35:44'),
-(29, 5, 'discount', 'Product Discount', 'H&M Blazer is now on sale!', 'http://localhost/product/3', 0, '2025-05-28 04:35:44', '2025-05-30 01:35:44'),
-(30, 6, 'discount', 'Product Discount', 'H&M Blazer is now on sale!', 'http://localhost/product/3', 0, '2025-05-28 22:35:44', '2025-05-30 01:35:44'),
-(31, 2, 'order_status', 'Order Delivered', 'Your order has been delivered successfully!', 'http://localhost/my-orders/8', 1, '2025-05-28 01:35:44', '2025-05-30 01:35:44'),
-(32, 3, 'order_status', 'Order Delivered', 'Your order has been delivered successfully!', 'http://localhost/my-orders/8', 1, '2025-05-27 01:35:44', '2025-05-30 01:35:44'),
-(33, 4, 'order_status', 'Order Delivered', 'Your order has been delivered successfully!', 'http://localhost/my-orders/5', 1, '2025-05-28 01:35:44', '2025-05-30 01:35:44'),
-(34, 5, 'order_status', 'Order Delivered', 'Your order has been delivered successfully!', 'http://localhost/my-orders/5', 1, '2025-05-23 01:35:44', '2025-05-30 01:35:44'),
-(35, 6, 'order_status', 'Order Delivered', 'Your order has been delivered successfully!', 'http://localhost/my-orders/8', 1, '2025-05-25 01:35:44', '2025-05-30 01:35:44');
+(1, 2, 'new_product', 'New Product Available!', 'Check out our latest additions like Gucci Marmont Mini Bag.', 'http://localhost/product/12', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(2, 2, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like Zara Kids Summer Dress.', 'http://localhost/product/24', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(3, 2, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(4, 3, 'new_product', 'New Product Available!', 'Check out our latest additions like Zara Kids Summer Dress.', 'http://localhost/product/24', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(5, 3, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like Uniqlo Kids Pajama Set.', 'http://localhost/product/25', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(6, 3, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(7, 4, 'new_product', 'New Product Available!', 'Check out our latest additions like Adidas Yoga Pants.', 'http://localhost/product/4', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(8, 4, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like Uniqlo Kids Pajama Set.', 'http://localhost/product/25', 1, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(9, 4, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(10, 5, 'new_product', 'New Product Available!', 'Check out our latest additions like Adidas Yoga Pants.', 'http://localhost/product/4', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(11, 5, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like Uniqlo Kids Pajama Set.', 'http://localhost/product/25', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(12, 5, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(13, 6, 'new_product', 'New Product Available!', 'Check out our latest additions like Zara Kids Summer Dress.', 'http://localhost/product/24', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(14, 6, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like DJI Mini 3 Pro.', 'http://localhost/product/30', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(15, 6, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(16, 7, 'new_product', 'New Product Available!', 'Check out our latest additions like Zara Kids Summer Dress.', 'http://localhost/product/24', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(17, 7, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like DJI Mini 3 Pro.', 'http://localhost/product/30', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(18, 7, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(19, 8, 'new_product', 'New Product Available!', 'Check out our latest additions like Uniqlo Kids Pajama Set.', 'http://localhost/product/25', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(20, 8, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like DJI Mini 3 Pro.', 'http://localhost/product/30', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(21, 8, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(22, 9, 'new_product', 'New Product Available!', 'Check out our latest additions like Gucci Marmont Mini Bag.', 'http://localhost/product/12', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(23, 9, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like DJI Mini 3 Pro.', 'http://localhost/product/30', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
+(24, 9, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26');
 
 -- --------------------------------------------------------
 
@@ -503,13 +493,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`

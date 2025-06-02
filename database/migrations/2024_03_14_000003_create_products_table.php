@@ -17,8 +17,6 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('image');
-            $table->enum('condition', ['new', 'like_new', 'good', 'fair'])->default('new');
-            $table->enum('status', ['active', 'inactive', 'sold'])->default('active');
             $table->timestamps();
         });
     }

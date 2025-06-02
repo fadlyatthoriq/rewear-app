@@ -363,7 +363,7 @@ class PaymentController extends Controller
         if (count($orderIdParts) < 2) {
             Log::error('Invalid order_id format in finishPayment', ['order_id' => $orderId]);
             // Redirect to an error page or show a generic message
-            return view('payment.payment-fail', ['message' => 'Invalid order ID format.']); // Assuming a payment-fail view exists
+            return view('payment.payment-finish', ['message' => 'Invalid order ID format.']); // Assuming a payment-fail view exists
         }
         $extractedOrderId = $orderIdParts[1];
 
@@ -373,7 +373,7 @@ class PaymentController extends Controller
         if (!$transaction) {
             Log::error('Transaction not found in DB in finishPayment', ['order_id_extracted' => $extractedOrderId, 'full_order_id_midtrans' => $orderId]);
             // Redirect to an error page or show a generic message
-            return view('payment.payment-fail', ['message' => 'Transaction not found.']); // Assuming a payment-fail view exists
+            return view('payment.payment-finish', ['message' => 'Transaction not found.']); // Assuming a payment-fail view exists
         }
 
         // Pass the transaction object to the view

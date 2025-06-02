@@ -111,3 +111,4 @@ Route::middleware('auth')->group(function () {
 
 // Midtrans callback route (no auth required)
 Route::post('/payment/callback', [PaymentController::class, 'handleCallback'])->name('payment.callback');
+Route::get('/payment/finish', [PaymentController::class, 'finishPayment'])->name('payment.finish');

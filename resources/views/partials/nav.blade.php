@@ -88,6 +88,13 @@
     <div class="hidden md:flex items-center space-x-8 ml-8">
       <a href="/" class="{{ request()->is('/') ? 'text-[#2596be]' : 'hover:text-[#2596be]' }} transition duration-300 font-semibold text-sm md:text-base relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2596be] hover:after:w-full after:transition-all">Home</a>
       <a href="/shop" class="{{ request()->is('shop*') ? 'text-[#2596be]' : 'hover:text-[#2596be]' }} transition duration-300 font-semibold text-sm md:text-base relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2596be] hover:after:w-full after:transition-all">Shop</a>
+      @auth
+        @if(auth()->user()->is_seller)
+          <a href="{{ route('seller.dashboard') }}" class="{{ request()->is('seller/dashboard*') ? 'text-[#2596be]' : 'hover:text-[#2596be]' }} transition duration-300 font-semibold text-sm md:text-base relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2596be] hover:after:w-full after:transition-all">
+            <i class="fas fa-store mr-1"></i> Seller Dashboard
+          </a>
+        @endif
+      @endauth
       @guest
         <a href="{{ route('login') }}" class="{{ request()->is('login*') ? 'text-[#2596be]' : 'hover:text-[#2596be]' }} transition duration-300 font-semibold text-sm md:text-base relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2596be] hover:after:w-full after:transition-all">Login</a>
       @endguest

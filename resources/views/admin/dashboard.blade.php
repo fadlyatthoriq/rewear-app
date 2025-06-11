@@ -1,5 +1,7 @@
 @extends('layouts.admin-master')
 
+@section('title', 'Dashboard')
+
 @section('content')
 <div class="px-4 sm:px-6 py-4 sm:py-8 transition-all duration-300">
     <!-- Main grid container -->

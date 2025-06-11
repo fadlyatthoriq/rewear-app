@@ -131,7 +131,7 @@
             </div>
 
             <!-- My Products Section -->
-            @if(auth()->user()->is_seller)
+            {{-- @if(auth()->user()->is_seller)
             <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm dark:border-gray-700 sm:p-8 dark:bg-gray-800">
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white">My Products</h3>
@@ -184,7 +184,7 @@
                     @endforeach
                 </div>
             </div>
-            @endif
+            @endif --}}
 
             <!-- Change Password Card -->
             <div class="p-6 bg-white border border-gray-200 rounded-xl shadow-sm dark:border-gray-700 sm:p-8 dark:bg-gray-800">

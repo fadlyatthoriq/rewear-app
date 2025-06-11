@@ -99,21 +99,43 @@
                     <!-- Product Image -->
                     <div class="col-span-2">
                         <label for="image-upload" class="block mb-2 text-sm font-semibold text-gray-900 dark:text-white">Product Image</label>
-                        <div class="flex items-center justify-center w-full">
-                            <label for="image-upload" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                <div class="flex flex-col items-center justify-center pt-5 pb-6" id="upload-text-area">
-                                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                    </svg>
+                        <div class="relative w-full border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 dark:bg-gray-700 p-4 min-h-[200px] flex items-center justify-center overflow-hidden transition-all duration-200" id="image-upload-area-combined">
+                            <!-- New Image Preview (visible after new file selected) -->
+                            <div class="absolute inset-0 flex items-center justify-center group hidden" id="new-image-preview">
+                                <div class="relative w-48 h-48">
+                                    <img src="" alt="Image preview" class="w-full h-full object-cover rounded-lg shadow-md transition-transform duration-200 group-hover:scale-100">
+                                    <button type="button" id="remove-new-image" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1.5 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200 opacity-0 group-hover:opacity-100 z-10">
+                                        <i class="fas fa-times w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Upload Placeholder (visible initially or if image removed/cleared) -->
+                            <label for="image-upload" class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200" id="upload-text-area-label">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-500 dark:text-gray-400 mb-4"></i>
                                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
                                     <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG or JPEG (MAX. 2MB)</p>
                                 </div>
-                                <input type="file" name="image" id="image-upload" required accept="image/*" class="hidden" />
                             </label>
+                            <input type="file" name="image" id="image-upload" required accept="image/*" class="hidden" />
+
+                            <!-- Loading Spinner (positioned over everything) -->
+                            <div id="loading-spinner" class="absolute inset-0 flex items-center justify-center hidden bg-gray-50 dark:bg-gray-700 bg-opacity-75 dark:bg-opacity-75">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <svg class="animate-spin h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400 font-medium">Uploading image...</span>
+                                </div>
+                            </div>
                         </div>
-                        <div id="file-name" class="mt-2 text-sm text-gray-600 dark:text-gray-300"></div>
-                        <div id="image-preview" class="mt-4 hidden">
-                            <img src="" alt="Image preview" class="w-32 h-32 object-cover rounded-lg shadow-md">
+                        <!-- File Name and Upload Status below the main area -->
+                        <div id="file-name" class="mt-2 text-sm text-gray-600 dark:text-gray-300 font-medium hidden"></div>
+                        <div id="upload-status" class="mt-2 text-sm text-green-600 dark:text-green-400 hidden flex items-center">
+                            <i class="fas fa-check-circle inline w-5 h-5 mr-1.5"></i>
+                            Image uploaded successfully
                         </div>
                         @error('image')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -148,35 +170,113 @@
 </section>
 @endsection
 
+@push('scripts')
 <script>
-    document.getElementById('image-upload').addEventListener('change', function(event) {
-        const fileInput = event.target;
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('image-upload');
         const fileNameDisplay = document.getElementById('file-name');
-        const imagePreview = document.getElementById('image-preview');
-        const imagePreviewImg = imagePreview.querySelector('img');
-        const uploadTextArea = document.getElementById('upload-text-area');
+        const newImagePreview = document.getElementById('new-image-preview');
+        const newImagePreviewImg = newImagePreview ? newImagePreview.querySelector('img') : null;
+        const uploadTextAreaLabel = document.getElementById('upload-text-area-label');
+        const uploadStatus = document.getElementById('upload-status');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const removeNewBtn = document.getElementById('remove-new-image');
+        const form = document.querySelector('form');
 
-        if (fileInput.files && fileInput.files[0]) {
-            const file = fileInput.files[0];
-            fileNameDisplay.textContent = `Selected file: ${file.name}`;
-            
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreviewImg.src = e.target.result;
-                    imagePreview.classList.remove('hidden');
-                     uploadTextArea.classList.add('hidden'); // Hide upload text
-                }
-                reader.readAsDataURL(file);
-            } else {
-                imagePreview.classList.add('hidden');
-                uploadTextArea.classList.remove('hidden'); // Show upload text for non-images (though input accepts only images)
-            }
-        } else {
+        // Function to reset display to initial state (upload area)
+        function resetImageDisplay() {
+            newImagePreview.classList.add('hidden');
+            if (newImagePreviewImg) newImagePreviewImg.src = ''; // Clear image src
+            uploadStatus.classList.add('hidden');
+            loadingSpinner.classList.add('hidden');
+            fileNameDisplay.classList.add('hidden');
             fileNameDisplay.textContent = '';
-            imagePreview.classList.add('hidden');
-            imagePreviewImg.src = '';
-            uploadTextArea.classList.remove('hidden'); // Show upload text when no file selected
+            fileInput.value = ''; // Clear the selected file
+            uploadTextAreaLabel.classList.remove('hidden');
         }
+
+        // Initial state for create form: always show upload area
+        resetImageDisplay();
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function(event) {
+                if (fileInput.files && fileInput.files[0]) {
+                    const file = fileInput.files[0];
+                    
+                    // Validate file size (2MB max)
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('File size must be less than 2MB');
+                        resetImageDisplay();
+                        return;
+                    }
+
+                    // Validate file type
+                    if (!file.type.startsWith('image/')) {
+                        alert('Please select an image file');
+                        resetImageDisplay();
+                        return;
+                    }
+
+                    fileNameDisplay.textContent = `Selected file: ${file.name}`;
+                    fileNameDisplay.classList.remove('hidden');
+                    
+                    // Show loading spinner
+                    loadingSpinner.classList.remove('hidden');
+                    uploadTextAreaLabel.classList.add('hidden');
+                    newImagePreview.classList.add('hidden');
+                    uploadStatus.classList.add('hidden');
+
+                    // Create FormData for upload
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    formData.append('_token', '{{ csrf_token() }}');
+
+                    // Upload image via AJAX
+                    fetch('{{ route('products.upload-image') }}', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Show success message
+                            uploadStatus.classList.remove('hidden');
+                            
+                            // Show image preview
+                            if (newImagePreviewImg) {
+                                newImagePreviewImg.src = data.url;
+                                newImagePreview.classList.remove('hidden');
+                            }
+                        } else {
+                            throw new Error(data.message || 'Upload failed');
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.message || 'Failed to upload image. Please try again.');
+                        resetImageDisplay();
+                    })
+                    .finally(() => {
+                        loadingSpinner.classList.add('hidden');
+                    });
+                } else {
+                    resetImageDisplay();
+                }
+            });
+        }
+
+        if (removeNewBtn) {
+            removeNewBtn.addEventListener('click', function() {
+                resetImageDisplay();
+            });
+        }
+
+        // Prevent form submission if no image is selected
+        form.addEventListener('submit', function(event) {
+            if (!fileInput.files || !fileInput.files[0]) {
+                event.preventDefault();
+                alert('Please select an image for your product');
+            }
+        });
     });
 </script>
+@endpush

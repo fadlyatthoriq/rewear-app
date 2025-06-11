@@ -177,7 +177,7 @@ class ProductController extends Controller
             $this->notificationService->createDiscountNotification($product);
         }
 
-        return redirect()->route('account')
+        return redirect()->route('seller.dashboard')
             ->with('success', 'Product updated successfully!');
     }
 
@@ -195,8 +195,40 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('account')
+        return redirect()->route('seller.dashboard')
             ->with('success', 'Product deleted successfully!');
+    }
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+
+        try {
+            $result = $this->cloudinary->uploadApi()->upload(
+                $request->file('image')->getRealPath(),
+                [
+                    'folder' => 'products',
+                    'resource_type' => 'image',
+                    'transformation' => [
+                        'width' => 800,
+                        'height' => 800,
+                        'crop' => 'fill'
+                    ]
+                ]
+            );
+            
+            return response()->json([
+                'success' => true,
+                'url' => $result['secure_url']
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to upload image: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     private function getPublicIdFromUrl($url)

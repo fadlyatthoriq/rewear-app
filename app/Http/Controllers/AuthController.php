@@ -66,7 +66,7 @@ class AuthController extends Controller
             // Redirect based on user role
             if ($user->isAdmin()) {
                 Alert::success('Success', 'Welcome back, Admin!');
-                return redirect()->intended('/admin/dashboard');
+                return redirect('/admin/dashboard');
             }
             
             Alert::success('Success', 'Welcome back! You have successfully logged in.');

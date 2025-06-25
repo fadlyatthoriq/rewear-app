@@ -39,7 +39,7 @@
                     </div>
                 </form>
             </div>
-            <button id="createProductButton" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 transition-all duration-300 w-full sm:w-auto" type="button" data-drawer-target="drawer-create-product-default" data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default" data-drawer-placement="right">
+            <button id="createProductButton" class="text-white !bg-primary-700 hover:!bg-primary-800 focus:ring-4 focus:!ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:!bg-primary-600 dark:hover:!bg-primary-700 focus:outline-none dark:focus:!ring-primary-800 transition-all duration-300 w-full sm:w-auto" type="button" data-drawer-target="drawer-create-product-default" data-drawer-show="drawer-create-product-default" aria-controls="drawer-create-product-default" data-drawer-placement="right">
                 <span class="inline-flex items-center">
                     <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
                     Add new product
@@ -251,7 +251,7 @@
         </div>
 
         <div class="flex-shrink-0 flex justify-end w-full p-4 space-x-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-            <button type="submit" class="text-white w-full justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-all duration-300">
+            <button type="submit" class="text-white w-full justify-center !bg-primary-700 hover:!bg-primary-800 focus:ring-4 focus:outline-none focus:!ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:!bg-primary-600 dark:hover:!bg-primary-700 dark:focus:!ring-primary-800 transition-all duration-300">
                 Add product
             </button>
             <button type="button" data-drawer-dismiss="drawer-create-product-default" aria-controls="drawer-create-product-default" class="inline-flex justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600 transition-all duration-300">
@@ -349,7 +349,7 @@
         </div>
 
         <div class="flex-shrink-0 flex justify-end w-full p-4 space-x-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-            <button type="submit" class="text-white w-full justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-all duration-300">
+            <button type="submit" class="text-white w-full justify-center !bg-primary-700 hover:!bg-primary-800 focus:ring-4 focus:outline-none focus:!ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:!bg-primary-600 dark:hover:!bg-primary-700 dark:focus:!ring-primary-800 transition-all duration-300">
                 Update product
             </button>
             <button type="button" data-drawer-dismiss="drawer-update-product-default" aria-controls="drawer-update-product-default" class="inline-flex justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600 transition-all duration-300">

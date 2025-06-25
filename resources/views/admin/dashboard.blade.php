@@ -256,7 +256,7 @@
             <div class="flex items-center group">
               <div class="w-16 sm:w-20 text-xs sm:text-sm font-medium text-gray-900 dark:text-white transition-colors duration-300">{{ $ageGroup }}</div>
               <div class="flex-1 h-2 sm:h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 mx-3 sm:mx-4 overflow-hidden">
-                <div class="bg-primary-600 h-2 sm:h-2.5 rounded-full dark:bg-primary-500 transition-all duration-300 group-hover:bg-primary-700 dark:group-hover:bg-primary-400" style="width: {{ $agePercentages[$ageGroup] }}%"></div>
+                <div class="!bg-primary-600 h-2 sm:h-2.5 rounded-full dark:bg-primary-500 transition-all duration-300 group-hover:!bg-primary-700 dark:group-hover:bg-primary-400" style="width: {{ $agePercentages[$ageGroup] }}%"></div>
               </div>
               <div class="w-8 sm:w-12 text-xs sm:text-sm text-right font-medium text-gray-900 dark:text-white transition-colors duration-300">{{ $agePercentages[$ageGroup] }}%</div>
             </div>

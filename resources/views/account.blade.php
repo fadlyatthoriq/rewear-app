@@ -91,7 +91,7 @@
 
                     <div class="flex justify-end">
                         <button type="submit" 
-                                class="text-white bg-primary hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-6 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 transition-colors">
+                                class="text-white !bg-primary hover:!bg-primary-600 focus:ring-4 focus:!ring-primary-300 font-medium rounded-lg text-sm px-6 py-2.5 dark:!bg-primary-600 dark:hover:!bg-primary-700 focus:outline-none dark:focus:!ring-primary-800 transition-colors">
                             Update Profile
                         </button>
                     </div>
@@ -136,7 +136,7 @@
 
                     <div class="flex justify-end">
                         <button type="submit" 
-                                class="text-white bg-primary hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-6 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 transition-colors">
+                                class="text-white !bg-primary hover:!bg-primary-600 focus:ring-4 focus:!ring-primary-300 font-medium rounded-lg text-sm px-6 py-2.5 dark:!bg-primary-600 dark:hover:!bg-primary-700 focus:outline-none dark:focus:!ring-primary-800 transition-colors">
                             Update Seller Information
                         </button>
                     </div>
@@ -179,7 +179,7 @@
                             </div>
                             <div class="mt-4 flex gap-2">
                                 <a href="{{ route('products.edit', $product) }}" 
-                                   class="flex-1 text-center text-white bg-primary hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 transition-colors">
+                                   class="flex-1 text-center text-white !bg-primary hover:!bg-primary-600 focus:ring-4 focus:!ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:!bg-primary-600 dark:hover:!bg-primary-700 focus:outline-none dark:focus:!ring-primary-800 transition-colors">
                                     Edit
                                 </a>
                                 <form action="{{ route('products.destroy', $product) }}" method="POST" class="flex-1">
@@ -266,7 +266,7 @@
 
                     <div class="flex justify-end">
                         <button type="submit" 
-                                class="text-white bg-primary hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-6 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800 transition-colors">
+                                class="text-white !bg-primary hover:!bg-primary-600 focus:ring-4 focus:!ring-primary-300 font-medium rounded-lg text-sm px-6 py-2.5 dark:!bg-primary-600 dark:hover:!bg-primary-700 focus:outline-none dark:focus:!ring-primary-800 transition-colors">
                             Change Password
                         </button>
                     </div>

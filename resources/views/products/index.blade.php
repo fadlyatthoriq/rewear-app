@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-900">My Products</h1>
-        <a href="{{ route('products.create') }}" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
+        <a href="{{ route('products.create') }}" class="!bg-primary-600 text-white px-4 py-2 rounded-lg hover:!bg-primary-700 transition-colors">
             Add New Product
         </a>
     </div>

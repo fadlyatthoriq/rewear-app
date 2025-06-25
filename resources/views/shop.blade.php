@@ -229,7 +229,10 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            fetch(this.action, {
+            // Use absolute URL with current protocol to avoid mixed content issues
+            const url = window.location.origin + this.action;
+            
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -305,7 +308,10 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            fetch(this.action, {
+            // Use absolute URL with current protocol to avoid mixed content issues
+            const url = window.location.origin + this.action;
+            
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

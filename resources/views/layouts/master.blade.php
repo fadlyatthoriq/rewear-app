@@ -66,7 +66,7 @@
 <script>
     // Keep updateNotifications for the badge
     function updateNotifications() {
-        fetch('/notifications/unread-count')
+        fetch(window.location.origin + '/notifications/unread-count')
             .then(response => response.json())
             .then(data => {
                 const badge = document.getElementById('notification-badge');

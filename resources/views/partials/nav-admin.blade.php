@@ -163,7 +163,7 @@
 
     // Notification functionality with improved UX
     function updateNotificationBadge() {
-        fetch('/admin/notifications/unread-count')
+        fetch(window.location.origin + '/admin/notifications/unread-count')
             .then(response => response.json())
             .then(data => {
                 const badge = document.getElementById('notificationBadge');
@@ -190,7 +190,7 @@
             </div>
         `;
 
-        fetch('/admin/notifications/recent')
+        fetch(window.location.origin + '/admin/notifications/recent')
             .then(response => response.json())
             .then(data => {
                 notificationList.innerHTML = '';
@@ -250,7 +250,7 @@
             </svg>
         `;
 
-        fetch(`/admin/notifications/${notificationId}/mark-as-read`, {
+        fetch(window.location.origin + `/admin/notifications/${notificationId}/mark-as-read`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -279,7 +279,7 @@
             </svg>
         `;
 
-        fetch('/admin/notifications/mark-all-as-read', {
+        fetch(window.location.origin + '/admin/notifications/mark-all-as-read', {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,

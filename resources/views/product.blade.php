@@ -332,7 +332,7 @@
     document.querySelector('form[action*="cart/add"]').addEventListener('submit', function(e) {
         e.preventDefault();
         
-        fetch(this.action, {
+        fetch(window.location.origin + this.action, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -415,7 +415,7 @@
     document.querySelector('form[action*="wishlist/add"]').addEventListener('submit', function(e) {
         e.preventDefault();
         
-        fetch(this.action, {
+        fetch(window.location.origin + this.action, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

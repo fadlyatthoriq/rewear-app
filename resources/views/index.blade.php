@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             button.disabled = true;
             
-            fetch(this.action, {
+            fetch(window.location.origin + this.action, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -359,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             button.disabled = true;
             
-            fetch(this.action, {
+            fetch(window.location.origin + this.action, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

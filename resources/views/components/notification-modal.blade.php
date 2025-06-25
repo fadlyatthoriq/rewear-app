@@ -9,7 +9,7 @@
              this.loading = true;
              this.empty = false;
              this.notifications = [];
-             fetch('/notifications/recent')
+             fetch(window.location.origin + '/notifications/recent')
                  .then(response => {
                      if (!response.ok) {
                          throw new Error(`HTTP error! status: ${response.status}`);

@@ -162,7 +162,7 @@ function confirmRemove(id) {
                 }
             });
 
-            fetch(form.action, {
+            fetch(window.location.origin + form.action, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -265,7 +265,7 @@ function updateQuantity(productId, action) {
     const buttons = quantitySpan.parentElement.querySelectorAll('button');
     buttons.forEach(button => button.disabled = true);
 
-    fetch(`/cart/update/${productId}`, {
+    fetch(window.location.origin + `/cart/update/${productId}`, {
         method: 'POST',
         headers: {
             'X-CSRF-TOKEN': token,
@@ -410,7 +410,7 @@ document.querySelectorAll('.wishlist-form').forEach(form => {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        fetch(this.action, {
+        fetch(window.location.origin + this.action, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

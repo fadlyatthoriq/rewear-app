@@ -153,7 +153,7 @@
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       
-      fetch(this.action, {
+      fetch(window.location.origin + this.action, {
         method: 'POST',
         headers: {
           'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -247,7 +247,7 @@
       }).then((result) => {
         if (result.isConfirmed) {
           // If confirmed, proceed with removal
-          fetch(this.action, {
+          fetch(window.location.origin + this.action, {
             method: 'POST',
             headers: {
               'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

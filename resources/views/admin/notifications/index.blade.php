@@ -97,7 +97,7 @@
         button.disabled = true;
         button.classList.add('opacity-50', 'cursor-not-allowed');
 
-        fetch(`/admin/notifications/${notificationId}/mark-as-read`, {
+        fetch(window.location.origin + `/admin/notifications/${notificationId}/mark-as-read`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -128,7 +128,7 @@
         button.disabled = true;
         button.classList.add('opacity-50', 'cursor-not-allowed');
 
-        fetch('/admin/notifications/mark-all-as-read', {
+        fetch(window.location.origin + '/admin/notifications/mark-all-as-read', {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,

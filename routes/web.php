@@ -61,8 +61,11 @@ Route::middleware('guest')->group(function () {
 // Seller Routes
 Route::middleware(['auth', 'seller'])->prefix('seller')->name('seller.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Seller\DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('transactions', App\Http\Controllers\Seller\TransactionController::class);
-    Route::put('/transaction-items/{item}/update-status', [App\Http\Controllers\Seller\TransactionItemController::class, 'updateStatus'])->name('transaction-items.update-status');
+    // Route::resource('transactions', App\Http\Controllers\Seller\TransactionController::class);
+    // Route::put('/transaction-items/{item}/update-status', [App\Http\Controllers\Seller\TransactionItemController::class, 'updateStatus'])->name('transaction-items.update-status');
+    Route::get('order-items', [App\Http\Controllers\Seller\TransactionItemController::class, 'index'])->name('order-items.index');
+    Route::get('order-items/{id}/edit', [App\Http\Controllers\Seller\TransactionItemController::class, 'edit'])->name('order-items.edit');
+    Route::put('order-items/{id}', [App\Http\Controllers\Seller\TransactionItemController::class, 'update'])->name('order-items.update');
 });
 
 Route::middleware('auth')->group(function () {

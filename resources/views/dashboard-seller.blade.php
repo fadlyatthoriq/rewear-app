@@ -122,8 +122,8 @@
         <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-gray-100">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold text-gray-800">Recent Transactions</h2>
-                <a href="{{ route('seller.transactions.index') }}" class="inline-flex items-center px-4 py-2 bg-[#2596be] text-white rounded-lg hover:bg-[#217ca6] transition-colors duration-300 text-sm font-medium">
-                    <i class="fas fa-list mr-2"></i> View All
+                <a href="{{ route('seller.order-items.index') }}" class="inline-flex items-center px-4 py-2 bg-[#2596be] text-white rounded-lg hover:bg-[#217ca6] transition-colors duration-300 text-sm font-medium">
+                    <i class="fas fa-list mr-2"></i> Lihat Semua Order Items
                 </a>
             </div>
             <div class="overflow-x-auto">
@@ -141,9 +141,7 @@
                         @foreach($transactions as $transaction)
                         <tr class="hover:bg-gray-50 transition-colors duration-200">
                             <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                <a href="{{ route('seller.transactions.show', $transaction) }}" class="text-[#2596be] hover:text-[#217ca6]">
-                                    #{{ $transaction->id }}
-                                </a>
+                                #{{ $transaction->id }}
                             </td>
                             <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{{ $transaction->created_at->format('d M Y') }}</td>
                             <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">Rp {{ number_format($transaction->total_amount, 0, ',', '.') }}</td>
@@ -160,10 +158,6 @@
                             </td>
                             <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center gap-2">
-                                    <a href="{{ route('seller.transactions.show', $transaction) }}" 
-                                       class="text-white bg-[#2596be] hover:bg-[#217ca6] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 transition-colors duration-300">
-                                        View
-                                    </a>
                                     <button onclick="editTransaction({{ $transaction->id }})" 
                                             class="text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5 transition-colors duration-300">
                                         Update

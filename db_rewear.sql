@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2025 at 08:47 AM
+-- Generation Time: Jun 25, 2025 at 09:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -127,7 +127,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (11, '2025_05_18_143804_create_wishlists_table', 1),
 (12, '2025_05_19_125211_create_transaction_items_table', 1),
 (13, '2025_05_19_125341_add_midtrans_columns_to_transactions_table', 1),
-(14, '2025_05_30_132741_add_status_and_condition_to_products_table', 1);
+(14, '2025_05_30_132741_add_status_and_condition_to_products_table', 1),
+(15, '2025_06_24_233441_add_tracking_number_to_transactions_table', 1),
+(16, '2025_06_25_063424_add_shipping_status_and_tracking_number_to_transaction_items_table', 1);
 
 -- --------------------------------------------------------
 
@@ -152,30 +154,30 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `user_id`, `type`, `title`, `message`, `link`, `is_read`, `created_at`, `updated_at`) VALUES
-(1, 2, 'new_product', 'New Product Available!', 'Check out our latest additions like Gucci Marmont Mini Bag.', 'http://localhost/product/12', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(2, 2, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like Zara Kids Summer Dress.', 'http://localhost/product/24', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(3, 2, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(4, 3, 'new_product', 'New Product Available!', 'Check out our latest additions like Zara Kids Summer Dress.', 'http://localhost/product/24', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(5, 3, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like Uniqlo Kids Pajama Set.', 'http://localhost/product/25', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(6, 3, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(7, 4, 'new_product', 'New Product Available!', 'Check out our latest additions like Adidas Yoga Pants.', 'http://localhost/product/4', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(8, 4, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like Uniqlo Kids Pajama Set.', 'http://localhost/product/25', 1, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(9, 4, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(10, 5, 'new_product', 'New Product Available!', 'Check out our latest additions like Adidas Yoga Pants.', 'http://localhost/product/4', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(11, 5, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like Uniqlo Kids Pajama Set.', 'http://localhost/product/25', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(12, 5, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(13, 6, 'new_product', 'New Product Available!', 'Check out our latest additions like Zara Kids Summer Dress.', 'http://localhost/product/24', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(14, 6, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like DJI Mini 3 Pro.', 'http://localhost/product/30', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(15, 6, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(16, 7, 'new_product', 'New Product Available!', 'Check out our latest additions like Zara Kids Summer Dress.', 'http://localhost/product/24', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(17, 7, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like DJI Mini 3 Pro.', 'http://localhost/product/30', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(18, 7, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(19, 8, 'new_product', 'New Product Available!', 'Check out our latest additions like Uniqlo Kids Pajama Set.', 'http://localhost/product/25', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(20, 8, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like DJI Mini 3 Pro.', 'http://localhost/product/30', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(21, 8, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(22, 9, 'new_product', 'New Product Available!', 'Check out our latest additions like Gucci Marmont Mini Bag.', 'http://localhost/product/12', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(23, 9, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like DJI Mini 3 Pro.', 'http://localhost/product/30', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26'),
-(24, 9, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-05-30 19:33:26', '2025-05-30 19:33:26');
+(1, 2, 'new_product', 'New Product Available!', 'Check out our latest additions like H&M Kids Winter Jacket.', 'http://localhost/product/21', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(2, 2, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like La Mer Moisturizing Cream.', 'http://localhost/product/18', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(3, 2, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(4, 3, 'new_product', 'New Product Available!', 'Check out our latest additions like SK-II Facial Treatment Essence.', 'http://localhost/product/16', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(5, 3, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like La Mer Moisturizing Cream.', 'http://localhost/product/18', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(6, 3, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(7, 4, 'new_product', 'New Product Available!', 'Check out our latest additions like H&M Kids Winter Jacket.', 'http://localhost/product/21', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(8, 4, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like H&M Kids Winter Jacket.', 'http://localhost/product/21', 1, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(9, 4, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(10, 5, 'new_product', 'New Product Available!', 'Check out our latest additions like H&M Blazer.', 'http://localhost/product/3', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(11, 5, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like La Mer Moisturizing Cream.', 'http://localhost/product/18', 1, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(12, 5, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(13, 6, 'new_product', 'New Product Available!', 'Check out our latest additions like H&M Kids Winter Jacket.', 'http://localhost/product/21', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(14, 6, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like La Mer Moisturizing Cream.', 'http://localhost/product/18', 1, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(15, 6, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(16, 7, 'new_product', 'New Product Available!', 'Check out our latest additions like H&M Blazer.', 'http://localhost/product/3', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(17, 7, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like SK-II Facial Treatment Essence.', 'http://localhost/product/16', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(18, 7, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(19, 8, 'new_product', 'New Product Available!', 'Check out our latest additions like H&M Blazer.', 'http://localhost/product/3', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(20, 8, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like Estee Lauder Advanced Night Repair.', 'http://localhost/product/17', 1, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(21, 8, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(22, 9, 'new_product', 'New Product Available!', 'Check out our latest additions like Estee Lauder Advanced Night Repair.', 'http://localhost/product/17', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(23, 9, 'discount', 'Special Discount for You', 'Enjoy a special discount on items like Estee Lauder Advanced Night Repair.', 'http://localhost/product/17', 1, '2025-06-25 00:31:27', '2025-06-25 00:31:27'),
+(24, 9, 'general', 'Welcome Message', 'Welcome to Rewear! Explore our collections.', 'http://localhost/shop', 0, '2025-06-25 00:31:27', '2025-06-25 00:31:27');
 
 -- --------------------------------------------------------
 
@@ -289,6 +291,7 @@ CREATE TABLE `transactions` (
   `delivery_method` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'pending',
   `shipping_status` varchar(255) NOT NULL DEFAULT 'pending',
+  `tracking_number` varchar(255) DEFAULT NULL,
   `payment_status` varchar(255) NOT NULL DEFAULT 'pending',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -307,7 +310,9 @@ CREATE TABLE `transaction_items` (
   `quantity` int(11) NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `shipping_status` varchar(255) NOT NULL DEFAULT 'pending',
+  `tracking_number` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -493,7 +498,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `notifications`

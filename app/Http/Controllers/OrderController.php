@@ -181,6 +181,11 @@ class OrderController extends Controller
                     if (!$transactionItem) {
                         throw new \Exception('Failed to create transaction item');
                     }
+
+                    // Notifikasi ke seller produk terjual
+                    $seller = $item->product->seller;
+                    $buyer = auth()->user();
+                    $this->notificationService->createProductSoldNotification($seller, $item->product, $buyer, $transaction);
                 }
 
                 // Create payment with Midtrans

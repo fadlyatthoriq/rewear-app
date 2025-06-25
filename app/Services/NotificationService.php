@@ -102,4 +102,18 @@ class NotificationService
             'link' => route('my-orders.show', $transaction->id)
         ]);
     }
+
+    /**
+     * Notify seller when their product is sold (added to a transaction)
+     */
+    public function createProductSoldNotification($seller, $product, $buyer, $transaction)
+    {
+        Notification::create([
+            'user_id' => $seller->id,
+            'type' => 'product_sold',
+            'title' => 'Produk Terjual!',
+            'message' => "Produk '{$product->name}' kamu telah dibeli oleh {$buyer->name} (Order #{$transaction->id})",
+            'link' => route('seller.order-items.index')
+        ]);
+    }
 } 

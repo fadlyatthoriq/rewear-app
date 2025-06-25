@@ -47,9 +47,9 @@ class MidtransService
                 ],
                 // Tambahkan konfigurasi redirect URLs
                 'callbacks' => [
-                    'finish' => route('payment.finish'),
-                    'error' => route('payment.finish'),
-                    'pending' => route('payment.finish'),
+                    'finish' => route('payment.finish', ['order_id' => $uniqueOrderId]),
+                    'error' => route('payment.finish', ['order_id' => $uniqueOrderId]),
+                    'pending' => route('payment.finish', ['order_id' => $uniqueOrderId]),
                 ],
             ];
 

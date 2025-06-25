@@ -61,6 +61,7 @@ Route::middleware('guest')->group(function () {
 // Seller Routes
 Route::middleware(['auth', 'seller'])->prefix('seller')->name('seller.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Seller\DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('transactions', App\Http\Controllers\Seller\TransactionController::class);
 });
 
 Route::middleware('auth')->group(function () {
@@ -90,7 +91,6 @@ Route::middleware('auth')->group(function () {
     
     // Payment Routes
     Route::post('/payment/create', [PaymentController::class, 'createPayment'])->name('payment.create');
-    Route::get('/payment/finish', [PaymentController::class, 'finishPayment'])->name('payment.finish');
     
     // My Orders Routes
     Route::get('/my-orders', [MyOrderController::class, 'index'])->name('my-orders');

@@ -83,6 +83,12 @@
                             @endif">
                             {{ ucfirst($transaction->shipping_status) }}
                         </span>
+                        @if($transaction->tracking_number)
+                        <div class="mt-2">
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Tracking Number</p>
+                            <p class="text-base font-medium text-gray-900 dark:text-white">{{ $transaction->tracking_number }}</p>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -190,6 +196,11 @@
                     <option value="failed">Failed</option>
                 </select>
             </div>
+            <div id="tracking_number_field" style="display: none;">
+                <label for="tracking_number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tracking Number <span class="text-red-500">*</span></label>
+                <input type="text" name="tracking_number" id="tracking_number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 transition-colors duration-200" placeholder="Enter tracking number">
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Required when marking order as shipped</p>
+            </div>
         </div>
         <div class="bottom-0 left-0 flex justify-center w-full pb-4 space-x-4 md:px-4 md:absolute">
             <button type="submit" class="text-white w-full justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 transition-colors duration-200">
@@ -222,8 +233,22 @@ function editTransaction(id) {
             
             // Fill form fields
             const shippingStatusSelect = document.getElementById('shipping_status');
+            const trackingNumberField = document.getElementById('tracking_number_field');
+            const trackingNumberInput = document.getElementById('tracking_number');
+            
             if (shippingStatusSelect) {
                 shippingStatusSelect.value = transaction.shipping_status;
+            }
+            
+            if (trackingNumberInput) {
+                trackingNumberInput.value = transaction.tracking_number || '';
+            }
+            
+            // Show/hide tracking number field based on status
+            if (transaction.shipping_status === 'shipped') {
+                trackingNumberField.style.display = 'block';
+            } else {
+                trackingNumberField.style.display = 'none';
             }
         })
         .catch(error => {
@@ -237,9 +262,42 @@ function editTransaction(id) {
         });
 }
 
+// Show/hide tracking number field when shipping status changes
+document.addEventListener('DOMContentLoaded', function() {
+    const shippingStatusSelect = document.getElementById('shipping_status');
+    const trackingNumberField = document.getElementById('tracking_number_field');
+    const trackingNumberInput = document.getElementById('tracking_number');
+    
+    if (shippingStatusSelect) {
+        shippingStatusSelect.addEventListener('change', function() {
+            if (this.value === 'shipped') {
+                trackingNumberField.style.display = 'block';
+                trackingNumberInput.required = true;
+            } else {
+                trackingNumberField.style.display = 'none';
+                trackingNumberInput.required = false;
+            }
+        });
+    }
+});
+
 // Add status update confirmation with SweetAlert2
 document.getElementById('updateTransactionForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    
+    const shippingStatus = document.getElementById('shipping_status').value;
+    const trackingNumber = document.getElementById('tracking_number').value;
+    
+    // Validate tracking number if status is shipped
+    if (shippingStatus === 'shipped' && !trackingNumber.trim()) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Validation Error',
+            text: 'Tracking number is required when marking order as shipped',
+            confirmButtonColor: '#3085d6'
+        });
+        return;
+    }
     
     Swal.fire({
         title: 'Update Status?',

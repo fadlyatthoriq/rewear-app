@@ -45,6 +45,12 @@ class MidtransService
                     'unit' => 'day',
                     'duration' => 1,
                 ],
+                // Tambahkan konfigurasi redirect URLs
+                'callbacks' => [
+                    'finish' => route('payment.finish'),
+                    'error' => route('payment.finish'),
+                    'pending' => route('payment.finish'),
+                ],
             ];
 
             // Log parameters for debugging

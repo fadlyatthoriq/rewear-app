@@ -71,6 +71,12 @@
                                         </span>
                                     </dd>
                                 </div>
+                                @if($transaction->tracking_number)
+                                <div class="flex flex-col">
+                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Tracking Number</dt>
+                                    <dd class="mt-1 text-base font-semibold text-gray-900 dark:text-white">{{ $transaction->tracking_number }}</dd>
+                                </div>
+                                @endif
                             </dl>
                         </div>
 

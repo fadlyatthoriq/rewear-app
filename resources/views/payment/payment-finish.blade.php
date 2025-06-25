@@ -18,9 +18,18 @@
                             <p class="mb-0">{{ $message }}</p>
                         </div>
                         <div class="mt-4">
-                            <a href="{{ route('my-orders') }}" class="btn btn-secondary btn-lg px-5">
-                                <i class="fas fa-list me-2"></i>View My Orders
-                            </a>
+                            @auth
+                                <a href="{{ route('my-orders') }}" class="btn btn-secondary btn-lg px-5">
+                                    <i class="fas fa-list me-2"></i>View My Orders
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-5 me-3">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Login to View Orders
+                                </a>
+                                <a href="{{ route('home') }}" class="btn btn-secondary btn-lg px-5">
+                                    <i class="fas fa-home me-2"></i>Back to Home
+                                </a>
+                            @endauth
                         </div>
                     @elseif ($transaction)
                         @if ($transaction->payment_status === 'paid')
@@ -38,9 +47,18 @@
                             </div>
                             
                             <div class="mt-4">
-                                <a href="{{ route('my-orders.show', $transaction->id) }}" class="btn btn-primary btn-lg px-5">
-                                    <i class="fas fa-shopping-bag me-2"></i>View Order Details
-                                </a>
+                                @auth
+                                    <a href="{{ route('my-orders.show', $transaction->id) }}" class="btn btn-primary btn-lg px-5">
+                                        <i class="fas fa-shopping-bag me-2"></i>View Order Details
+                                    </a>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-5 me-3">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Login to View Order
+                                    </a>
+                                    <a href="{{ route('home') }}" class="btn btn-secondary btn-lg px-5">
+                                        <i class="fas fa-home me-2"></i>Back to Home
+                                    </a>
+                                @endauth
                             </div>
                         @elseif ($transaction->payment_status === 'pending')
                             {{-- Pending Case --}}
@@ -57,12 +75,21 @@
                             </div>
                             
                             <div class="mt-4">
-                                <a href="{{ route('my-orders.show', $transaction->id) }}" class="btn btn-warning btn-lg px-5 me-3">
-                                    <i class="fas fa-sync me-2"></i>Check Status
-                                </a>
-                                <a href="{{ route('my-orders') }}" class="btn btn-secondary btn-lg px-5">
-                                    <i class="fas fa-list me-2"></i>View My Orders
-                                </a>
+                                @auth
+                                    <a href="{{ route('my-orders.show', $transaction->id) }}" class="btn btn-warning btn-lg px-5 me-3">
+                                        <i class="fas fa-sync me-2"></i>Check Status
+                                    </a>
+                                    <a href="{{ route('my-orders') }}" class="btn btn-secondary btn-lg px-5">
+                                        <i class="fas fa-list me-2"></i>View My Orders
+                                    </a>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-5 me-3">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Login to Check Status
+                                    </a>
+                                    <a href="{{ route('home') }}" class="btn btn-secondary btn-lg px-5">
+                                        <i class="fas fa-home me-2"></i>Back to Home
+                                    </a>
+                                @endauth
                             </div>
                         @else
                             {{-- Failed Case --}}
@@ -80,12 +107,21 @@
                             </div>
                             
                             <div class="mt-4">
-                                <a href="{{ route('my-orders') }}" class="btn btn-secondary btn-lg px-5 me-3">
-                                    <i class="fas fa-list me-2"></i>View My Orders
-                                </a>
-                                <a href="{{ route('checkout') }}" class="btn btn-primary btn-lg px-5">
-                                    <i class="fas fa-redo me-2"></i>Try Again
-                                </a>
+                                @auth
+                                    <a href="{{ route('my-orders') }}" class="btn btn-secondary btn-lg px-5 me-3">
+                                        <i class="fas fa-list me-2"></i>View My Orders
+                                    </a>
+                                    <a href="{{ route('checkout') }}" class="btn btn-primary btn-lg px-5">
+                                        <i class="fas fa-redo me-2"></i>Try Again
+                                    </a>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-5 me-3">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Login to Try Again
+                                    </a>
+                                    <a href="{{ route('home') }}" class="btn btn-secondary btn-lg px-5">
+                                        <i class="fas fa-home me-2"></i>Back to Home
+                                    </a>
+                                @endauth
                             </div>
                         @endif
                     @else
@@ -98,9 +134,18 @@
                             <p class="mb-0">Unable to process payment information. Please contact support.</p>
                         </div>
                         <div class="mt-4">
-                            <a href="{{ route('my-orders') }}" class="btn btn-secondary btn-lg px-5">
-                                <i class="fas fa-list me-2"></i>View My Orders
-                            </a>
+                            @auth
+                                <a href="{{ route('my-orders') }}" class="btn btn-secondary btn-lg px-5">
+                                    <i class="fas fa-list me-2"></i>View My Orders
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}" class="btn btn-primary btn-lg px-5 me-3">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                                </a>
+                                <a href="{{ route('home') }}" class="btn btn-secondary btn-lg px-5">
+                                    <i class="fas fa-home me-2"></i>Back to Home
+                                </a>
+                            @endauth
                         </div>
                     @endif
                 </div>

@@ -54,6 +54,7 @@
                                         @endif
                                     </a>
                                 </th>
+                                <th scope="col" class="whitespace-nowrap px-6 py-4">Tracking</th>
                                 <th scope="col" class="whitespace-nowrap px-6 py-4">Actions</th>
                             </tr>
                         </thead>
@@ -98,6 +99,18 @@
                                             @endif
                                             {{ ucfirst($transaction->status) }}
                                         </span>
+                                    </td>
+                                    <td class="whitespace-nowrap px-6 py-4">
+                                        @if($transaction->tracking_number)
+                                            <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                                                <svg class="h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2-10V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V10a1 1 0 0 0-1-1h-3.393a1 1 0 0 1-.894-.553L14 5h-3c-.53 0-1.04-.2-1.414-.586l-.78-.78a1 1 0 0 0-1.414 0l-.78.78A1 1 0 0 1 7.393 9H4a1 1 0 0 0-1 1v2h18v-2h-3Z"/>
+                                                </svg>
+                                                {{ $transaction->tracking_number }}
+                                            </span>
+                                        @else
+                                            <span class="text-gray-400 dark:text-gray-500">-</span>
+                                        @endif
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4">
                                         <div class="flex flex-wrap items-center gap-2">
@@ -147,7 +160,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="px-6 py-8 text-center">
+                                    <td colspan="6" class="px-6 py-8 text-center">
                                         <div class="mx-auto flex max-w-sm flex-col items-center">
                                             <svg class="mb-3 h-10 w-10 text-gray-400 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2-10V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V10a1 1 0 0 0-1-1h-3.393a1 1 0 0 1-.894-.553L14 5h-3c-.53 0-1.04-.2-1.414-.586l-.78-.78a1 1 0 0 0-1.414 0l-.78.78A1 1 0 0 1 7.393 9H4a1 1 0 0 0-1 1v2h18v-2h-3Z"/>

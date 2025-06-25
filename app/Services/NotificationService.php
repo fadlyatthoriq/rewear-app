@@ -76,4 +76,16 @@ class NotificationService
             ]);
         }
     }
+
+    public function createShippingNotification($transaction)
+    {
+        // Create notification for the customer about shipping
+        Notification::create([
+            'user_id' => $transaction->user_id,
+            'type' => 'shipping',
+            'title' => 'Order Shipped',
+            'message' => "Your order #{$transaction->id} has been shipped! Tracking number: {$transaction->tracking_number}",
+            'link' => route('my-orders.show', $transaction->id)
+        ]);
+    }
 } 

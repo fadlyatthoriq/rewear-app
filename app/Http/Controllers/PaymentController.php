@@ -356,15 +356,32 @@ class PaymentController extends Controller
         // The request will contain payment status information from Midtrans via GET parameters
 
         $orderId = $request->input('order_id');
+        $transactionStatus = $request->input('transaction_status');
+        $paymentType = $request->input('payment_type');
+        $fraudStatus = $request->input('fraud_status');
+
+        // Log the incoming parameters for debugging
+        Log::info('Payment finish called with parameters', [
+            'order_id' => $orderId,
+            'transaction_status' => $transactionStatus,
+            'payment_type' => $paymentType,
+            'fraud_status' => $fraudStatus,
+            'all_params' => $request->all()
+        ]);
 
         // Safely extract order_id (still needed if format is ORDER-ID)
+        if (!$orderId) {
+            Log::error('No order_id provided in finishPayment');
+            return view('payment.payment-finish', ['message' => 'No order ID provided.']);
+        }
+
         $orderIdParts = explode('-', $orderId);
 
         if (count($orderIdParts) < 2) {
             Log::error('Invalid order_id format in finishPayment', ['order_id' => $orderId]);
-            // Redirect to an error page or show a generic message
-            return view('payment.payment-finish', ['message' => 'Invalid order ID format.']); // Assuming a payment-fail view exists
+            return view('payment.payment-finish', ['message' => 'Invalid order ID format.']);
         }
+        
         $extractedOrderId = $orderIdParts[1];
 
         // Find transaction using the extracted order ID
@@ -372,8 +389,50 @@ class PaymentController extends Controller
 
         if (!$transaction) {
             Log::error('Transaction not found in DB in finishPayment', ['order_id_extracted' => $extractedOrderId, 'full_order_id_midtrans' => $orderId]);
-            // Redirect to an error page or show a generic message
-            return view('payment.payment-finish', ['message' => 'Transaction not found.']); // Assuming a payment-fail view exists
+            return view('payment.payment-finish', ['message' => 'Transaction not found.']);
+        }
+
+        // Update transaction status based on Midtrans status if provided
+        if ($transactionStatus) {
+            switch ($transactionStatus) {
+                case 'capture':
+                case 'settlement':
+                    $transaction->status = 'success';
+                    $transaction->payment_status = 'paid';
+                    break;
+                case 'pending':
+                    $transaction->status = 'pending';
+                    $transaction->payment_status = 'unpaid';
+                    break;
+                case 'deny':
+                case 'expire':
+                case 'cancel':
+                    $transaction->status = 'failed';
+                    $transaction->payment_status = 'failed';
+                    break;
+            }
+            
+            // Update Midtrans data if available
+            $updateData = [
+                'midtrans_transaction_status' => $transactionStatus,
+            ];
+            
+            if ($paymentType) {
+                $updateData['midtrans_payment_type'] = $paymentType;
+            }
+            
+            if ($fraudStatus) {
+                $updateData['midtrans_fraud_status'] = $fraudStatus;
+            }
+            
+            $transaction->update($updateData);
+            
+            Log::info('Transaction updated in finishPayment', [
+                'transaction_id' => $transaction->id,
+                'status' => $transaction->status,
+                'payment_status' => $transaction->payment_status,
+                'midtrans_status' => $transactionStatus
+            ]);
         }
 
         // Pass the transaction object to the view

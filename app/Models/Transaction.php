@@ -19,6 +19,7 @@ class Transaction extends Model
         'status',
         'payment_status',
         'shipping_status',
+        'tracking_number',
         'midtrans_transaction_id',
         'midtrans_transaction_status',
         'midtrans_payment_type',

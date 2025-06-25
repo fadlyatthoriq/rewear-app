@@ -66,16 +66,36 @@
 <script>
     // Keep updateNotifications for the badge
     function updateNotifications() {
+        // Only update if user is authenticated and notification badge exists
+        const badge = document.getElementById('notification-badge');
+        if (!badge || !document.querySelector('meta[name="csrf-token"]')) {
+            return;
+        }
+        
         fetch(window.location.origin + '/notifications/unread-count')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // User not authenticated, hide badge
+                        badge.classList.add('hidden');
+                        return;
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
-                const badge = document.getElementById('notification-badge');
-                if (data.count > 0) {
+                if (data && data.count > 0) {
                     badge.textContent = data.count;
                     badge.classList.remove('hidden');
                 } else {
                     badge.classList.add('hidden');
                 }
+            })
+            .catch(error => {
+                console.error('Error updating notifications:', error);
+                // Hide badge on error
+                badge.classList.add('hidden');
             });
     }
 
@@ -101,8 +121,10 @@
     // Update notification count every minute
     setInterval(updateNotifications, 60000);
     
-    // Initial load of count
-    updateNotifications();
+    // Initial load of count - only if user is authenticated
+    if (document.querySelector('meta[name="csrf-token"]')) {
+        updateNotifications();
+    }
 
 </script>
 @endpush

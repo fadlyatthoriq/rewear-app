@@ -228,12 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.add-to-cart-form').forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            let url = this.action;
-            if (!/^https?:\/\//i.test(url)) {
-                url = window.location.origin + url;
-            }
-            fetch(url, {
+            fetch(this.action, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -308,12 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.wishlist-form').forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            let url = this.action;
-            if (!/^https?:\/\//i.test(url)) {
-                url = window.location.origin + url;
-            }
-            fetch(url, {
+            fetch(this.action, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

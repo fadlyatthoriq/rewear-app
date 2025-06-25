@@ -88,4 +88,18 @@ class NotificationService
             'link' => route('my-orders.show', $transaction->id)
         ]);
     }
+
+    public function createShippingNotificationPerItem($item)
+    {
+        $transaction = $item->transaction;
+        $userId = $transaction->user_id;
+        $productName = $item->product->name;
+        Notification::create([
+            'user_id' => $userId,
+            'type' => 'shipping',
+            'title' => 'Product Shipped',
+            'message' => "Your product '{$productName}' in order #{$transaction->id} has been shipped! Tracking number: {$item->tracking_number}",
+            'link' => route('my-orders.show', $transaction->id)
+        ]);
+    }
 } 

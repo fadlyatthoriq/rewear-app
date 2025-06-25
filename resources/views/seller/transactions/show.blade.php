@@ -94,6 +94,9 @@
                                 <th scope="col" class="px-4 py-3">Price</th>
                                 <th scope="col" class="px-4 py-3">Quantity</th>
                                 <th scope="col" class="px-4 py-3">Subtotal</th>
+                                <th scope="col" class="px-4 py-3">Shipping Status</th>
+                                <th scope="col" class="px-4 py-3">Tracking Number</th>
+                                <th scope="col" class="px-4 py-3">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
@@ -113,6 +116,43 @@
                                 <td class="px-4 py-3">Rp {{ number_format($item->price, 0, ',', '.') }}</td>
                                 <td class="px-4 py-3">{{ $item->quantity }}</td>
                                 <td class="px-4 py-3 font-medium text-gray-900">Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</td>
+                                <td class="px-4 py-3">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                        @if($item->shipping_status === 'delivered') bg-green-100 text-green-800
+                                        @elseif($item->shipping_status === 'shipped') bg-blue-100 text-blue-800
+                                        @elseif($item->shipping_status === 'processing') bg-yellow-100 text-yellow-800
+                                        @elseif($item->shipping_status === 'failed') bg-red-100 text-red-800
+                                        @else bg-gray-100 text-gray-800 @endif">
+                                        {{ ucfirst($item->shipping_status) }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    @if($item->tracking_number)
+                                        <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800">
+                                            <svg class="h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2-10V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V10a1 1 0 0 0-1-1h-3.393a1 1 0 0 1-.894-.553L14 5h-3c-.53 0-1.04-.2-1.414-.586l-.78-.78a1 1 0 0 0-1.414 0l-.78.78A1 1 0 0 1 7.393 9H4a1 1 0 0 0-1 1v2h18v-2h-3Z"/>
+                                            </svg>
+                                            {{ $item->tracking_number }}
+                                        </span>
+                                    @else
+                                        <span class="text-gray-400">-</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-3">
+                                    <form action="{{ route('seller.transaction-items.update-status', $item) }}" method="POST" class="flex flex-col gap-2">
+                                        @csrf
+                                        @method('PUT')
+                                        <select name="shipping_status" class="px-2 py-1 border border-gray-300 rounded-lg text-xs" onchange="toggleTrackingInput(this, 'tracking-{{ $item->id }}')">
+                                            <option value="pending" {{ $item->shipping_status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="processing" {{ $item->shipping_status === 'processing' ? 'selected' : '' }}>Processing</option>
+                                            <option value="shipped" {{ $item->shipping_status === 'shipped' ? 'selected' : '' }}>Shipped</option>
+                                            <option value="delivered" {{ $item->shipping_status === 'delivered' ? 'selected' : '' }}>Delivered</option>
+                                            <option value="failed" {{ $item->shipping_status === 'failed' ? 'selected' : '' }}>Failed</option>
+                                        </select>
+                                        <input type="text" name="tracking_number" id="tracking-{{ $item->id }}" value="{{ $item->tracking_number }}" placeholder="Tracking number" class="px-2 py-1 border border-gray-300 rounded-lg text-xs mt-1" style="display: {{ $item->shipping_status === 'shipped' ? 'block' : 'none' }};" />
+                                        <button type="submit" class="mt-1 px-3 py-1 bg-[#2596be] text-white rounded-lg text-xs hover:bg-[#217ca6] transition-colors duration-200">Update</button>
+                                    </form>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -317,5 +357,16 @@ document.getElementById('updateTransactionForm').addEventListener('submit', func
         }
     });
 });
+
+function toggleTrackingInput(select, inputId) {
+    const input = document.getElementById(inputId);
+    if (select.value === 'shipped') {
+        input.style.display = 'block';
+        input.required = true;
+    } else {
+        input.style.display = 'none';
+        input.required = false;
+    }
+}
 </script>
 @endpush 

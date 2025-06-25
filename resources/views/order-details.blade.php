@@ -152,6 +152,28 @@
                                         <div class="flex flex-col gap-1 text-sm text-gray-500 dark:text-gray-400">
                                             <p>Quantity: {{ $item->quantity }}</p>
                                             <p>Price per item: Rp. {{ number_format($item->price, 2) }}</p>
+                                            <p>Status: 
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                                    @if($item->shipping_status === 'delivered') bg-green-100 text-green-800
+                                                    @elseif($item->shipping_status === 'shipped') bg-blue-100 text-blue-800
+                                                    @elseif($item->shipping_status === 'processing') bg-yellow-100 text-yellow-800
+                                                    @elseif($item->shipping_status === 'failed') bg-red-100 text-red-800
+                                                    @else bg-gray-100 text-gray-800 @endif">
+                                                    {{ ucfirst($item->shipping_status) }}
+                                                </span>
+                                            </p>
+                                            <p>Tracking Number: 
+                                                @if($item->tracking_number)
+                                                    <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800">
+                                                        <svg class="h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2-10V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V10a1 1 0 0 0-1-1h-3.393a1 1 0 0 1-.894-.553L14 5h-3c-.53 0-1.04-.2-1.414-.586l-.78-.78a1 1 0 0 0-1.414 0l-.78.78A1 1 0 0 1 7.393 9H4a1 1 0 0 0-1 1v2h18v-2h-3Z"/>
+                                                        </svg>
+                                                        {{ $item->tracking_number }}
+                                                    </span>
+                                                @else
+                                                    <span class="text-gray-400">-</span>
+                                                @endif
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

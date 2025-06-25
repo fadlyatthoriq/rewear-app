@@ -14,6 +14,8 @@ class TransactionItem extends Model
         'product_id',
         'quantity',
         'price',
+        'shipping_status',
+        'tracking_number',
     ];
 
     public function transaction()

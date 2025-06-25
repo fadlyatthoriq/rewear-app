@@ -62,6 +62,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware(['auth', 'seller'])->prefix('seller')->name('seller.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Seller\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('transactions', App\Http\Controllers\Seller\TransactionController::class);
+    Route::put('/transaction-items/{item}/update-status', [App\Http\Controllers\Seller\TransactionItemController::class, 'updateStatus'])->name('transaction-items.update-status');
 });
 
 Route::middleware('auth')->group(function () {

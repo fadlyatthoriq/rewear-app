@@ -220,7 +220,7 @@
 <script>
 function editTransaction(id) {
     // Fetch transaction data
-    fetch(`/admin/transactions/${id}/edit`)
+    fetch(window.location.origin + `/admin/transactions/${id}/edit`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error fetching transaction data');

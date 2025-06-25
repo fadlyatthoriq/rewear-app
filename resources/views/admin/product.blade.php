@@ -367,7 +367,7 @@ function editProduct(id) {
     document.getElementById('current_image').classList.add('hidden');
 
     // Fetch product data
-    fetch(`/admin/products/${id}/edit`, {
+    fetch(window.location.origin + `/admin/products/${id}/edit`, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
             'Accept': 'application/json'

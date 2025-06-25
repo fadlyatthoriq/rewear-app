@@ -243,7 +243,7 @@
 
     function editTransaction(id) {
         // Fetch transaction data
-        fetch(`/seller/transactions/${id}/edit`)
+        fetch(window.location.origin + `/seller/transactions/${id}/edit`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error fetching transaction data');

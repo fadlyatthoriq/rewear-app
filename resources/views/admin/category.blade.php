@@ -258,7 +258,7 @@
 <script>
 function editCategory(id) {
     // Fetch category data
-    fetch(`/admin/categories/${id}/edit`)
+    fetch(window.location.origin + `/admin/categories/${id}/edit`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

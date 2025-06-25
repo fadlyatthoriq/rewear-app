@@ -305,7 +305,7 @@ function editUser(id) {
     document.getElementById('edit-user-spinner').classList.remove('hidden');
     document.getElementById('updateUserForm').classList.add('opacity-50', 'pointer-events-none');
     // Fetch user data
-    fetch(`/admin/users/${id}/edit`)
+    fetch(window.location.origin + `/admin/users/${id}/edit`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

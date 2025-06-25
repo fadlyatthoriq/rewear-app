@@ -137,7 +137,7 @@
                             <input type="hidden" name="total" value="{{ $total }}">
                             <input type="hidden" name="payment_method" value="{{ $checkout['payment_method'] ?? '' }}">
                             <input type="hidden" name="delivery_method" value="{{ $checkout['delivery_method'] ?? '' }}">
-                            <button type="submit" class="w-full !bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:!bg-primary-700 transition-colors duration-200 shadow-md">
+                            <button type="submit" class="w-full !bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:!bg-primary-700 transition-colors duration-200 shadow-md">
                                 Place Order
                             </button>
                         </form>

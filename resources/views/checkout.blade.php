@@ -176,7 +176,7 @@
 
                         <!-- Action Buttons -->
                         <div class="flex flex-col space-y-4 mt-6">
-                            <button type="submit" class="w-full !bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:!bg-primary-700 transition-colors duration-200 shadow-md">
+                            <button type="submit" class="w-full !bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:!bg-primary-700 transition-colors duration-200 shadow-md">
                                 Proceed to Order Summary
                             </button>
                             <a href="{{ route('cart.index') }}" class="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 py-3 px-6 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200 text-center shadow-sm">

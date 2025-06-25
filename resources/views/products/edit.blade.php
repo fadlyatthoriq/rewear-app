@@ -171,7 +171,7 @@
                         Cancel
                     </a>
                     <button type="submit" 
-                        class="inline-flex justify-center items-center px-5 py-3 text-sm font-medium text-white !bg-primary hover:!bg-primary-600 focus:ring-4 focus:!ring-primary-300 rounded-lg dark:!bg-primary-600 dark:hover:!bg-primary-700 focus:outline-none dark:focus:!ring-primary-800 transition-colors duration-200">
+                        class="inline-flex justify-center items-center px-5 py-3 text-sm font-medium text-white !bg-primary-600 hover:!bg-primary-600 focus:ring-4 focus:!ring-primary-300 rounded-lg dark:!bg-primary-600 dark:hover:!bg-primary-700 focus:outline-none dark:focus:!ring-primary-800 transition-colors duration-200">
                         Update Product
                     </button>
                 </div>

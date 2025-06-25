@@ -60,6 +60,7 @@
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                             @forelse($transactions as $transaction)
+                                @php $status = $transaction->aggregated_status; @endphp
                                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                     <td class="whitespace-nowrap px-6 py-4">{{ $transaction->created_at->format('d.m.Y H:i') }}</td>
                                     <td class="whitespace-nowrap px-6 py-4">
@@ -71,33 +72,38 @@
                                     <td class="whitespace-nowrap px-6 py-4 font-medium">Rp. {{ number_format($transaction->total_amount, 2) }}</td>
                                     <td class="whitespace-nowrap px-6 py-4">
                                         <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium
-                                            @if($transaction->status === 'pending') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
-                                            @elseif($transaction->status === 'processing') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
-                                            @elseif($transaction->status === 'completed' || $transaction->status === 'success') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
-                                            @elseif($transaction->status === 'shipped') bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300
+                                            @if($status === 'pending') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                                            @elseif($status === 'processing') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
+                                            @elseif($status === 'delivered') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                                            @elseif($status === 'shipped') bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300
+                                            @elseif($status === 'partial_delivered') bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300
                                             @else bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 @endif">
-                                            @if($transaction->status === 'pending')
+                                            @if($status === 'pending')
                                                 <svg class="h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.5 4h-13m13 16h-13M8 20v-3.333a2 2 0 0 1 .4-1.2L10 12.6a1 1 0 0 0 0-1.2L8.4 8.533a2 2 0 0 1-.4-1.2V4h8v3.333a2 2 0 0 1-.4 1.2L13.957 11.4a1 1 0 0 0 0 1.2l1.643 2.867a2 2 0 0 1 .4 1.2V20H8Z" />
                                                 </svg>
-                                            @elseif($transaction->status === 'processing')
+                                            @elseif($status === 'processing')
                                                 <svg class="h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9h2m8 0H9m4 0h2m4 0h2v-4m0 0h-5m3.5 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-10 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
                                                 </svg>
-                                            @elseif($transaction->status === 'completed' || $transaction->status === 'success')
+                                            @elseif($status === 'delivered')
                                                 <svg class="h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
                                                 </svg>
-                                            @elseif($transaction->status === 'shipped')
+                                            @elseif($status === 'shipped')
                                                 <svg class="h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2-10V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V10a1 1 0 0 0-1-1h-3.393a1 1 0 0 1-.894-.553L14 5h-3c-.53 0-1.04-.2-1.414-.586l-.78-.78a1 1 0 0 0-1.414 0l-.78.78A1 1 0 0 1 7.393 9H4a1 1 0 0 0-1 1v2h18v-2h-3Z"/>
+                                                </svg>
+                                            @elseif($status === 'partial_delivered')
+                                                <svg class="h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6l2 4m-8-4v8m0-8V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V10a1 1 0 0 0-1-1h-3.393a1 1 0 0 1-.894-.553L14 5h-3c-.53 0-1.04-.2-1.414-.586l-.78-.78a1 1 0 0 0-1.414 0l-.78.78A1 1 0 0 1 7.393 9H4a1 1 0 0 0-1 1v2h18v-2h-3Z"/>
                                                 </svg>
                                             @else
                                                 <svg class="h-3.5 w-3.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
                                                 </svg>
                                             @endif
-                                            {{ ucfirst($transaction->status) }}
+                                            {{ ucfirst($status) }}
                                         </span>
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4">
@@ -114,7 +120,7 @@
                                     </td>
                                     <td class="whitespace-nowrap px-6 py-4">
                                         <div class="flex flex-wrap items-center gap-2">
-                                            @if($transaction->status === 'pending')
+                                            @if($status === 'pending')
                                                 <form action="{{ route('my-orders.cancel', $transaction) }}" method="POST" class="inline">
                                                     @csrf
                                                     <button type="submit" 
@@ -125,7 +131,7 @@
                                                         Cancel
                                                     </button>
                                                 </form>
-                                            @elseif($transaction->status === 'shipped')
+                                            @elseif($status === 'shipped')
                                                 <form action="{{ route('my-orders.complete', $transaction) }}" method="POST" class="inline">
                                                     @csrf
                                                     <button type="submit" 

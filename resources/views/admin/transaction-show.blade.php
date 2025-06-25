@@ -50,15 +50,17 @@
                     </div>
                     <div class="p-3 bg-gray-50 rounded-lg dark:bg-gray-700">
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Overall Status</p>
+                        @php $status = $transaction->aggregated_status; @endphp
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                            @if($transaction->overall_status === 'Completed' || $transaction->overall_status === 'Success' || $transaction->overall_status === 'Paid' || $transaction->overall_status === 'Delivered' || $transaction->overall_status === 'Payment Confirmed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
-                            @elseif($transaction->overall_status === 'Processing' || $transaction->overall_status === 'Payment Processing' || $transaction->overall_status === 'Shipping Processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
-                            @elseif($transaction->overall_status === 'Shipped') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
-                            @elseif($transaction->overall_status === 'Failed' || $transaction->overall_status === 'Cancelled' || $transaction->overall_status === 'Shipping Failed' || $transaction->overall_status === 'Failed Payment' || $transaction->overall_status === 'Cancelled Payment') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
-                            @elseif($transaction->overall_status === 'Pending' || $transaction->overall_status === 'Pending Shipping') bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
+                            @if($status === 'completed' || $status === 'success' || $status === 'paid' || $status === 'delivered' || $status === 'payment_confirmed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                            @elseif($status === 'processing' || $status === 'payment_processing' || $status === 'shipping_processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                            @elseif($status === 'shipped') bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300
+                            @elseif($status === 'failed' || $status === 'cancelled' || $status === 'shipping_failed' || $status === 'failed_payment' || $status === 'cancelled_payment') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                            @elseif($status === 'pending' || $status === 'pending_shipping') bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
+                            @elseif($status === 'partial_delivered') bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300
                             @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
                             @endif">
-                            {{ $transaction->overall_status }}
+                            {{ ucfirst($status) }}
                         </span>
                     </div>
                     <div class="p-3 bg-gray-50 rounded-lg dark:bg-gray-700">
@@ -76,8 +78,8 @@
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Shipping Status</p>
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                             @if($transaction->shipping_status === 'delivered') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
-                            @elseif($transaction->shipping_status === 'shipped') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
-                            @elseif($transaction->shipping_status === 'processing') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                            @elseif($transaction->shipping_status === 'shipped') bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300
+                            @elseif($transaction->shipping_status === 'processing') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
                             @elseif($transaction->shipping_status === 'failed') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
                             @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300
                             @endif">

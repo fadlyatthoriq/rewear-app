@@ -93,4 +93,30 @@ class Transaction extends Model
         // This might catch 'completed' or other specific statuses not covered above
         return ucfirst($this->status);
     }
+
+    /**
+     * Get aggregated status from all transaction items.
+     * Prioritas: pending > processing > shipped > delivered
+     * Jika campur, bisa partial_shipped/partial_delivered
+     */
+    public function getAggregatedStatusAttribute()
+    {
+        $statuses = $this->items->pluck('shipping_status')->unique();
+        if ($statuses->contains('pending')) {
+            return 'pending';
+        }
+        if ($statuses->contains('processing')) {
+            return 'processing';
+        }
+        if ($statuses->contains('shipped') && $statuses->contains('delivered')) {
+            return 'partial_delivered';
+        }
+        if ($statuses->contains('shipped')) {
+            return 'shipped';
+        }
+        if ($statuses->contains('delivered')) {
+            return 'delivered';
+        }
+        return 'unknown';
+    }
 } 

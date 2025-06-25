@@ -11,8 +11,9 @@
 
 ## 🔧 Konfigurasi yang Sudah Diubah
 
-- [x] Database default connection diubah ke PostgreSQL
+- [x] Database default connection tetap MySQL (konsisten dengan development)
 - [x] File konfigurasi untuk production environment
+- [x] Ekstensi PHP untuk MySQL sudah dikonfigurasi
 
 ## 📋 Checklist Sebelum Deployment
 
@@ -24,7 +25,7 @@
 ### 2. Environment Variables yang Perlu Disiapkan
 - [ ] APP_KEY (akan di-generate di Railway)
 - [ ] APP_URL (akan otomatis dari Railway)
-- [ ] DATABASE_URL (akan otomatis dari Railway PostgreSQL)
+- [ ] DATABASE_URL (akan otomatis dari Railway MySQL)
 - [ ] CLOUDINARY_URL (kredensial Cloudinary Anda)
 - [ ] MIDTRANS_SERVER_KEY (kredensial Midtrans Anda)
 - [ ] MIDTRANS_CLIENT_KEY (kredensial Midtrans Anda)
@@ -42,7 +43,7 @@
 - [ ] Connect ke GitHub repository
 
 ### Step 2: Database Setup
-- [ ] Tambah PostgreSQL service
+- [ ] Tambah MySQL service
 - [ ] Catat DATABASE_URL
 - [ ] Test koneksi database
 
@@ -50,7 +51,7 @@
 - [ ] Set APP_NAME="Rewear App"
 - [ ] Set APP_ENV=production
 - [ ] Set APP_DEBUG=false
-- [ ] Set DB_CONNECTION=pgsql
+- [ ] Set DB_CONNECTION=mysql
 - [ ] Set semua variable lainnya
 
 ### Step 4: Deploy
@@ -74,8 +75,9 @@
 
 ### Jika Database Error
 - [ ] Cek DATABASE_URL sudah benar
-- [ ] Pastikan PostgreSQL service running
+- [ ] Pastikan MySQL service running
 - [ ] Test koneksi database
+- [ ] Pastikan format: `mysql://username:password@host:port/database`
 
 ### Jika 500 Error
 - [ ] Cek APP_KEY sudah diset
@@ -114,7 +116,7 @@
 - [Railway Dashboard](https://railway.app)
 - [Railway Documentation](https://docs.railway.app)
 - [Laravel Documentation](https://laravel.com/docs)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- [MySQL Documentation](https://dev.mysql.com/doc/)
 
 ## 📞 Support
 

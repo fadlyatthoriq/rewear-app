@@ -27,9 +27,9 @@ git push origin main
 3. Pilih repository proyek Laravel Anda
 4. Klik "Deploy Now"
 
-### 3. Setup Database PostgreSQL
+### 3. Setup Database MySQL
 1. Di dashboard project, klik "New"
-2. Pilih "Database" → "PostgreSQL"
+2. Pilih "Database" → "MySQL"
 3. Tunggu sampai database terbuat
 4. Catat connection string yang diberikan
 
@@ -45,8 +45,8 @@ APP_DEBUG=false
 APP_URL=https://your-app-name.railway.app
 
 # Database (akan otomatis terisi dari Railway)
-DB_CONNECTION=pgsql
-DATABASE_URL=postgresql://username:password@host:port/database
+DB_CONNECTION=mysql
+DATABASE_URL=mysql://username:password@host:port/database
 
 # Cache dan Session
 BROADCAST_DRIVER=log
@@ -104,7 +104,8 @@ php artisan storage:link
 
 ### Error Database Connection
 - Pastikan DATABASE_URL sudah benar
-- Cek apakah database PostgreSQL sudah running
+- Cek apakah database MySQL sudah running
+- Pastikan format DATABASE_URL: `mysql://username:password@host:port/database`
 
 ### Error 500
 - Cek logs di Railway dashboard

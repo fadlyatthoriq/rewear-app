@@ -229,9 +229,10 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Use absolute URL with current protocol to avoid mixed content issues
-            const url = window.location.origin + this.action;
-            
+            let url = this.action;
+            if (!/^https?:\/\//i.test(url)) {
+                url = window.location.origin + url;
+            }
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -308,9 +309,10 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Use absolute URL with current protocol to avoid mixed content issues
-            const url = window.location.origin + this.action;
-            
+            let url = this.action;
+            if (!/^https?:\/\//i.test(url)) {
+                url = window.location.origin + url;
+            }
             fetch(url, {
                 method: 'POST',
                 headers: {

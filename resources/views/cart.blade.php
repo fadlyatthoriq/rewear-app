@@ -162,7 +162,11 @@ function confirmRemove(id) {
                 }
             });
 
-            fetch(window.location.origin + form.action, {
+            let url = form.action;
+            if (!/^https?:\/\//i.test(url)) {
+                url = window.location.origin + url;
+            }
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -265,7 +269,11 @@ function updateQuantity(productId, action) {
     const buttons = quantitySpan.parentElement.querySelectorAll('button');
     buttons.forEach(button => button.disabled = true);
 
-    fetch(window.location.origin + `/cart/update/${productId}`, {
+    let url = `/cart/update/${productId}`;
+    if (!/^https?:\/\//i.test(url)) {
+        url = window.location.origin + url;
+    }
+    fetch(url, {
         method: 'POST',
         headers: {
             'X-CSRF-TOKEN': token,
@@ -410,7 +418,11 @@ document.querySelectorAll('.wishlist-form').forEach(form => {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        fetch(window.location.origin + this.action, {
+        let url = this.action;
+        if (!/^https?:\/\//i.test(url)) {
+            url = window.location.origin + url;
+        }
+        fetch(url, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -474,16 +486,12 @@ document.querySelectorAll('.wishlist-form').forEach(form => {
             
             if (data.action === 'added') {
                 // Change to remove from wishlist
-                // This line is incorrect, the action URL should be for removing
-                // this.action = this.action.replace('add', 'remove'); 
                 icon.classList.add('text-primary-700'); // Use text-primary-700 for added state
                 icon.classList.remove('text-gray-500'); // Remove gray color
                 textSpan.textContent = 'Remove from Favorites';
             } else {
                 // Change to add to wishlist
-                // This line is incorrect, the action URL should be for adding
-                // this.action = this.action.replace('remove', 'add');
-                 icon.classList.remove('text-primary-700'); // Remove primary color
+                icon.classList.remove('text-primary-700'); // Remove primary color
                 icon.classList.add('text-gray-500'); // Add gray color
                 textSpan.textContent = 'Add to Favorites';
             }

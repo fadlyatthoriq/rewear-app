@@ -153,7 +153,11 @@
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       
-      fetch(window.location.origin + this.action, {
+      let url = this.action;
+      if (!/^https?:\/\//i.test(url)) {
+        url = window.location.origin + url;
+      }
+      fetch(url, {
         method: 'POST',
         headers: {
           'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -247,7 +251,11 @@
       }).then((result) => {
         if (result.isConfirmed) {
           // If confirmed, proceed with removal
-          fetch(window.location.origin + this.action, {
+          let url = this.action;
+          if (!/^https?:\/\//i.test(url)) {
+            url = window.location.origin + url;
+          }
+          fetch(url, {
             method: 'POST',
             headers: {
               'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),

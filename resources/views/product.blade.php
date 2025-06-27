@@ -156,6 +156,16 @@
                             <p class="text-sm text-gray-600 dark:text-gray-400">Member since {{ $product->seller->created_at->format('M Y') }}</p>
                         </div>
                     </div>
+
+                    @if($product->seller->phone)
+                        <a href="{{ \App\Helpers\WhatsAppHelper::generateWhatsAppUrl($product->seller->phone, 'Halo, saya tertarik dengan produk ' . $product->name . '. Apakah masih tersedia?') }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg">
+                            <svg class="w-4 h-4 mr-2" ...></svg>
+                            Chat WhatsApp
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

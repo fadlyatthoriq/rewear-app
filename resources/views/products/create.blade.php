@@ -232,7 +232,7 @@
                     formData.append('_token', '{{ csrf_token() }}');
 
                     // Upload image via AJAX
-                    fetch(window.location.origin + '{{ route('products.upload-image') }}', {
+                    fetch('{{ route('products.upload-image') }}', {
                         method: 'POST',
                         body: formData
                     })
